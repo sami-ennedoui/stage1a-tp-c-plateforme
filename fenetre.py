@@ -8,6 +8,7 @@ from PyQt6.QtCore import Qt, QThread, pyqtSignal
 from PyQt6.QtGui import QFont
 
 import chemins
+import coloration
 import executeur
 import progression
 import tuteur_ia
@@ -70,6 +71,10 @@ class Fenetre(QMainWindow):
             edit.setFont(police_code)
         for edit in (self.editeur, self.editeur_test):
             edit.setTabStopDistance(4 * edit.fontMetrics().horizontalAdvance(" "))
+
+        # coloration syntaxique C, gardée en attribut pour ne pas être ramassée
+        self._color_code = coloration.ColorationC(self.editeur.document())
+        self._color_test = coloration.ColorationC(self.editeur_test.document())
         self.label_cran = QLabel()
         self.choix_cran = QComboBox()    # redescendre sous le cran débloqué pour moins d'aide
         self.choix_cran.currentIndexChanged.connect(self._changer_cran)
