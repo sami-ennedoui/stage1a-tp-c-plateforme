@@ -1,5 +1,4 @@
 import unittest
-from pathlib import Path
 import chemins
 from modele_etape import charger_parcours, charger_etape
 

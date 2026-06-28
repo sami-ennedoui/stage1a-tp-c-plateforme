@@ -1,6 +1,6 @@
 {
   "id": "perso_P1",
-  "titre": "P1 — Le pointeur qui change l'état",
+  "titre": "P1, le pointeur qui change l'état",
   "type": "perso",
   "mode": "test_fourni",
   "recette": "perso",

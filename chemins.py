@@ -18,7 +18,8 @@ SDL_INCLUDES = [
 
 
 def _module_existe(nom: str) -> bool:
-    return subprocess.run(["pkg-config", "--exists", nom]).returncode == 0
+    return subprocess.run(["pkg-config", "--exists", nom],
+                          stderr=subprocess.DEVNULL).returncode == 0
 
 
 def modules_sdl(avec_ttf_image: bool = True) -> list[str]:

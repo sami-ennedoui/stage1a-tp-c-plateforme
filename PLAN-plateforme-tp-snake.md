@@ -1,4 +1,4 @@
-# Plateforme du TP Snake — Plan d'implémentation
+# Plateforme du TP Snake, plan d'implémentation
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -216,7 +216,7 @@ def charger_parcours(dossier_contenu: Path = chemins.CONTENU) -> list[Etape]:
 ```json
 {
   "id": "perso_P1",
-  "titre": "P1 — Le pointeur qui change l'état",
+  "titre": "P1, le pointeur qui change l'état",
   "type": "perso",
   "mode": "test_fourni",
   "recette": "perso",
@@ -231,7 +231,7 @@ def charger_parcours(dossier_contenu: Path = chemins.CONTENU) -> list[Etape]:
 ```json
 {
   "id": "jalon1_parametrage",
-  "titre": "Jalon 1 — Le menu Paramétrage",
+  "titre": "Jalon 1, le menu Paramétrage",
   "type": "jalon",
   "mode": "test_a_ecrire",
   "recette": "jalon_test",
@@ -343,7 +343,7 @@ int main(void) {
 - [ ] **Step 5: Écrire `enonce.md`**
 
 ```markdown
-# P1 — Le pointeur qui change l'état
+# P1, le pointeur qui change l'état
 
 Dans le projet Snake, un sous-programme doit changer l'état du menu de celui qui
 l'appelle. Sa signature ressemble à `SP_Gestion_Evenements_MENU_ACCUEIL(SDL_Event, int*)`.
@@ -630,7 +630,7 @@ int main(void) {
 - [ ] **Step 8: Écrire `enonce.md`**
 
 ```markdown
-# Jalon 1 — Le menu Paramétrage
+# Jalon 1, le menu Paramétrage
 
 Tu as l'accueil comme exemple, dans `GestionMenuAcceuil.c`. Écris le menu Paramétrage
 sur le même modèle. Deux sous-programmes.
