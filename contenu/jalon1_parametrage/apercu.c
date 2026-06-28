@@ -2,7 +2,6 @@
    a construits dans SP_Structure_Menu_Parametrage. Échap ou la croix pour fermer. */
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <stdio.h>
 
 #include "ConfigurationJeu.h"
 #include "MesTypes.h"

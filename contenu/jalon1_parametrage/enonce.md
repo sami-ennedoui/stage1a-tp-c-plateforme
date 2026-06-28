@@ -1,7 +1,7 @@
 # Jalon 1, le menu Paramétrage
 
 Tu as l'accueil comme exemple, dans `GestionMenuAcceuil.c`. Écris le menu Paramétrage
-sur le même modèle. Deux sous-programmes.
+sur le même modèle. Il comporte deux sous-programmes.
 
 `SP_Structure_Menu_Parametrage` crée les quatre boutons dans `ListeBouton_Menu_Parametrage`,
 avec `SP_Creation_Bouton` : couleur du serpent, couleur du fond, couleur du bord, retour.
