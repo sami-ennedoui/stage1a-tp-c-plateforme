@@ -13,6 +13,14 @@ class TestTuteur(unittest.TestCase):
         self.assertIn("explique", p.lower())
         self.assertIn("sans donner", p.lower())
 
+    def test_prompt_n1_propose_un_squelette(self):
+        p = construire_prompt(self.etape, "code", "comment faire ?", 1)
+        self.assertIn("squelette", p.lower())
+
+    def test_prompt_n2_demande_de_justifier(self):
+        p = construire_prompt(self.etape, "code", "comment faire ?", 2)
+        self.assertIn("justifier", p.lower())
+
     def test_prompt_n3_est_libre(self):
         p = construire_prompt(self.etape, "code", "comment faire ?", 3)
         self.assertIn("libre", p.lower())
