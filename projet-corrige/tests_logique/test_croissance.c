@@ -2,9 +2,8 @@
  * test_croissance.c -- verifie que le serpent grandit quand il mange une pomme.
  *
  * Apres SP_Initialisation_Partie :
- *   - on oriente le serpent vers le bas (DOWN) pour eviter la collision
- *     immediate avec le mur de droite ;
- *   - on place la pomme juste devant la tete (19, 11) ;
+ *   - on oriente le serpent vers le bas (DOWN) ;
+ *   - on place la pomme juste devant la tete, lue dynamiquement ;
  *   - on appelle SP_Avancer_Serpent ;
  *   - on verifie que taille a augmente d'un, que score a augmente d'un,
  *     et que la nouvelle pomme est dans les bornes et hors du corps.
@@ -37,15 +36,15 @@ int main(void) {
     srand(42);
     SP_Initialisation_Partie();
 
-    /* Direction DOWN : tete (19,10) -> (19,11). */
+    /* Direction DOWN : la tete descendra d'une cellule au prochain pas. */
     serpent.dir = DOWN;
 
     int taille_avant = serpent.taille;
     int score_avant  = score;
 
-    /* Pomme posee exactement devant la tete. */
-    pomme.x = serpent.corps[0].x;          /* 19 */
-    pomme.y = serpent.corps[0].y + 1.0f;  /* 11 */
+    /* Pomme posee exactement devant la tete, position lue dynamiquement. */
+    pomme.x = serpent.corps[0].x;
+    pomme.y = serpent.corps[0].y + 1.0f;
 
     int ret = SP_Avancer_Serpent();
 

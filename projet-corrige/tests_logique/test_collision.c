@@ -2,8 +2,9 @@
  * test_collision.c -- verifie la detection des deux types de collision.
  *
  * Cas 1 -- collision avec un mur :
- *   Apres SP_Initialisation_Partie (tete en (19,10), direction RIGHT),
- *   un pas suffit pour que la tete sorte de la grille (x = 20).
+ *   On monte a la main un serpent court colle au bord droit, tete a
+ *   l'extremite (x = NOMBRE_CELLULE_LARGEUR - 1), direction RIGHT. Un pas
+ *   suffit pour que la tete sorte de la grille.
  *   SP_Avancer_Serpent doit renvoyer 0 et poser partie_terminee = 1.
  *
  * Cas 2 -- collision avec le corps propre :
@@ -44,9 +45,16 @@ int main(void) {
     /* ----- Cas 1 : collision avec le mur de droite ----- */
     printf("  Cas 1 : mur de droite\n");
 
-    srand(42);
-    SP_Initialisation_Partie();
-    /* serpent.dir == RIGHT et corps[0].x == 19 : le pas suivant sort de la grille. */
+    /* Serpent court colle au bord droit, tete a l'extremite, direction RIGHT.
+       Le pas suivant fait sortir la tete de la grille. On monte cet etat a la
+       main pour ne pas dependre du placement initial. */
+    serpent.taille     = 3;
+    serpent.dir        = RIGHT;
+    serpent.corps[0].x = (float)(NOMBRE_CELLULE_LARGEUR - 1);  serpent.corps[0].y = 10.0f;
+    serpent.corps[1].x = (float)(NOMBRE_CELLULE_LARGEUR - 2);  serpent.corps[1].y = 10.0f;
+    serpent.corps[2].x = (float)(NOMBRE_CELLULE_LARGEUR - 3);  serpent.corps[2].y = 10.0f;
+    partie_terminee    = 0;
+    pomme.x = 0.0f;  pomme.y = 0.0f;   /* pomme loin, sans effet sur le test */
 
     int ret = SP_Avancer_Serpent();
     VERIFIER(ret == 0,

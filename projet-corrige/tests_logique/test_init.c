@@ -2,10 +2,10 @@
  * test_init.c -- verifie l'etat apres SP_Initialisation_Partie.
  *
  * Criteres :
- *   - serpent.taille == TAILLE_INITIALE
- *   - la tete (corps[0]) est sur la ligne centrale (y == NOMBRE_CELLULE_HAUTEUR/2)
- *     et a l'extremite droite attendue (x == NOMBRE_CELLULE_LARGEUR - 1)
- *   - le corps forme une ligne horizontale valide
+ *   - serpent.taille == LONGUEUR_DEPART
+ *   - la tete (corps[0]) est au centre (x == NOMBRE_CELLULE_LARGEUR/2,
+ *     y == NOMBRE_CELLULE_HAUTEUR/2)
+ *   - le corps forme une ligne horizontale valide qui s'etend vers la gauche
  *   - pomme dans les bornes de la grille et hors du corps
  *
  * Aucune fenetre SDL n'est creee, le test tourne sans ecran.
@@ -38,16 +38,16 @@ int main(void) {
     SP_Initialisation_Partie();
 
     /* Taille initiale. */
-    VERIFIER(serpent.taille == TAILLE_INITIALE,
-             "serpent.taille != TAILLE_INITIALE apres initialisation");
+    VERIFIER(serpent.taille == LONGUEUR_DEPART,
+             "serpent.taille != LONGUEUR_DEPART apres initialisation");
 
     /* Direction initiale. */
     VERIFIER(serpent.dir == RIGHT,
              "serpent.dir != RIGHT apres initialisation");
 
-    /* Position de la tete (corps[0]). */
-    VERIFIER((int)serpent.corps[0].x == NOMBRE_CELLULE_LARGEUR - 1,
-             "tete.x incorrect (attendu NOMBRE_CELLULE_LARGEUR - 1)");
+    /* Position de la tete (corps[0]) : au centre de la grille. */
+    VERIFIER((int)serpent.corps[0].x == NOMBRE_CELLULE_LARGEUR / 2,
+             "tete.x incorrect (attendu NOMBRE_CELLULE_LARGEUR / 2)");
     VERIFIER((int)serpent.corps[0].y == NOMBRE_CELLULE_HAUTEUR / 2,
              "tete.y incorrect (attendu NOMBRE_CELLULE_HAUTEUR / 2)");
 

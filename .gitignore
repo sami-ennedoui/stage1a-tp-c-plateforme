@@ -4,3 +4,7 @@ progression.json
 .superpowers/
 projet-corrige/SNAKE/snake
 *.o
+projet-corrige/tests_logique/test_init
+projet-corrige/tests_logique/test_deplacement
+projet-corrige/tests_logique/test_croissance
+projet-corrige/tests_logique/test_collision

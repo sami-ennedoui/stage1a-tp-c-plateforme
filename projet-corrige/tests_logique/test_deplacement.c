@@ -1,9 +1,9 @@
 /*
  * test_deplacement.c -- verifie qu'un pas deplace correctement le serpent.
  *
- * Apres SP_Initialisation_Partie (tete en (19,10), direction RIGHT) :
- *   - on change la direction a DOWN pour eviter la collision immediate
- *     avec le mur de droite ;
+ * Apres SP_Initialisation_Partie (tete au centre, direction RIGHT) :
+ *   - on change la direction a DOWN, puis on lit la position reelle de la tete
+ *     pour calculer l'attendu, donc le test ne depend pas du placement exact ;
  *   - on enregistre toutes les positions avant le pas ;
  *   - on appelle SP_Avancer_Serpent ;
  *   - on verifie que la tete a avance d'une cellule vers le bas et que
@@ -37,7 +37,7 @@ int main(void) {
     srand(42);
     SP_Initialisation_Partie();
 
-    /* On choisit DOWN : la tete passe de (19,10) a (19,11), aucune collision. */
+    /* On choisit DOWN : la tete descend d'une cellule, sans collision possible. */
     serpent.dir = DOWN;
 
     /* Sauvegarde des positions avant le deplacement. */

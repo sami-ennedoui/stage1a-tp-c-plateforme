@@ -53,24 +53,26 @@ void SP_Nouvelle_Pomme(void) {
 /*=======================================================================
    SP_Initialisation_Partie
    Prepare une nouvelle partie :
-   - le serpent est place horizontalement sur la ligne centrale de la
-     grille, TAILLE_INITIALE segments, tete a l'extremite droite
-     (corps[0]), regardant a droite ;
+   - le serpent part au centre de la grille, LONGUEUR_DEPART segments, tete
+     a droite (corps[0]) et corps qui s'etend vers la gauche, direction
+     initiale a droite ;
    - score et partie_terminee sont remis a zero ;
    - une premiere pomme est posee hors du corps.
 
-   Avec TAILLE_INITIALE = NOMBRE_CELLULE_LARGEUR = 20, le serpent occupe
-   toute la ligne du milieu : corps[0].x = 19, corps[19].x = 0.
+   On ne prend pas TAILLE_INITIALE comme longueur de depart : valant 20 sur une
+   grille 20 par 20, le serpent remplirait une ligne entiere et toucherait le
+   mur des le premier pas. Un serpent court au centre est jouable, comme dans la
+   reference jeu_demo.c.
 ========================================================================*/
 void SP_Initialisation_Partie(void) {
 
     srand((unsigned int)time(NULL));
 
-    serpent.taille = TAILLE_INITIALE;
+    serpent.taille = LONGUEUR_DEPART;
     serpent.dir    = RIGHT;
 
     for (int i = 0; i < serpent.taille; i++) {
-        serpent.corps[i].x = (float)(NOMBRE_CELLULE_LARGEUR - 1 - i);
+        serpent.corps[i].x = (float)(NOMBRE_CELLULE_LARGEUR / 2 - i);
         serpent.corps[i].y = (float)(NOMBRE_CELLULE_HAUTEUR / 2);
     }
 
