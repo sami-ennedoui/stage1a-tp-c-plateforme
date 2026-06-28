@@ -96,9 +96,11 @@ _SOURCES_APERCU = [
 ]
 
 
-def construire_apercu(etape: Etape, code_eleve: str):
+def construire_apercu(etape: Etape, code_eleve: str) -> tuple[Resultat, Path | None]:
     """Construit le binaire d'aperçu : le code de l'étudiant plus apercu.c plus la
-    bibliothèque du projet. Rend (Resultat, chemin_binaire_ou_None)."""
+    bibliothèque du projet. Rend (Resultat, chemin_binaire_ou_None).
+    Le dossier temporaire est volontairement persistant, le binaire doit survivre à
+    l'appel pour que lancer_jeu puisse l'ouvrir, il reste dans /tmp jusqu'au redémarrage."""
     persistant = Path(tempfile.mkdtemp(prefix="apercu_"))
     code = persistant / etape.fichier_edite
     code.write_text(code_eleve, encoding="utf-8")
@@ -128,7 +130,8 @@ def lancer_jeu(etape: Etape, code_eleve: str) -> Resultat:
     resultat, binaire = construire_apercu(etape, code_eleve)
     if not resultat.ok:
         return resultat
-    subprocess.Popen([str(binaire)], cwd=str(chemins.BUILD_COPY))
+    subprocess.Popen([str(binaire)], cwd=str(chemins.BUILD_COPY),
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     return Resultat(True, "Fenêtre lancée. Échap pour fermer.")
 
 
