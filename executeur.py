@@ -2,6 +2,7 @@
 Le code de sortie du programme fait foi, pas le texte affiché."""
 from dataclasses import dataclass
 from pathlib import Path
+import shutil
 import subprocess
 import tempfile
 
@@ -80,6 +81,55 @@ def porte_jalon(etape: Etape, code_eleve: str, test_eleve: str) -> Resultat:
         t = Path(d) / "test_eleve.c"
         t.write_text(test_eleve, encoding="utf-8")
         return _compiler_et_lancer([code, t, etape.dossier / "stubs.c"], includes, libs=libs)
+
+
+# Sources de la bibliothèque du projet suffisantes pour un menu. Confirmées présentes
+# dans la copie de build. On évite les fichiers de gameplay incomplets de l'archive.
+_SOURCES_APERCU = [
+    "Bibliotheque_source/Initialisation_SDL.c",
+    "Bibliotheque_source/OutilsDessin.c",
+    "Bibliotheque_source/OutilsBouton.c",
+    "Bibliotheque_source/OutilsCouleur.c",
+    "Bibliotheque_source/OutilsZoneTexte.c",
+    "InitialisationTexture.c",
+    "VariablesGlobales.c",
+]
+
+
+def construire_apercu(etape: Etape, code_eleve: str):
+    """Construit le binaire d'aperçu : le code de l'étudiant plus apercu.c plus la
+    bibliothèque du projet. Rend (Resultat, chemin_binaire_ou_None)."""
+    persistant = Path(tempfile.mkdtemp(prefix="apercu_"))
+    code = persistant / etape.fichier_edite
+    code.write_text(code_eleve, encoding="utf-8")
+    binaire = persistant / "apercu"
+
+    sources = [code, etape.dossier / "apercu.c"]
+    sources += [chemins.BUILD_COPY / s for s in _SOURCES_APERCU]
+    includes = [etape.dossier, chemins.BUILD_COPY, chemins.BUILD_COPY / "Bibliotheque_header"]
+    includes += chemins.SDL_INCLUDES
+
+    cmd = ["gcc", "-Wall", "-Wno-unused-parameter", "-Wno-unused-variable"]
+    cmd += [f"-I{i}" for i in includes]
+    cmd += chemins.cflags_sdl(avec_ttf_image=True)
+    cmd += [str(s) for s in sources]
+    cmd += chemins.libs_sdl(avec_ttf_image=True)
+    cmd += ["-lm", "-o", str(binaire)]
+    comp = subprocess.run(cmd, capture_output=True, text=True)
+    if comp.returncode != 0:
+        shutil.rmtree(persistant, ignore_errors=True)
+        return Resultat(False, "Erreur de compilation de l'aperçu :\n" + comp.stderr), None
+    return Resultat(True, "Aperçu construit."), binaire
+
+
+def lancer_jeu(etape: Etape, code_eleve: str) -> Resultat:
+    """Construit l'aperçu puis ouvre la fenêtre. Les assets sont chargés en chemin
+    relatif, donc on lance depuis la copie de build."""
+    resultat, binaire = construire_apercu(etape, code_eleve)
+    if not resultat.ok:
+        return resultat
+    subprocess.Popen([str(binaire)], cwd=str(chemins.BUILD_COPY))
+    return Resultat(True, "Fenêtre lancée. Échap pour fermer.")
 
 
 def porte_perso(etape: Etape, code_eleve: str) -> Resultat:

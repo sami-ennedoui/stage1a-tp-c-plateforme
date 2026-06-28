@@ -1,7 +1,7 @@
 import unittest
 import chemins
 from modele_etape import charger_etape
-from executeur import porte_perso, juger_test, porte_jalon
+from executeur import porte_perso, juger_test, porte_jalon, construire_apercu
 
 
 class TestPortePerso(unittest.TestCase):
@@ -47,6 +47,15 @@ class TestJalon(unittest.TestCase):
     def test_porte_jalon_corrige_passe(self):
         r = porte_jalon(self.etape, self.corrige, self.test_ref)
         self.assertTrue(r.ok, r.sortie)
+
+
+class TestApercu(unittest.TestCase):
+    def test_apercu_se_construit_avec_le_corrige(self):
+        etape = charger_etape(chemins.CONTENU / "jalon1_parametrage")
+        corrige = (etape.dossier / "corrige.c").read_text(encoding="utf-8")
+        resultat, binaire = construire_apercu(etape, corrige)
+        self.assertTrue(resultat.ok, resultat.sortie)
+        self.assertIsNotNone(binaire)
 
 
 if __name__ == "__main__":
