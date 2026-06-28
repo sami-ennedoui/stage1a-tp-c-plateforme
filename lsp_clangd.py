@@ -239,9 +239,27 @@ class ClientClangd(QThread):
         try:
             self._lancer_et_boucler(dossier_tmp)
         finally:
-            import shutil as _shutil
-            _shutil.rmtree(dossier_tmp, ignore_errors=True)
-            self._processus = None
+            self._nettoyer_processus()
+            shutil.rmtree(dossier_tmp, ignore_errors=True)
+
+    def _nettoyer_processus(self) -> None:
+        """Ferme les pipes et attend la fin du processus clangd, sans laisser de flux ouvert."""
+        proc = self._processus
+        self._processus = None
+        if proc is None:
+            return
+        if proc.poll() is None:
+            proc.terminate()
+        try:
+            proc.wait(timeout=2)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+        for flux in (proc.stdin, proc.stdout):
+            try:
+                if flux is not None:
+                    flux.close()
+            except Exception:
+                pass
 
     def _lancer_et_boucler(self, dossier: Path) -> None:
         fichier_c = dossier / "atelier.c"

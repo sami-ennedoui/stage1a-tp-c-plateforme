@@ -176,7 +176,9 @@ class Fenetre(QMainWindow):
         self.onglets.setTabVisible(1, a_ecrire)
         self.b_jeu.setVisible(self.etape.type == "jalon")
         self._maj_cran()
-        self._demarrer_lsp()
+        # démarrage différé à la boucle d'événements : le constructeur reste sans
+        # fil vivant, donc le smoketest sans boucle ne laisse aucun QThread orphelin
+        QTimer.singleShot(0, self._demarrer_lsp)
 
     def _maj_cran(self):
         dispo = progression.cran_disponible(self.prog)
@@ -266,7 +268,7 @@ class Fenetre(QMainWindow):
         if self._client_lsp is not None:
             self._client_lsp.diagnostics_recus.disconnect()
             self._client_lsp.arreter()
-            self._client_lsp.wait(msecs=2000)
+            self._client_lsp.wait(2000)
             self._client_lsp = None
         # efface les soulignements de l'étape précédente
         self.editeur.setExtraSelections([])
@@ -288,7 +290,7 @@ class Fenetre(QMainWindow):
         """Arrête proprement le client LSP avant de fermer la fenêtre."""
         if self._client_lsp is not None:
             self._client_lsp.arreter()
-            self._client_lsp.wait(msecs=2000)
+            self._client_lsp.wait(2000)
         super().closeEvent(event)
 
 

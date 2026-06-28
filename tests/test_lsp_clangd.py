@@ -234,5 +234,57 @@ class TestRenduDiagnostics(unittest.TestCase):
         self.assertEqual(len(editeur.extraSelections()), 0)
 
 
+# ---------------------------------------------------------------------------
+# Test live : lance vraiment clangd. Sauté si clang-tools-extra est absent,
+# donc la suite reste verte partout. Là où clangd existe, il prouve la chaîne
+# complète : lancement, handshake, didOpen, remontée par le signal Qt, arrêt.
+# ---------------------------------------------------------------------------
+
+@unittest.skipUnless(clangd_disponible(), "clangd absent, test live ignoré")
+class TestClangdLive(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        from PyQt6.QtWidgets import QApplication
+        cls.app = QApplication.instance() or QApplication(sys.argv[:1])
+
+    def _charger_etape(self):
+        import chemins
+        from modele_etape import charger_etape
+        return charger_etape(chemins.CONTENU / "perso_P1")
+
+    def _attendre(self, predicat, ms=12000):
+        from PyQt6.QtCore import QEventLoop, QTimer
+        loop = QEventLoop()
+        sonde = QTimer()
+        sonde.timeout.connect(lambda: predicat() and loop.quit())
+        sonde.start(150)
+        secours = QTimer()
+        secours.setSingleShot(True)
+        secours.timeout.connect(loop.quit)
+        secours.start(ms)
+        loop.exec()
+
+    def test_diagnostics_live_sur_code_fautif(self):
+        from lsp_clangd import ClientClangd
+        etape = self._charger_etape()
+        # 'y' n'est pas déclaré : clangd doit signaler une erreur
+        code = ("#include <stdio.h>\nint main(void){\n"
+                "    int x = y + 1;\n    return x;\n}\n")
+        recus = []
+        client = ClientClangd(etape)
+        client.diagnostics_recus.connect(recus.append)
+        client.demarrer(code)
+        try:
+            self._attendre(lambda: any(lot for lot in recus))
+            non_vides = [lot for lot in recus if lot]
+            self.assertTrue(non_vides, "clangd n'a renvoyé aucun diagnostic")
+            erreurs = [d for lot in non_vides for d in lot if d.severite == 1]
+            self.assertTrue(erreurs, "aucune erreur signalée sur du code fautif")
+        finally:
+            client.arreter()
+            self.assertTrue(client.wait(3000), "le client clangd ne s'est pas arrêté")
+
+
 if __name__ == "__main__":
     unittest.main()
