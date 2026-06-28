@@ -1,0 +1,10 @@
+{
+  "id": "perso_P1",
+  "titre": "P1 — Le pointeur qui change l'état",
+  "type": "perso",
+  "mode": "test_fourni",
+  "recette": "perso",
+  "cran_debloque": 1,
+  "noeud_cours": "Passage par pointeur IN/OUT",
+  "fichier_edite": "soumission.c"
+}

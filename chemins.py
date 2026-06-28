@@ -1,0 +1,48 @@
+"""Chemins et drapeaux de compilation. Aucune logique métier ici."""
+from pathlib import Path
+import subprocess
+
+RACINE = Path(__file__).resolve().parent
+CONTENU = RACINE / "contenu"
+PROGRESSION_FICHIER = RACINE / "progression.json"
+
+SNAKE_ROOT = Path.home() / "scratch-stage1a" / "snake-sdl" / "extracted" / "SNAKE_STAGE"
+ARCH = SNAKE_ROOT / "SNAKE_ARCHIVE_SDL_DEPART"
+BUILD_COPY = Path.home() / "scratch-stage1a" / "snake-sdl" / "linux-build" / "SNAKE"
+
+SDL_INCLUDES = [
+    SNAKE_ROOT / "SDL3" / "include",
+    SNAKE_ROOT / "SDL3_ttf" / "include",
+    SNAKE_ROOT / "SDL3_image" / "include",
+]
+
+
+def _module_existe(nom: str) -> bool:
+    return subprocess.run(["pkg-config", "--exists", nom]).returncode == 0
+
+
+def modules_sdl(avec_ttf_image: bool = True) -> list[str]:
+    mods = ["sdl3"]
+    if avec_ttf_image:
+        for c in ("sdl3-ttf", "SDL3_ttf"):
+            if _module_existe(c):
+                mods.append(c)
+                break
+        for c in ("sdl3-image", "SDL3_image"):
+            if _module_existe(c):
+                mods.append(c)
+                break
+    return mods
+
+
+def _pkg(champ: str, mods: list[str]) -> list[str]:
+    r = subprocess.run(["pkg-config", champ, *mods], capture_output=True, text=True)
+    return r.stdout.split()
+
+
+def cflags_sdl(avec_ttf_image: bool = True) -> list[str]:
+    return _pkg("--cflags", modules_sdl(avec_ttf_image))
+
+
+def libs_sdl(avec_ttf_image: bool = True) -> list[str]:
+    return _pkg("--libs", modules_sdl(avec_ttf_image))

@@ -1,0 +1,10 @@
+{
+  "id": "jalon1_parametrage",
+  "titre": "Jalon 1 — Le menu Paramétrage",
+  "type": "jalon",
+  "mode": "test_a_ecrire",
+  "recette": "jalon_test",
+  "cran_debloque": 2,
+  "noeud_cours": "Décomposition fonctionnelle, tableau de boutons, état par pointeur",
+  "fichier_edite": "GestionMenuParametrage.c"
+}
