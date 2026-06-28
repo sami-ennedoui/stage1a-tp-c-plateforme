@@ -1,14 +1,25 @@
 """Fenêtre de l'atelier Snake. Câble énoncé, éditeur, console, tuteur et portes."""
+import html
+
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QListWidget,
                              QPlainTextEdit, QTextEdit, QPushButton, QLabel, QTabWidget,
                              QListWidgetItem, QInputDialog, QComboBox)
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
+from PyQt6.QtGui import QFont
 
 import chemins
 import executeur
 import progression
 import tuteur_ia
+import theme
 from modele_etape import charger_parcours
+
+
+def _titre(texte: str) -> QLabel:
+    """Petit en-tête de colonne, stylé par la feuille de style via son objectName."""
+    etiquette = QLabel(texte)
+    etiquette.setObjectName("titre")
+    return etiquette
 
 
 class FilTuteur(QThread):
@@ -49,6 +60,16 @@ class Fenetre(QMainWindow):
         self.onglets.addTab(self.editeur_test, "Mon test")
 
         self.console = QTextEdit(readOnly=True)
+
+        # police à chasse fixe pour tout ce qui contient du code
+        police_code = QFont()
+        police_code.setFamilies(["JetBrains Mono", "Fira Code", "DejaVu Sans Mono", "monospace"])
+        police_code.setStyleHint(QFont.StyleHint.Monospace)
+        police_code.setPointSize(11)
+        for edit in (self.editeur, self.editeur_test, self.console):
+            edit.setFont(police_code)
+        for edit in (self.editeur, self.editeur_test):
+            edit.setTabStopDistance(4 * edit.fontMetrics().horizontalAdvance(" "))
         self.label_cran = QLabel()
         self.choix_cran = QComboBox()    # redescendre sous le cran débloqué pour moins d'aide
         self.choix_cran.currentIndexChanged.connect(self._changer_cran)
@@ -56,6 +77,7 @@ class Fenetre(QMainWindow):
 
         b_compiler = QPushButton("Compiler")
         b_tester = QPushButton("Tester")
+        b_tester.setObjectName("primaire")     # bouton d'action principal, accent vert
         self.b_jeu = QPushButton("Lancer le jeu")
         b_aide = QPushButton("Demander de l'aide")
         self.b_corrige = QPushButton("Charger le corrigé")
@@ -67,22 +89,37 @@ class Fenetre(QMainWindow):
         self.b_corrige.clicked.connect(self._charger_corrige)
 
         barre = QHBoxLayout()
+        barre.setSpacing(8)
         for b in (b_compiler, b_tester, self.b_jeu, b_aide, self.b_corrige):
             barre.addWidget(b)
+        barre.addStretch(1)
+
+        gauche = QVBoxLayout()
+        gauche.setSpacing(6)
+        gauche.addWidget(_titre("PARCOURS"))
+        gauche.addWidget(self.liste)
 
         centre = QVBoxLayout()
+        centre.setSpacing(6)
+        centre.addWidget(_titre("ÉNONCÉ"))
         centre.addWidget(self.enonce, 2)
+        centre.addWidget(_titre("ATELIER"))
         centre.addWidget(self.onglets, 5)
         centre.addLayout(barre)
+        centre.addWidget(_titre("CONSOLE"))
         centre.addWidget(self.console, 3)
 
         droite = QVBoxLayout()
+        droite.setSpacing(6)
+        droite.addWidget(_titre("TUTEUR IA"))
         droite.addWidget(self.label_cran)
         droite.addWidget(self.choix_cran)
         droite.addWidget(self.reponse_tuteur)
 
         racine = QHBoxLayout()
-        racine.addWidget(self.liste, 1)
+        racine.setContentsMargins(14, 14, 14, 14)
+        racine.setSpacing(14)
+        racine.addLayout(gauche, 1)
         racine.addLayout(centre, 4)
         racine.addLayout(droite, 2)
         conteneur = QWidget()
@@ -156,7 +193,12 @@ class Fenetre(QMainWindow):
             self._afficher_porte(r.ok, "Ton test est solide.\n" + r.sortie)
 
     def _afficher_porte(self, ok, sortie):
-        self.console.setPlainText(("PORTE OUVERTE\n\n" if ok else "PORTE FERMÉE\n\n") + sortie)
+        couleur = theme.ACCENT if ok else theme.ROUGE
+        titre = "PORTE OUVERTE" if ok else "PORTE FERMÉE"
+        self.console.setHtml(
+            f'<span style="color:{couleur};font-weight:bold;font-size:15px;">{titre}</span>'
+            f'<pre style="font-family:monospace;color:{theme.TEXTE};white-space:pre-wrap;">'
+            f'{html.escape(sortie)}</pre>')
         if ok:
             self.prog = progression.valider(self.etape, self.prog)
             if not self.demo:                # le mode démo n'écrase pas l'état réel sauvegardé

@@ -37,7 +37,9 @@ def selftest() -> int:
 def smoketest() -> int:
     from PyQt6.QtWidgets import QApplication
     import fenetre
+    import theme
     app = QApplication.instance() or QApplication([])
+    theme.appliquer(app)
     f = fenetre.construire(app)
     print("SMOKETEST OK, fenêtre construite :", f.windowTitle())
     return 0
@@ -50,7 +52,9 @@ def main():
         sys.exit(smoketest())
     from PyQt6.QtWidgets import QApplication
     import fenetre
+    import theme
     app = QApplication(sys.argv)
+    theme.appliquer(app)
     f = fenetre.Fenetre(demo="--demo" in sys.argv)
     f.resize(1280, 800)
     f.show()
