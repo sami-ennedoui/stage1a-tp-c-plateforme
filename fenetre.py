@@ -24,11 +24,16 @@ class FilTuteur(QThread):
 
 
 class Fenetre(QMainWindow):
-    def __init__(self):
+    def __init__(self, demo=False):
         super().__init__()
-        self.setWindowTitle("Atelier Snake")
+        self.demo = demo
+        self.setWindowTitle("Atelier Snake (mode démo)" if demo else "Atelier Snake")
         self.parcours = charger_parcours(chemins.CONTENU)
-        self.prog = progression.charger()
+        if demo:
+            # mode démo : tout débloqué, cran poussé à N3 pour tester les quatre niveaux d'IA
+            self.prog = progression.Progression([e.id for e in self.parcours], 3)
+        else:
+            self.prog = progression.charger()
         self.etape = self.parcours[0]
         # cran restauré depuis l'état sauvegardé, l'étudiant qui revient garde son niveau
         self.niveau = progression.cran_disponible(self.prog)
@@ -53,13 +58,16 @@ class Fenetre(QMainWindow):
         b_tester = QPushButton("Tester")
         self.b_jeu = QPushButton("Lancer le jeu")
         b_aide = QPushButton("Demander de l'aide")
+        self.b_corrige = QPushButton("Charger le corrigé")
+        self.b_corrige.setVisible(self.demo)     # bouton du mode démo seulement
         b_compiler.clicked.connect(self._compiler)
         b_tester.clicked.connect(self._tester)
         self.b_jeu.clicked.connect(self._lancer_jeu)
         b_aide.clicked.connect(self._demander_aide)
+        self.b_corrige.clicked.connect(self._charger_corrige)
 
         barre = QHBoxLayout()
-        for b in (b_compiler, b_tester, self.b_jeu, b_aide):
+        for b in (b_compiler, b_tester, self.b_jeu, b_aide, self.b_corrige):
             barre.addWidget(b)
 
         centre = QVBoxLayout()
@@ -151,7 +159,8 @@ class Fenetre(QMainWindow):
         self.console.setPlainText(("PORTE OUVERTE\n\n" if ok else "PORTE FERMÉE\n\n") + sortie)
         if ok:
             self.prog = progression.valider(self.etape, self.prog)
-            progression.sauver(self.prog)
+            if not self.demo:                # le mode démo n'écrase pas l'état réel sauvegardé
+                progression.sauver(self.prog)
             self.niveau = progression.cran_disponible(self.prog)
             self._remplir_liste()
             self._maj_cran()
@@ -159,6 +168,14 @@ class Fenetre(QMainWindow):
     def _lancer_jeu(self):
         r = executeur.lancer_jeu(self.etape, self.editeur.toPlainText())
         self.console.setPlainText(r.sortie)
+
+    def _charger_corrige(self):
+        # mode démo : remplit l'éditeur avec le code correct, plus le test de référence pour un jalon
+        self.editeur.setPlainText((self.etape.dossier / "corrige.c").read_text(encoding="utf-8"))
+        if self.etape.mode == "test_a_ecrire":
+            self.editeur_test.setPlainText(
+                (self.etape.dossier / "test_reference.c").read_text(encoding="utf-8"))
+        self.console.setPlainText("Corrigé chargé. Clique Tester pour franchir la porte.")
 
     def _demander_aide(self):
         if getattr(self, "_fil", None) is not None and self._fil.isRunning():
@@ -174,6 +191,6 @@ class Fenetre(QMainWindow):
         self._fil.start()
 
 
-def construire(app):
+def construire(app, demo=False):
     """Construit la fenêtre sans l'afficher. Sert au smoketest."""
-    return Fenetre()
+    return Fenetre(demo=demo)

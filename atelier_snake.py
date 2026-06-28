@@ -3,6 +3,7 @@
   python3 atelier_snake.py             lance la fenêtre
   python3 atelier_snake.py --selftest  vérifie les portes sans écran
   python3 atelier_snake.py --smoketest construit la fenêtre sans l'afficher
+  python3 atelier_snake.py --demo      mode démo, tout débloqué, bouton Charger le corrigé, crans N0 à N3
 """
 import sys
 
@@ -50,7 +51,7 @@ def main():
     from PyQt6.QtWidgets import QApplication
     import fenetre
     app = QApplication(sys.argv)
-    f = fenetre.Fenetre()
+    f = fenetre.Fenetre(demo="--demo" in sys.argv)
     f.resize(1280, 800)
     f.show()
     sys.exit(app.exec())
