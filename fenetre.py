@@ -1,7 +1,7 @@
 """Fenêtre de l'atelier Snake. Câble énoncé, éditeur, console, tuteur et portes."""
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QListWidget,
                              QPlainTextEdit, QTextEdit, QPushButton, QLabel, QTabWidget,
-                             QListWidgetItem, QInputDialog)
+                             QListWidgetItem, QInputDialog, QComboBox)
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 
 import chemins
@@ -30,7 +30,8 @@ class Fenetre(QMainWindow):
         self.parcours = charger_parcours(chemins.CONTENU)
         self.prog = progression.charger()
         self.etape = self.parcours[0]
-        self.niveau = 0
+        # cran restauré depuis l'état sauvegardé, l'étudiant qui revient garde son niveau
+        self.niveau = progression.cran_disponible(self.prog)
 
         self.liste = QListWidget()
         self.liste.currentRowChanged.connect(self._changer_etape)
@@ -44,6 +45,8 @@ class Fenetre(QMainWindow):
 
         self.console = QTextEdit(readOnly=True)
         self.label_cran = QLabel()
+        self.choix_cran = QComboBox()    # redescendre sous le cran débloqué pour moins d'aide
+        self.choix_cran.currentIndexChanged.connect(self._changer_cran)
         self.reponse_tuteur = QTextEdit(readOnly=True)
 
         b_compiler = QPushButton("Compiler")
@@ -67,6 +70,7 @@ class Fenetre(QMainWindow):
 
         droite = QVBoxLayout()
         droite.addWidget(self.label_cran)
+        droite.addWidget(self.choix_cran)
         droite.addWidget(self.reponse_tuteur)
 
         racine = QHBoxLayout()
@@ -105,7 +109,21 @@ class Fenetre(QMainWindow):
 
     def _maj_cran(self):
         dispo = progression.cran_disponible(self.prog)
-        self.label_cran.setText(f"Tuteur, cran courant N{min(self.niveau, dispo)} sur N{dispo} débloqué")
+        if self.niveau > dispo:          # le plafond, jamais au-dessus du cran débloqué
+            self.niveau = dispo
+        self.choix_cran.blockSignals(True)
+        self.choix_cran.clear()
+        self.choix_cran.addItems([f"N{i}" for i in range(dispo + 1)])
+        self.choix_cran.setCurrentIndex(self.niveau)
+        self.choix_cran.blockSignals(False)
+        self.label_cran.setText(f"Tuteur, cran courant N{self.niveau} sur N{dispo} débloqué")
+
+    def _changer_cran(self, i):
+        if i < 0:
+            return
+        self.niveau = i                  # l'étudiant choisit un cran <= ce qu'il a débloqué
+        dispo = progression.cran_disponible(self.prog)
+        self.label_cran.setText(f"Tuteur, cran courant N{self.niveau} sur N{dispo} débloqué")
 
     def _compiler(self):
         self.console.setPlainText("Compilation et exécution en cours…")
@@ -143,6 +161,8 @@ class Fenetre(QMainWindow):
         self.console.setPlainText(r.sortie)
 
     def _demander_aide(self):
+        if getattr(self, "_fil", None) is not None and self._fil.isRunning():
+            return                       # un appel tuteur déjà en cours, on ne le détruit pas
         question, ok = QInputDialog.getText(self, "Demander de l'aide", "Ta question :")
         if not ok or not question:
             return
