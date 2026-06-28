@@ -6,28 +6,44 @@
 #include "Bibliotheque_header/TypeBouton.h"
 #include "Bibliotheque_header/TypeZoneTexte.h"
 //===============================================================
-// Déclaration des Fenetres necessaires à l'application
+// Dï¿½claration des Fenetres necessaires ï¿½ l'application
 //==============================================================*/
 
 extern SDL_Window*      window                         ;
 extern SDL_Renderer*    renderer                       ;
 
 //===============================================================
-// Déclaration des Boutons utilisés
+// Dï¿½claration des Boutons utilisï¿½s
 //==============================================================*/
 
 extern type_Bouton ListeBouton_Menu_Acceuil[3] ;
 
 //===============================================================
-// Déclaration des zones de texte utilisés
+// Dï¿½claration des zones de texte utilisï¿½s
 //==============================================================*/
 
 extern type_ZoneTexte texteAccueil           ;
 
 //===============================================================
-// Déclaration des textures utilisées
+// Dï¿½claration des textures utilisï¿½es
 //==============================================================*/
 
 extern SDL_Texture*     TEXTURE_FOND_ACCEUIL            ;
+
+//===============================================================
+// Declaration des variables de l'etat du jeu Snake
+//==============================================================*/
+
+/* Le serpent : corps, taille courante et direction. */
+extern type_serpent serpent ;
+
+/* Position de la pomme sur la grille. */
+extern type_point pomme ;
+
+/* Score courant (nombre de pommes mangees). */
+extern int score ;
+
+/* Vaut 1 quand une collision a mis fin a la partie, 0 sinon. */
+extern int partie_terminee ;
 
 #endif // COULEURS_H_INCLUDED

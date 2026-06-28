@@ -3,6 +3,7 @@
 
 
 #include <SDL3_ttf/SDL_ttf.h>
+#include "ConfigurationJeu.h"
 
 enum {
     MENU_ACCEUIL,
@@ -35,6 +36,19 @@ typedef struct {
     float y;
 
 } type_point;
+
+/*
+ * type_serpent : structure principale du jeu.
+ * La tete est corps[0], la queue est corps[taille-1].
+ * Le tableau est dimensionne au maximum possible (toute la grille).
+ */
+typedef struct {
+
+    type_point corps[NOMBRE_CELLULE_LARGEUR * NOMBRE_CELLULE_HAUTEUR];
+    int        taille;
+    Direction  dir;
+
+} type_serpent;
 
 typedef struct {
 

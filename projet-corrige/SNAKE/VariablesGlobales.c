@@ -6,26 +6,38 @@
 #include "Bibliotheque_header/TypeZoneTexte.h"
 
 //===============================================================
-// Déclaration des Fenetres necessaires à l'application
+// Dï¿½claration des Fenetres necessaires ï¿½ l'application
 //==============================================================*/
 
 SDL_Window*      window                         ;
 SDL_Renderer*    renderer                       ;
 
 //===============================================================
-// Déclaration des Boutons utilisés
+// Dï¿½claration des Boutons utilisï¿½s
 //==============================================================*/
 
 type_Bouton ListeBouton_Menu_Acceuil[3] ;
 
 //===============================================================
-// Déclaration des zones de texte utilisés
+// Dï¿½claration des zones de texte utilisï¿½s
 //==============================================================*/
 
 type_ZoneTexte texteAccueil ;
 
 //===============================================================
-// Déclaration des textures utilisées
+// Dï¿½claration des textures utilisï¿½es
 //==============================================================*/
 
 SDL_Texture*     TEXTURE_FOND_ACCEUIL            ;
+
+//===============================================================
+// Definition des variables de l'etat du jeu Snake
+//==============================================================*/
+
+type_serpent serpent ;
+
+type_point pomme ;
+
+int score ;
+
+int partie_terminee ;
