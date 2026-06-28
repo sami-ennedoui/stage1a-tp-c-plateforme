@@ -1,0 +1,6839 @@
+# depslib dependency file v1.0
+1693915368 source:c:\temp\be_decouverte\snake\snake\mylib.c
+	"myLib.h"
+	<stdio.h>
+	<string.h>
+	<windows.h>
+	<time.h>
+	<conio.h>
+
+1696508797 c:\temp\be_decouverte\snake\snake\mylib.h
+	<stdio.h>
+	<string.h>
+	<windows.h>
+	<conio.h>
+
+1758284790 source:c:\temp\be_decouverte\snake\snake\main.c
+	<SDL2/SDL.h>
+	<SDL2/SDL_image.h>
+	<stdbool.h>
+	<stdlib.h>
+	<time.h>
+	<math.h>
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_assert.h"
+	"SDL_atomic.h"
+	"SDL_audio.h"
+	"SDL_clipboard.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_filesystem.h"
+	"SDL_gamecontroller.h"
+	"SDL_guid.h"
+	"SDL_haptic.h"
+	"SDL_hidapi.h"
+	"SDL_hints.h"
+	"SDL_joystick.h"
+	"SDL_loadso.h"
+	"SDL_log.h"
+	"SDL_messagebox.h"
+	"SDL_metal.h"
+	"SDL_mutex.h"
+	"SDL_power.h"
+	"SDL_render.h"
+	"SDL_rwops.h"
+	"SDL_sensor.h"
+	"SDL_shape.h"
+	"SDL_system.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_version.h"
+	"SDL_video.h"
+	"SDL_locale.h"
+	"SDL_misc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<wchar.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<math.h>
+	<float.h>
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	<sal.h>
+	"begin_code.h"
+	<stdlib.h>
+	<string.h>
+	<stdio.h>
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_config.h
+	"SDL_platform.h"
+	"SDL_config_windows.h"
+	"SDL_config_winrt.h"
+	"SDL_config_wingdk.h"
+	"SDL_config_xbox.h"
+	"SDL_config_macosx.h"
+	"SDL_config_iphoneos.h"
+	"SDL_config_android.h"
+	"SDL_config_os2.h"
+	"SDL_config_emscripten.h"
+	"SDL_config_ngage.h"
+	"SDL_config_minimal.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_platform.h
+	<AvailabilityMacros.h>
+	<TargetConditionals.h>
+	<TargetConditionals.h>
+	<winapifamily.h>
+	"begin_code.h"
+	"close_code.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\begin_code.h
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\close_code.h
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_config_windows.h
+	"SDL_platform.h"
+	<winsdkver.h>
+	<sdkddkver.h>
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_config_winrt.h
+	"SDL_platform.h"
+	<sdkddkver.h>
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_config_wingdk.h
+	"SDL_platform.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_config_xbox.h
+	"SDL_platform.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_config_macosx.h
+	"SDL_platform.h"
+	<AvailabilityMacros.h>
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_config_iphoneos.h
+	"SDL_platform.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_config_android.h
+	"SDL_platform.h"
+	<stdarg.h>
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_config_os2.h
+	"SDL_platform.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_config_emscripten.h
+	"SDL_platform.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_config_ngage.h
+	"SDL_platform.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_config_minimal.h
+	"SDL_platform.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_assert.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	<signal.h>
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_atomic.h
+	"SDL_stdinc.h"
+	"SDL_platform.h"
+	"begin_code.h"
+	<sys/cpuinline.h>
+	<mbarrier.h>
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_endian.h
+	"SDL_stdinc.h"
+	<intrin.h>
+	<endian.h>
+	<sys/byteorder.h>
+	<endian.h>
+	<sys/endian.h>
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_atomic.h"
+	"SDL_mutex.h"
+	<process.h>
+	<process.h>
+	<stdlib.h>
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_clipboard.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	<intrin.h>
+	<intrin.h>
+	<arm_neon.h>
+	<altivec.h>
+	<arm_neon.h>
+	<armintr.h>
+	<arm_neon.h>
+	<arm64intr.h>
+	<arm64_neon.h>
+	<mm3dnow.h>
+	<lsxintrin.h>
+	<lasxintrin.h>
+	<immintrin.h>
+	<mmintrin.h>
+	<xmmintrin.h>
+	<emmintrin.h>
+	<pmmintrin.h>
+	"begin_code.h"
+	"close_code.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_gamecontroller.h"
+	"SDL_quit.h"
+	"SDL_gesture.h"
+	"SDL_touch.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_surface.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_pixels.h
+	"SDL_stdinc.h"
+	"SDL_endian.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_rect.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_pixels.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_surface.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_blendmode.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_blendmode.h
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keycode.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_keycode.h
+	"SDL_stdinc.h"
+	"SDL_scancode.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_scancode.h
+	"SDL_stdinc.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_guid.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_guid.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_gamecontroller.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"SDL_sensor.h"
+	"SDL_joystick.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_sensor.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_gesture.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_touch.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_touch.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_filesystem.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_haptic.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_joystick.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_hidapi.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_hints.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_log.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_messagebox.h
+	"SDL_stdinc.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_metal.h
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_power.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_render.h
+	"SDL_stdinc.h"
+	"SDL_rect.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_shape.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_surface.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_system.h
+	"SDL_stdinc.h"
+	"SDL_keyboard.h"
+	"SDL_render.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194739 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194737 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_locale.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758194738 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_misc.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1758283133 c:\temp\be_decouverte\snake\sdl2\include\sdl2\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1693915368 source:c:\temp\be_decouverte\snake_sdl3\snake\mylib.c
+	"myLib.h"
+	<stdio.h>
+	<string.h>
+	<windows.h>
+	<time.h>
+	<conio.h>
+
+1696508797 c:\temp\be_decouverte\snake_sdl3\snake\mylib.h
+	<stdio.h>
+	<string.h>
+	<windows.h>
+	<conio.h>
+
+1759414063 source:c:\temp\be_decouverte\snake_sdl3\snake\main.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<SDL3/SDL_main.h>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"MesTypes.h"
+	"BoutonClick.h"
+	"Couleurs.h"
+	"InitialisationJeu.h"
+	"ZoneTexte.h"
+	"FenetreAcceuil.h"
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_assert.h>
+	<SDL3/SDL_asyncio.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_bits.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_clipboard.h>
+	<SDL3/SDL_cpuinfo.h>
+	<SDL3/SDL_dialog.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_gpu.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_haptic.h>
+	<SDL3/SDL_hidapi.h>
+	<SDL3/SDL_hints.h>
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_loadso.h>
+	<SDL3/SDL_locale.h>
+	<SDL3/SDL_log.h>
+	<SDL3/SDL_messagebox.h>
+	<SDL3/SDL_metal.h>
+	<SDL3/SDL_misc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_platform.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_process.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_render.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_storage.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_system.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_time.h>
+	<SDL3/SDL_timer.h>
+	<SDL3/SDL_tray.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_version.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_oldnames.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_stdinc.h
+	<SDL3/SDL_platform_defines.h>
+	<stdarg.h>
+	<stdint.h>
+	<string.h>
+	<wchar.h>
+	<inttypes.h>
+	<stdbool.h>
+	<alloca.h>
+	<stdlib.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	<sal.h>
+	<SDL3/SDL_begin_code.h>
+	<stdio.h>
+	<stdlib.h>
+	<strings.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_platform_defines.h
+	<AvailabilityMacros.h>
+	<TargetConditionals.h>
+	<TargetConditionals.h>
+	<winapifamily.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_begin_code.h
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_close_code.h
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_assert.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<assert.h>
+	<signal.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_asyncio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_atomic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<mbarrier.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_audio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_endian.h
+	<SDL3/SDL_stdinc.h>
+	<intrin.h>
+	<endian.h>
+	<sys/byteorder.h>
+	<endian.h>
+	<sys/endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_error.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_mutex.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_thread.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_atomic.h>
+	<process.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_properties.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_iostream.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_bits.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_blendmode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_camera.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_pixels.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_surface.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_rect.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_clipboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_cpuinfo.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_dialog.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_video.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_events.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_gamepad.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_guid.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_joystick.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_power.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_sensor.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_keyboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_keycode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_scancode.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_scancode.h
+	<SDL3/SDL_stdinc.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_mouse.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_pen.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_touch.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_touch.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_filesystem.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_gpu.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_haptic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_hidapi.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_hints.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_init.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_loadso.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_locale.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_log.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_messagebox.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_metal.h
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_misc.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_platform.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_process.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_render.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_storage.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_system.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_time.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_timer.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_tray.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_version.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_oldnames.h
+	<SDL3/SDL_platform_defines.h>
+
+1758294789 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_ttf.h
+	<SDL3/SDL.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_main.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	"SDL_main_private.h"
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+	<SDL3/SDL_main_impl.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3\sdl3\include\sdl3\sdl_main_impl.h
+	"SDL_main_impl_private.h"
+
+1758550442 source:c:\temp\be_decouverte\snake_sdl3\snake\boutonclick.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	"MesTypes.h"
+
+1759418276 c:\temp\be_decouverte\snake_sdl3\snake\mestypes.h
+
+1758550373 c:\temp\be_decouverte\snake_sdl3\snake\boutonclick.h
+
+1758313404 c:\temp\be_decouverte\snake_sdl3\snake\couleurs.h
+
+1758644244 source:c:\temp\be_decouverte\snake_sdl3\snake\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+
+1758550110 source:c:\temp\be_decouverte\snake_sdl3\snake\zonetexte.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+
+1758541932 c:\temp\be_decouverte\snake_sdl3\snake\initialisationjeu.h
+
+1758550322 c:\temp\be_decouverte\snake_sdl3\snake\zonetexte.h
+
+1759412815 source:c:\temp\be_decouverte\snake_sdl3\snake\fenetremenuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"BoutonClick.h"
+	"ZoneTexte.h"
+	"Couleurs.h"
+
+1758641571 source:c:\temp\be_decouverte\snake_sdl3\snake\couleurs.c
+	<SDL3/SDL.h>
+
+1758644947 c:\temp\be_decouverte\snake_sdl3\snake\fenetreacceuil.h
+
+1759418013 source:c:\temp\be_decouverte\snake_sdl3\snake\fenetreacceuil.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"BoutonClick.h"
+	"ZoneTexte.h"
+	"Couleurs.h"
+	"FenetreMenuParametrage.h"
+	"FenetreJeu.h"
+	"OutilsDessin.h"
+
+1758545172 c:\temp\be_decouverte\snake_sdl3\snake\fenetremenuparametrage.h
+
+1759417957 source:c:\temp\be_decouverte\snake_sdl3\snake\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+
+1759418054 source:c:\temp\be_decouverte\snake_sdl3\snake\fenetrejeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<stdlib.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+
+1759418330 c:\temp\be_decouverte\snake_sdl3\snake\outilsdessin.h
+
+1758644947 c:\temp\be_decouverte\snake_sdl3\snake\fenetrejeu.h
+
+1758550442 source:c:\temp\be_decouverte\snake_sdl3_v2\snake\boutonclick.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	"MesTypes.h"
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_assert.h>
+	<SDL3/SDL_asyncio.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_bits.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_clipboard.h>
+	<SDL3/SDL_cpuinfo.h>
+	<SDL3/SDL_dialog.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_gpu.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_haptic.h>
+	<SDL3/SDL_hidapi.h>
+	<SDL3/SDL_hints.h>
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_loadso.h>
+	<SDL3/SDL_locale.h>
+	<SDL3/SDL_log.h>
+	<SDL3/SDL_messagebox.h>
+	<SDL3/SDL_metal.h>
+	<SDL3/SDL_misc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_platform.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_process.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_render.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_storage.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_system.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_time.h>
+	<SDL3/SDL_timer.h>
+	<SDL3/SDL_tray.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_version.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_oldnames.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_stdinc.h
+	<SDL3/SDL_platform_defines.h>
+	<stdarg.h>
+	<stdint.h>
+	<string.h>
+	<wchar.h>
+	<inttypes.h>
+	<stdbool.h>
+	<alloca.h>
+	<stdlib.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	<sal.h>
+	<SDL3/SDL_begin_code.h>
+	<stdio.h>
+	<stdlib.h>
+	<strings.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_platform_defines.h
+	<AvailabilityMacros.h>
+	<TargetConditionals.h>
+	<TargetConditionals.h>
+	<winapifamily.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_begin_code.h
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_close_code.h
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_assert.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<assert.h>
+	<signal.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_asyncio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_atomic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<mbarrier.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_audio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_endian.h
+	<SDL3/SDL_stdinc.h>
+	<intrin.h>
+	<endian.h>
+	<sys/byteorder.h>
+	<endian.h>
+	<sys/endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_error.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_mutex.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_thread.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_atomic.h>
+	<process.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_properties.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_iostream.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_bits.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_blendmode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_camera.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_pixels.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_surface.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_rect.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_clipboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_cpuinfo.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_dialog.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_video.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_events.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_gamepad.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_guid.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_joystick.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_power.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_sensor.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_keyboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_keycode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_scancode.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_scancode.h
+	<SDL3/SDL_stdinc.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_mouse.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_pen.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_touch.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_touch.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_filesystem.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_gpu.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_haptic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_hidapi.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_hints.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_init.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_loadso.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_locale.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_log.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_messagebox.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_metal.h
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_misc.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_platform.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_process.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_render.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_storage.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_system.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_time.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_timer.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_tray.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_version.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_oldnames.h
+	<SDL3/SDL_platform_defines.h>
+
+1758294789 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_ttf.h
+	<SDL3/SDL.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1759422040 c:\temp\be_decouverte\snake_sdl3_v2\snake\mestypes.h
+
+1758641571 source:c:\temp\be_decouverte\snake_sdl3_v2\snake\couleurs.c
+	<SDL3/SDL.h>
+
+1759420686 source:c:\temp\be_decouverte\snake_sdl3_v2\snake\fenetreacceuil.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"BoutonClick.h"
+	"ZoneTexte.h"
+	"Couleurs.h"
+	"FenetreMenuParametrage.h"
+	"FenetreJeu.h"
+	"OutilsDessin.h"
+
+1758550373 c:\temp\be_decouverte\snake_sdl3_v2\snake\boutonclick.h
+
+1758550322 c:\temp\be_decouverte\snake_sdl3_v2\snake\zonetexte.h
+
+1758313404 c:\temp\be_decouverte\snake_sdl3_v2\snake\couleurs.h
+
+1758545172 c:\temp\be_decouverte\snake_sdl3_v2\snake\fenetremenuparametrage.h
+
+1758644947 c:\temp\be_decouverte\snake_sdl3_v2\snake\fenetrejeu.h
+
+1759420305 c:\temp\be_decouverte\snake_sdl3_v2\snake\outilsdessin.h
+
+1759422332 source:c:\temp\be_decouverte\snake_sdl3_v2\snake\fenetrejeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<stdlib.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+
+1759412815 source:c:\temp\be_decouverte\snake_sdl3_v2\snake\fenetremenuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"BoutonClick.h"
+	"ZoneTexte.h"
+	"Couleurs.h"
+
+1759414063 source:c:\temp\be_decouverte\snake_sdl3_v2\snake\main.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<SDL3/SDL_main.h>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"MesTypes.h"
+	"BoutonClick.h"
+	"Couleurs.h"
+	"InitialisationJeu.h"
+	"ZoneTexte.h"
+	"FenetreAcceuil.h"
+
+1758289966 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_main.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	"SDL_main_private.h"
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+	<SDL3/SDL_main_impl.h>
+
+1758289965 c:\temp\be_decouverte\snake_sdl3_v2\sdl3\include\sdl3\sdl_main_impl.h
+	"SDL_main_impl_private.h"
+
+1758541932 c:\temp\be_decouverte\snake_sdl3_v2\snake\initialisationjeu.h
+
+1759420562 c:\temp\be_decouverte\snake_sdl3_v2\snake\fenetreacceuil.h
+
+1758550110 source:c:\temp\be_decouverte\snake_sdl3_v2\snake\zonetexte.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+
+1759422076 source:c:\temp\be_decouverte\snake_sdl3_v2\snake\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+
+1759420849 source:c:\temp\be_decouverte\snake_sdl3_v2\snake\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+
+1760089715 source:c:\users\regnier\desktop\snake_sdl3_v2\snake\boutonclick.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	"MesTypes.h"
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_assert.h>
+	<SDL3/SDL_asyncio.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_bits.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_clipboard.h>
+	<SDL3/SDL_cpuinfo.h>
+	<SDL3/SDL_dialog.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_gpu.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_haptic.h>
+	<SDL3/SDL_hidapi.h>
+	<SDL3/SDL_hints.h>
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_loadso.h>
+	<SDL3/SDL_locale.h>
+	<SDL3/SDL_log.h>
+	<SDL3/SDL_messagebox.h>
+	<SDL3/SDL_metal.h>
+	<SDL3/SDL_misc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_platform.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_process.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_render.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_storage.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_system.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_time.h>
+	<SDL3/SDL_timer.h>
+	<SDL3/SDL_tray.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_version.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_oldnames.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_stdinc.h
+	<SDL3/SDL_platform_defines.h>
+	<stdarg.h>
+	<stdint.h>
+	<string.h>
+	<wchar.h>
+	<inttypes.h>
+	<stdbool.h>
+	<alloca.h>
+	<stdlib.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	<sal.h>
+	<SDL3/SDL_begin_code.h>
+	<stdio.h>
+	<stdlib.h>
+	<strings.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_platform_defines.h
+	<AvailabilityMacros.h>
+	<TargetConditionals.h>
+	<TargetConditionals.h>
+	<winapifamily.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_begin_code.h
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_close_code.h
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_assert.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<assert.h>
+	<signal.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_asyncio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_atomic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<mbarrier.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_audio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_endian.h
+	<SDL3/SDL_stdinc.h>
+	<intrin.h>
+	<endian.h>
+	<sys/byteorder.h>
+	<endian.h>
+	<sys/endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_error.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_mutex.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_thread.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_atomic.h>
+	<process.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_properties.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_iostream.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_bits.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_blendmode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_camera.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_pixels.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_surface.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_rect.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_clipboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_cpuinfo.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_dialog.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_video.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_events.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_gamepad.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_guid.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_joystick.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_power.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_sensor.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_keyboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_keycode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_scancode.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_scancode.h
+	<SDL3/SDL_stdinc.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_mouse.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_pen.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_touch.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_touch.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_filesystem.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_gpu.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_haptic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_hidapi.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_hints.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_init.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_loadso.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_locale.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_log.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_messagebox.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_metal.h
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_misc.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_platform.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_process.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_render.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_storage.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_system.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_time.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_timer.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_tray.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289964 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_version.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_oldnames.h
+	<SDL3/SDL_platform_defines.h>
+
+1758294789 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_ttf.h
+	<SDL3/SDL.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1760514407 c:\users\regnier\desktop\snake_sdl3_v2\snake\mestypes.h
+
+1760452597 source:c:\users\regnier\desktop\snake_sdl3_v2\snake\couleurs.c
+	<SDL3/SDL.h>
+
+1760455561 source:c:\users\regnier\desktop\snake_sdl3_v2\snake\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+
+1760517849 source:c:\users\regnier\desktop\snake_sdl3_v2\snake\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"MesTypes.h"
+	"Couleurs.h"
+
+1760452608 c:\users\regnier\desktop\snake_sdl3_v2\snake\couleurs.h
+
+1760088849 source:c:\users\regnier\desktop\snake_sdl3_v2\snake\zonetexte.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<string.h>
+	"MesTypes.h"
+
+1760104484 source:c:\users\regnier\desktop\snake_sdl3_v2\snake\main.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<SDL3/SDL_main.h>
+	<stdio.h>
+	<stdlib.h>
+	"MesTypes.h"
+	"BoutonClick.h"
+	"Couleurs.h"
+	"InitialisationJeu.h"
+	"ZoneTexte.h"
+	"OutilsDessin.h"
+	"MenuAcceuil.h"
+	"MenuParametrage.h"
+	"GestionJeu.h"
+
+1758289966 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_main.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	"SDL_main_private.h"
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+	<SDL3/SDL_main_impl.h>
+
+1758289965 c:\users\regnier\desktop\snake_sdl3_v2\sdl3\include\sdl3\sdl_main_impl.h
+	"SDL_main_impl_private.h"
+
+1760022260 c:\users\regnier\desktop\snake_sdl3_v2\snake\boutonclick.h
+
+1760089929 c:\users\regnier\desktop\snake_sdl3_v2\snake\initialisationjeu.h
+
+1760020648 c:\users\regnier\desktop\snake_sdl3_v2\snake\zonetexte.h
+
+1760517844 c:\users\regnier\desktop\snake_sdl3_v2\snake\outilsdessin.h
+
+1760095460 source:c:\users\regnier\desktop\snake_sdl3_v2\snake\menuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1760101450 source:c:\users\regnier\desktop\snake_sdl3_v2\snake\menuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1760101477 c:\users\regnier\desktop\snake_sdl3_v2\snake\menuacceuil.h
+
+1760101477 c:\users\regnier\desktop\snake_sdl3_v2\snake\menuparametrage.h
+
+1760539367 source:c:\users\regnier\desktop\snake_sdl3_v2\snake\gestionjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1760344303 c:\users\regnier\desktop\snake_sdl3_v2\snake\gestionjeu.h
+
+1760089715 source:c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\boutonclick.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	"MesTypes.h"
+
+1760698858 c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\mestypes.h
+
+1760452597 source:c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\couleurs.c
+	<SDL3/SDL.h>
+
+1760950984 source:c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\gestionjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1760452608 c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\couleurs.h
+
+1760691276 c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\outilsdessin.h
+
+1760020648 c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\zonetexte.h
+
+1760022260 c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\boutonclick.h
+
+1760700026 source:c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+
+1760104484 source:c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\main.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<SDL3/SDL_main.h>
+	<stdio.h>
+	<stdlib.h>
+	"MesTypes.h"
+	"BoutonClick.h"
+	"Couleurs.h"
+	"InitialisationJeu.h"
+	"ZoneTexte.h"
+	"OutilsDessin.h"
+	"MenuAcceuil.h"
+	"MenuParametrage.h"
+	"GestionJeu.h"
+
+1760089929 c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\initialisationjeu.h
+
+1760101477 c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\menuacceuil.h
+
+1760101477 c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\menuparametrage.h
+
+1760344303 c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\gestionjeu.h
+
+1760692846 source:c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\menuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1760692734 source:c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\menuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1760946140 source:c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"MesTypes.h"
+	"Couleurs.h"
+
+1760692870 source:c:\users\regnier\desktop\snake_sdl3_v2\snake_archive\zonetexte.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<string.h>
+	"MesTypes.h"
+
+1762349423 source:c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\boutonclick.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	"MesTypes.h"
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_assert.h>
+	<SDL3/SDL_asyncio.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_bits.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_clipboard.h>
+	<SDL3/SDL_cpuinfo.h>
+	<SDL3/SDL_dialog.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_gpu.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_haptic.h>
+	<SDL3/SDL_hidapi.h>
+	<SDL3/SDL_hints.h>
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_loadso.h>
+	<SDL3/SDL_locale.h>
+	<SDL3/SDL_log.h>
+	<SDL3/SDL_messagebox.h>
+	<SDL3/SDL_metal.h>
+	<SDL3/SDL_misc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_platform.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_process.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_render.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_storage.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_system.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_time.h>
+	<SDL3/SDL_timer.h>
+	<SDL3/SDL_tray.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_version.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_oldnames.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_stdinc.h
+	<SDL3/SDL_platform_defines.h>
+	<stdarg.h>
+	<stdint.h>
+	<string.h>
+	<wchar.h>
+	<inttypes.h>
+	<stdbool.h>
+	<alloca.h>
+	<stdlib.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	<sal.h>
+	<SDL3/SDL_begin_code.h>
+	<stdio.h>
+	<stdlib.h>
+	<strings.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_platform_defines.h
+	<AvailabilityMacros.h>
+	<TargetConditionals.h>
+	<TargetConditionals.h>
+	<winapifamily.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_begin_code.h
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_close_code.h
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_assert.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<assert.h>
+	<signal.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_asyncio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_atomic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<mbarrier.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_audio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_endian.h
+	<SDL3/SDL_stdinc.h>
+	<intrin.h>
+	<endian.h>
+	<sys/byteorder.h>
+	<endian.h>
+	<sys/endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_error.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_mutex.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_thread.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_atomic.h>
+	<process.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_properties.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_iostream.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_bits.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_blendmode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_camera.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_pixels.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_surface.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_rect.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_clipboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_cpuinfo.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_dialog.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_video.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_events.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_gamepad.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_guid.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_joystick.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_power.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_sensor.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_keyboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_keycode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_scancode.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_scancode.h
+	<SDL3/SDL_stdinc.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_mouse.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_pen.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_touch.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_touch.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_filesystem.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_gpu.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_haptic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_hidapi.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_hints.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_init.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_loadso.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_locale.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_log.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_messagebox.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_metal.h
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_misc.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_platform.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_process.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_render.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_storage.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_system.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_time.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_timer.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_tray.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_version.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_oldnames.h
+	<SDL3/SDL_platform_defines.h>
+
+1762349422 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_ttf.h
+	<SDL3/SDL.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762857210 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\mestypes.h
+
+1762349423 source:c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\couleurs.c
+	<SDL3/SDL.h>
+
+1762349423 source:c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\gestionjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1762349423 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\couleurs.h
+
+1762349423 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\outilsdessin.h
+
+1762349423 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\zonetexte.h
+
+1762349423 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\boutonclick.h
+
+1762349423 source:c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+
+1762349423 source:c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\main.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<SDL3/SDL_main.h>
+	<stdio.h>
+	<stdlib.h>
+	"MesTypes.h"
+	"BoutonClick.h"
+	"Couleurs.h"
+	"InitialisationJeu.h"
+	"ZoneTexte.h"
+	"OutilsDessin.h"
+	"MenuAcceuil.h"
+	"MenuParametrage.h"
+	"GestionJeu.h"
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_main.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	"SDL_main_private.h"
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+	<SDL3/SDL_main_impl.h>
+
+1762349421 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_main_impl.h
+	"SDL_main_impl_private.h"
+
+1762349423 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\initialisationjeu.h
+
+1762349423 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\menuacceuil.h
+
+1762349423 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\menuparametrage.h
+
+1762349423 c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\gestionjeu.h
+
+1762349423 source:c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\menuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1762349423 source:c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\menuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1762349423 source:c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"MesTypes.h"
+	"Couleurs.h"
+
+1762547892 source:c:\users\user\documents\stage snake\archive_snake_depart\archive_snake_depart\snake_archive\zonetexte.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<string.h>
+	"MesTypes.h"
+
+1762349423 source:c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\boutonclick.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	"MesTypes.h"
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_assert.h>
+	<SDL3/SDL_asyncio.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_bits.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_clipboard.h>
+	<SDL3/SDL_cpuinfo.h>
+	<SDL3/SDL_dialog.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_gpu.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_haptic.h>
+	<SDL3/SDL_hidapi.h>
+	<SDL3/SDL_hints.h>
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_loadso.h>
+	<SDL3/SDL_locale.h>
+	<SDL3/SDL_log.h>
+	<SDL3/SDL_messagebox.h>
+	<SDL3/SDL_metal.h>
+	<SDL3/SDL_misc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_platform.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_process.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_render.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_storage.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_system.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_time.h>
+	<SDL3/SDL_timer.h>
+	<SDL3/SDL_tray.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_version.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_oldnames.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_stdinc.h
+	<SDL3/SDL_platform_defines.h>
+	<stdarg.h>
+	<stdint.h>
+	<string.h>
+	<wchar.h>
+	<inttypes.h>
+	<stdbool.h>
+	<alloca.h>
+	<stdlib.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	<sal.h>
+	<SDL3/SDL_begin_code.h>
+	<stdio.h>
+	<stdlib.h>
+	<strings.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_platform_defines.h
+	<AvailabilityMacros.h>
+	<TargetConditionals.h>
+	<TargetConditionals.h>
+	<winapifamily.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_begin_code.h
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_close_code.h
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_assert.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<assert.h>
+	<signal.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_asyncio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_atomic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<mbarrier.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_audio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_endian.h
+	<SDL3/SDL_stdinc.h>
+	<intrin.h>
+	<endian.h>
+	<sys/byteorder.h>
+	<endian.h>
+	<sys/endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_error.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_mutex.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_thread.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_atomic.h>
+	<process.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_properties.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_iostream.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_bits.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_blendmode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_camera.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_pixels.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_surface.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_rect.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_clipboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_cpuinfo.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_dialog.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_video.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_events.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_gamepad.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_guid.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_joystick.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_power.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_sensor.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_keyboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_keycode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_scancode.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_scancode.h
+	<SDL3/SDL_stdinc.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_mouse.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_pen.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_touch.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_touch.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_filesystem.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_gpu.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_haptic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_hidapi.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_hints.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_init.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_loadso.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_locale.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_log.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_messagebox.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_metal.h
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_misc.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_platform.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_process.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_render.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_storage.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_system.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_time.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_timer.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_tray.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_version.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_oldnames.h
+	<SDL3/SDL_platform_defines.h>
+
+1762349422 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_ttf.h
+	<SDL3/SDL.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762857210 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\mestypes.h
+
+1762349423 source:c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\couleurs.c
+	<SDL3/SDL.h>
+
+1762349423 source:c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\gestionjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1762349423 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\couleurs.h
+
+1762349423 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\outilsdessin.h
+
+1762349423 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\zonetexte.h
+
+1762349423 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\boutonclick.h
+
+1762349423 source:c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+
+1762349423 source:c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\main.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<SDL3/SDL_main.h>
+	<stdio.h>
+	<stdlib.h>
+	"MesTypes.h"
+	"BoutonClick.h"
+	"Couleurs.h"
+	"InitialisationJeu.h"
+	"ZoneTexte.h"
+	"OutilsDessin.h"
+	"MenuAcceuil.h"
+	"MenuParametrage.h"
+	"GestionJeu.h"
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_main.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	"SDL_main_private.h"
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+	<SDL3/SDL_main_impl.h>
+
+1762349421 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\sdl3\include\sdl3\sdl_main_impl.h
+	"SDL_main_impl_private.h"
+
+1762349423 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\initialisationjeu.h
+
+1762349423 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\menuacceuil.h
+
+1762349423 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\menuparametrage.h
+
+1762349423 c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\gestionjeu.h
+
+1762349423 source:c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\menuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1762349423 source:c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\menuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1762349423 source:c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"MesTypes.h"
+	"Couleurs.h"
+
+1762547892 source:c:\users\user\documents\stage_snake\archive_snake_depart\archive_snake_depart\snake_archive\zonetexte.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<string.h>
+	"MesTypes.h"
+
+1762349423 source:c:\users\user\documents\archive_snake_depart\snake_archive\boutonclick.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	"MesTypes.h"
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_assert.h>
+	<SDL3/SDL_asyncio.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_bits.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_clipboard.h>
+	<SDL3/SDL_cpuinfo.h>
+	<SDL3/SDL_dialog.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_gpu.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_haptic.h>
+	<SDL3/SDL_hidapi.h>
+	<SDL3/SDL_hints.h>
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_loadso.h>
+	<SDL3/SDL_locale.h>
+	<SDL3/SDL_log.h>
+	<SDL3/SDL_messagebox.h>
+	<SDL3/SDL_metal.h>
+	<SDL3/SDL_misc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_platform.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_process.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_render.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_storage.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_system.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_time.h>
+	<SDL3/SDL_timer.h>
+	<SDL3/SDL_tray.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_version.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_oldnames.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_stdinc.h
+	<SDL3/SDL_platform_defines.h>
+	<stdarg.h>
+	<stdint.h>
+	<string.h>
+	<wchar.h>
+	<inttypes.h>
+	<stdbool.h>
+	<alloca.h>
+	<stdlib.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	<sal.h>
+	<SDL3/SDL_begin_code.h>
+	<stdio.h>
+	<stdlib.h>
+	<strings.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_platform_defines.h
+	<AvailabilityMacros.h>
+	<TargetConditionals.h>
+	<TargetConditionals.h>
+	<winapifamily.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_begin_code.h
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_close_code.h
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_assert.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<assert.h>
+	<signal.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_asyncio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_atomic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<mbarrier.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_audio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_endian.h
+	<SDL3/SDL_stdinc.h>
+	<intrin.h>
+	<endian.h>
+	<sys/byteorder.h>
+	<endian.h>
+	<sys/endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_error.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_mutex.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_thread.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_atomic.h>
+	<process.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_properties.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_iostream.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_bits.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_blendmode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_camera.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_pixels.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_surface.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_rect.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_clipboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_cpuinfo.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_dialog.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_video.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_events.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_gamepad.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_guid.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_joystick.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_power.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_sensor.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_keyboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_keycode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_scancode.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_scancode.h
+	<SDL3/SDL_stdinc.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_mouse.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_pen.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_touch.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_touch.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_filesystem.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_gpu.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_haptic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_hidapi.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349420 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_hints.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_init.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_loadso.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_locale.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_log.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_messagebox.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_metal.h
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_misc.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_platform.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_process.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_render.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_storage.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_system.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_time.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_timer.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_tray.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_version.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_oldnames.h
+	<SDL3/SDL_platform_defines.h>
+
+1762349422 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_ttf.h
+	<SDL3/SDL.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764249685 c:\users\user\documents\archive_snake_depart\snake_archive\mestypes.h
+
+1762349423 source:c:\users\user\documents\archive_snake_depart\snake_archive\couleurs.c
+	<SDL3/SDL.h>
+
+1762349423 source:c:\users\user\documents\archive_snake_depart\snake_archive\gestionjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1762349423 c:\users\user\documents\archive_snake_depart\snake_archive\couleurs.h
+
+1762349423 c:\users\user\documents\archive_snake_depart\snake_archive\outilsdessin.h
+
+1762349423 c:\users\user\documents\archive_snake_depart\snake_archive\zonetexte.h
+
+1762349423 c:\users\user\documents\archive_snake_depart\snake_archive\boutonclick.h
+
+1762349423 source:c:\users\user\documents\archive_snake_depart\snake_archive\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+
+1762349423 source:c:\users\user\documents\archive_snake_depart\snake_archive\main.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<SDL3/SDL_main.h>
+	<stdio.h>
+	<stdlib.h>
+	"MesTypes.h"
+	"BoutonClick.h"
+	"Couleurs.h"
+	"InitialisationJeu.h"
+	"ZoneTexte.h"
+	"OutilsDessin.h"
+	"MenuAcceuil.h"
+	"MenuParametrage.h"
+	"GestionJeu.h"
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_main.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	"SDL_main_private.h"
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+	<SDL3/SDL_main_impl.h>
+
+1762349421 c:\users\user\documents\archive_snake_depart\sdl3\include\sdl3\sdl_main_impl.h
+	"SDL_main_impl_private.h"
+
+1762349423 c:\users\user\documents\archive_snake_depart\snake_archive\initialisationjeu.h
+
+1762349423 c:\users\user\documents\archive_snake_depart\snake_archive\menuacceuil.h
+
+1762349423 c:\users\user\documents\archive_snake_depart\snake_archive\menuparametrage.h
+
+1762349423 c:\users\user\documents\archive_snake_depart\snake_archive\gestionjeu.h
+
+1762349423 source:c:\users\user\documents\archive_snake_depart\snake_archive\menuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1762349423 source:c:\users\user\documents\archive_snake_depart\snake_archive\menuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"Couleurs.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1762349423 source:c:\users\user\documents\archive_snake_depart\snake_archive\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"MesTypes.h"
+	"Couleurs.h"
+
+1762547892 source:c:\users\user\documents\archive_snake_depart\snake_archive\zonetexte.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<string.h>
+	"MesTypes.h"
+
+1764260104 source:c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\boutonclick.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_assert.h>
+	<SDL3/SDL_asyncio.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_bits.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_clipboard.h>
+	<SDL3/SDL_cpuinfo.h>
+	<SDL3/SDL_dialog.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_gpu.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_haptic.h>
+	<SDL3/SDL_hidapi.h>
+	<SDL3/SDL_hints.h>
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_loadso.h>
+	<SDL3/SDL_locale.h>
+	<SDL3/SDL_log.h>
+	<SDL3/SDL_messagebox.h>
+	<SDL3/SDL_metal.h>
+	<SDL3/SDL_misc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_platform.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_process.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_render.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_storage.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_system.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_time.h>
+	<SDL3/SDL_timer.h>
+	<SDL3/SDL_tray.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_version.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_oldnames.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_stdinc.h
+	<SDL3/SDL_platform_defines.h>
+	<stdarg.h>
+	<stdint.h>
+	<string.h>
+	<wchar.h>
+	<inttypes.h>
+	<stdbool.h>
+	<alloca.h>
+	<stdlib.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	<sal.h>
+	<SDL3/SDL_begin_code.h>
+	<stdio.h>
+	<stdlib.h>
+	<strings.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_platform_defines.h
+	<AvailabilityMacros.h>
+	<TargetConditionals.h>
+	<TargetConditionals.h>
+	<winapifamily.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_begin_code.h
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_close_code.h
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_assert.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<assert.h>
+	<signal.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_asyncio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_atomic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<mbarrier.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_audio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_endian.h
+	<SDL3/SDL_stdinc.h>
+	<intrin.h>
+	<endian.h>
+	<sys/byteorder.h>
+	<endian.h>
+	<sys/endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_error.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_mutex.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_thread.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_atomic.h>
+	<process.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_properties.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_iostream.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_bits.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_blendmode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_camera.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_pixels.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_surface.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_rect.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_clipboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_cpuinfo.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_dialog.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251686 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_video.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_events.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_gamepad.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_guid.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_joystick.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_power.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_sensor.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_keyboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_keycode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_scancode.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_scancode.h
+	<SDL3/SDL_stdinc.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_mouse.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_pen.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_touch.h>
+
+1764251686 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_touch.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_filesystem.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251683 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_gpu.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_haptic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_hidapi.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_hints.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_init.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_loadso.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_locale.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_log.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_messagebox.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_metal.h
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_misc.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_platform.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_process.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_render.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_storage.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251685 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_system.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251686 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_time.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251686 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_timer.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251686 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_tray.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251686 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_version.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_oldnames.h
+	<SDL3/SDL_platform_defines.h>
+
+1764251686 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_ttf.h
+	<SDL3/SDL.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764256023 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\mestypes.h
+
+1764251703 source:c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\couleurs.c
+	<SDL3/SDL.h>
+
+1764260195 source:c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\gestionjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1764251703 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\couleurs.h
+
+1764251703 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\outilsdessin.h
+
+1764251704 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\zonetexte.h
+
+1764251703 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\boutonclick.h
+
+1764260203 source:c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+
+1764260220 source:c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\main.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<SDL3/SDL_main.h>
+	<stdio.h>
+	<stdlib.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"BoutonClick.h"
+	"InitialisationJeu.h"
+	"ZoneTexte.h"
+	"OutilsDessin.h"
+	"MenuAcceuil.h"
+	"MenuParametrage.h"
+	"GestionJeu.h"
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_main.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	"SDL_main_private.h"
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+	<SDL3/SDL_main_impl.h>
+
+1764251684 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\sdl3\include\sdl3\sdl_main_impl.h
+	"SDL_main_impl_private.h"
+
+1764251703 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\initialisationjeu.h
+
+1764251703 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\menuacceuil.h
+
+1764251703 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\menuparametrage.h
+
+1764251703 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\gestionjeu.h
+
+1764260177 source:c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\menuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1764260230 source:c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\menuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1764251703 source:c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"MesTypes.h"
+	"Couleurs.h"
+
+1764260188 source:c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\zonetexte.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<string.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1764260051 source:c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\mesvariablesglobales.c
+	<SDL3/SDL.h>
+
+1764255991 c:\users\regnier\downloads\archive_snake_v25\archive_snake_depart\snake_archive\mesvariablesglobales.h
+
+1767974101 source:c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\boutonclick.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_assert.h>
+	<SDL3/SDL_asyncio.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_bits.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_clipboard.h>
+	<SDL3/SDL_cpuinfo.h>
+	<SDL3/SDL_dialog.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_gpu.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_haptic.h>
+	<SDL3/SDL_hidapi.h>
+	<SDL3/SDL_hints.h>
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_loadso.h>
+	<SDL3/SDL_locale.h>
+	<SDL3/SDL_log.h>
+	<SDL3/SDL_messagebox.h>
+	<SDL3/SDL_metal.h>
+	<SDL3/SDL_misc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_platform.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_process.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_render.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_storage.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_system.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_time.h>
+	<SDL3/SDL_timer.h>
+	<SDL3/SDL_tray.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_version.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_oldnames.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_stdinc.h
+	<SDL3/SDL_platform_defines.h>
+	<stdarg.h>
+	<stdint.h>
+	<string.h>
+	<wchar.h>
+	<inttypes.h>
+	<stdbool.h>
+	<alloca.h>
+	<stdlib.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	<sal.h>
+	<SDL3/SDL_begin_code.h>
+	<stdio.h>
+	<stdlib.h>
+	<strings.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_platform_defines.h
+	<AvailabilityMacros.h>
+	<TargetConditionals.h>
+	<TargetConditionals.h>
+	<winapifamily.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_begin_code.h
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_close_code.h
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_assert.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<assert.h>
+	<signal.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_asyncio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_atomic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<mbarrier.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_audio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_endian.h
+	<SDL3/SDL_stdinc.h>
+	<intrin.h>
+	<endian.h>
+	<sys/byteorder.h>
+	<endian.h>
+	<sys/endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_error.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_mutex.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_thread.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_atomic.h>
+	<process.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_properties.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_iostream.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_bits.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_blendmode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_camera.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_pixels.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_surface.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_rect.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_clipboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_cpuinfo.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_dialog.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251686 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_video.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_events.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_gamepad.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_guid.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_joystick.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_power.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_sensor.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_keyboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_keycode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_scancode.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_scancode.h
+	<SDL3/SDL_stdinc.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_mouse.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_pen.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_touch.h>
+
+1764251686 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_touch.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_filesystem.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251682 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_gpu.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_haptic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_hidapi.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_hints.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_init.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_loadso.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_locale.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_log.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_messagebox.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_metal.h
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_misc.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_platform.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_process.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_render.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_storage.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_system.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251686 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_time.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251686 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_timer.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251686 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_tray.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251686 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_version.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_oldnames.h
+	<SDL3/SDL_platform_defines.h>
+
+1764251686 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_ttf.h
+	<SDL3/SDL.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1764255990 c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\mesvariablesglobales.h
+
+1767976520 c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\mestypes.h
+
+1767973343 source:c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\gestionjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1764251702 c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\outilsdessin.h
+
+1767978344 c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\zonetexte.h
+
+1767970662 c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\boutonclick.h
+
+1767946685 source:c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+
+1767979640 source:c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\main.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<SDL3/SDL_main.h>
+	<stdio.h>
+	<stdlib.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"BoutonClick.h"
+	"InitialisationJeu.h"
+	"ZoneTexte.h"
+	"OutilsDessin.h"
+	"MenuAcceuil.h"
+	"MenuParametrage.h"
+	"GestionJeu.h"
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_main.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	"SDL_main_private.h"
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+	<SDL3/SDL_main_impl.h>
+
+1764251684 c:\temp\snake_variables_globales\snake_variables_globales\sdl3\include\sdl3\sdl_main_impl.h
+	"SDL_main_impl_private.h"
+
+1764251702 c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\initialisationjeu.h
+
+1767976435 c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\menuacceuil.h
+
+1767964504 c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\menuparametrage.h
+
+1767973164 c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\gestionjeu.h
+
+1767979509 source:c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\menuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1767977979 source:c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\menuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+	"GestionJeu.h"
+
+1764260050 source:c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\mesvariablesglobales.c
+	<SDL3/SDL.h>
+
+1767972941 source:c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1767978344 source:c:\temp\snake_variables_globales\snake_variables_globales\snake_archive\zonetexte.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<string.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1767974101 source:c:\temp\snake_vscode\snake_archive\boutonclick.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1772532668 c:\temp\snake_vscode\sdl3\include\sdl3\sdl.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_assert.h>
+	<SDL3/SDL_asyncio.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_bits.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_clipboard.h>
+	<SDL3/SDL_cpuinfo.h>
+	<SDL3/SDL_dialog.h>
+	<SDL3/SDL_dlopennote.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_gpu.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_haptic.h>
+	<SDL3/SDL_hidapi.h>
+	<SDL3/SDL_hints.h>
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_loadso.h>
+	<SDL3/SDL_locale.h>
+	<SDL3/SDL_log.h>
+	<SDL3/SDL_messagebox.h>
+	<SDL3/SDL_metal.h>
+	<SDL3/SDL_misc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_platform.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_process.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_render.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_storage.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_system.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_time.h>
+	<SDL3/SDL_timer.h>
+	<SDL3/SDL_tray.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_version.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_oldnames.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_stdinc.h
+	<SDL3/SDL_platform_defines.h>
+	<stdarg.h>
+	<string.h>
+	<wchar.h>
+	<stdint.h>
+	<inttypes.h>
+	<stdbool.h>
+	<alloca.h>
+	<stdlib.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	<sal.h>
+	<SDL3/SDL_begin_code.h>
+	<stdio.h>
+	<stdlib.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_platform_defines.h
+	<AvailabilityMacros.h>
+	<TargetConditionals.h>
+	<TargetConditionals.h>
+	<winapifamily.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_begin_code.h
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_close_code.h
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_assert.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<signal.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_asyncio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_atomic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<mbarrier.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_audio.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_endian.h
+	<SDL3/SDL_stdinc.h>
+	<intrin.h>
+	<endian.h>
+	<sys/byteorder.h>
+	<endian.h>
+	<sys/endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_error.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_mutex.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_atomic.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_thread.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_thread.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_atomic.h>
+	<process.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_properties.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_iostream.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_bits.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_blendmode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_camera.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_pixels.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_endian.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_surface.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_rect.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_clipboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_cpuinfo.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532668 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_dialog.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_video.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_events.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_audio.h>
+	<SDL3/SDL_camera.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_gamepad.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_pen.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_gamepad.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_guid.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_joystick.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_guid.h>
+	<SDL3/SDL_mutex.h>
+	<SDL3/SDL_power.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_sensor.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_power.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_sensor.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_keyboard.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keycode.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_scancode.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532668 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_keycode.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_scancode.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_scancode.h
+	<SDL3/SDL_stdinc.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_mouse.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_pen.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_touch.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_touch.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_mouse.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_filesystem.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532668 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_gpu.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_haptic.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_joystick.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_hidapi.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_hints.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_init.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_loadso.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_locale.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_log.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_messagebox.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_metal.h
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_misc.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_platform.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_process.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_iostream.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_render.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_blendmode.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	<SDL3/SDL_pixels.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_rect.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_gpu.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_storage.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_filesystem.h>
+	<SDL3/SDL_properties.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_system.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_keyboard.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_time.h
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_timer.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_tray.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_surface.h>
+	<SDL3/SDL_video.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_version.h
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_oldnames.h
+	<SDL3/SDL_platform_defines.h>
+
+1764251686 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_ttf.h
+	<SDL3/SDL.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772199496 c:\temp\snake_vscode\snake_archive\mesvariablesglobales.h
+
+1772291831 c:\temp\snake_vscode\snake_archive\mestypes.h
+
+1772208077 source:c:\temp\snake_vscode\snake_archive\gestionjeu.c
+	<math.h>
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1764251702 c:\temp\snake_vscode\snake_archive\outilsdessin.h
+
+1767978344 c:\temp\snake_vscode\snake_archive\zonetexte.h
+
+1767970662 c:\temp\snake_vscode\snake_archive\boutonclick.h
+
+1767946685 source:c:\temp\snake_vscode\snake_archive\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+
+1772292480 source:c:\temp\snake_vscode\snake_archive\main.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<SDL3/SDL_main.h>
+	<stdio.h>
+	<stdlib.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"BoutonClick.h"
+	"InitialisationJeu.h"
+	"ZoneTexte.h"
+	"OutilsDessin.h"
+	"MenuAcceuil.h"
+	"MenuParametrage.h"
+	"GestionJeu.h"
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_main.h
+	<SDL3/SDL_platform_defines.h>
+	<SDL3/SDL_stdinc.h>
+	<SDL3/SDL_error.h>
+	<SDL3/SDL_events.h>
+	"SDL_main_private.h"
+	<SDL3/SDL_init.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+	<SDL3/SDL_main_impl.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_main_impl.h
+	"SDL_main_impl_private.h"
+
+1764251702 c:\temp\snake_vscode\snake_archive\initialisationjeu.h
+
+1767976435 c:\temp\snake_vscode\snake_archive\menuacceuil.h
+
+1767964504 c:\temp\snake_vscode\snake_archive\menuparametrage.h
+
+1767973164 c:\temp\snake_vscode\snake_archive\gestionjeu.h
+
+1772199274 source:c:\temp\snake_vscode\snake_archive\menuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+
+1772292576 source:c:\temp\snake_vscode\snake_archive\menuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+	"GestionJeu.h"
+
+1764260050 source:c:\temp\snake_vscode\snake_archive\mesvariablesglobales.c
+	<SDL3/SDL.h>
+
+1767972941 source:c:\temp\snake_vscode\snake_archive\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1767978344 source:c:\temp\snake_vscode\snake_archive\zonetexte.c
+	<SDL3/SDL.h>
+	<SDL3/SDL_ttf.h>
+	<stdio.h>
+	<string.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1772533578 source:c:\temp\snake_vscode\snake_archive_new_archi\boutonclick.c
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3/SDL.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1773079400 c:\temp\snake_vscode\snake_archive_new_archi\mesvariablesglobales.h
+	"mesTypes.h"
+
+1773079851 c:\temp\snake_vscode\snake_archive_new_archi\mestypes.h
+	<SDL3_ttf/SDL_ttf.h>
+
+1773079499 source:c:\temp\snake_vscode\snake_archive_new_archi\gestionjeu.c
+	<math.h>
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+	"InitialisationJeu.h"
+	"GestionJeu.h"
+
+1772800109 c:\temp\snake_vscode\snake_archive_new_archi\outilsdessin.h
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"MesVariablesGlobales.h"
+
+1773079874 c:\temp\snake_vscode\snake_archive_new_archi\zonetexte.h
+
+1772800531 c:\temp\snake_vscode\snake_archive_new_archi\boutonclick.h
+
+1773077350 source:c:\temp\snake_vscode\snake_archive_new_archi\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"OutilsDessin.h"
+
+1773078902 source:c:\temp\snake_vscode\snake_archive_new_archi\menuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+	"GestionJeu.h"
+	"InitialisationJeu.h"
+
+1773078458 source:c:\temp\snake_vscode\snake_archive_new_archi\mesvariablesglobales.c
+	<SDL3/SDL.h>
+	"MesTypes.h"
+
+1772930386 source:c:\temp\snake_vscode\snake_archive_new_archi\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"MesVariablesGlobales.h"
+
+1773078002 source:c:\temp\snake_vscode\snake_archive_new_archi\zonetexte.c
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3/SDL.h>
+	<stdio.h>
+	<string.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1772932847 source:c:\temp\snake_vscode\snake_archive_new_archi\menuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"OutilsDessin.h"
+	"ZoneTexte.h"
+	"BoutonClick.h"
+	"GestionJeu.h"
+
+1772748504 c:\temp\snake_vscode\snake_archive_new_archi\gestionjeu.h
+
+1773071003 source:c:\temp\snake_vscode\snake_archive_new_archi\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<math.h>
+	<SDL3/SDL.h>
+	<SDL3/SDL_main.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"InitialisationJeu.h"
+	"ZoneTexte.h"
+	"OutilsDessin.h"
+	"MenuAcceuil.h"
+	"MenuParametrage.h"
+	"GestionJeu.h"
+
+1772637404 c:\temp\snake_vscode\snake_archive_new_archi\initialisationjeu.h
+
+1772643731 c:\temp\snake_vscode\snake_archive_new_archi\menuacceuil.h
+
+1772639528 c:\temp\snake_vscode\snake_archive_new_archi\menuparametrage.h
+
+1769029793 c:\temp\snake_vscode\sdl3_image\include\sdl3_image\sdl_image.h
+	<SDL3/SDL.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772532669 c:\temp\snake_vscode\sdl3\include\sdl3\sdl_dlopennote.h
+	<SDL3/SDL_stdinc.h>
+
+1764251690 c:\temp\snake_vscode\sdl3_ttf\include\sdl3_ttf\sdl_ttf.h
+	<SDL3/SDL.h>
+	<SDL3/SDL_begin_code.h>
+	<SDL3/SDL_close_code.h>
+
+1772722652 source:c:\temp\snake_vscode\snake_archive_new_archi\main_start.c
+	<SDL3/SDL.h>
+	<stdio.h>
+
+1773135791 source:c:\temp\snake_vscode\snake_archive_sdl\boutonclick.c
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3/SDL.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1773150729 c:\temp\snake_vscode\snake_archive_sdl\mesvariablesglobales.h
+	"mesTypes.h"
+	"TypeboiteSaisie.h"
+	"TypeBouton.h"
+	"TypeZoneTexte.h"
+
+1773684733 c:\temp\snake_vscode\snake_archive_sdl\mestypes.h
+	<SDL3_ttf/SDL_ttf.h>
+
+1773684745 source:c:\temp\snake_vscode\snake_archive_sdl\gestionjeu.c
+	<math.h>
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"ConfigurationJeu.h"
+	"MesTypes.h"
+	"VariablesGlobales.h"
+	"Bibliotheque_header/TypeBoiteSaisie.h"
+	"Bibliotheque_header/OutilsBoiteSaisie.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"Bibliotheque_header/OutilsBouton.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"InitialisationJeu.h"
+	"GestionJeu.h"
+
+1773151039 c:\temp\snake_vscode\snake_archive_sdl\outilsdessin.h
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"MesVariablesGlobales.h"
+
+1773133564 c:\temp\snake_vscode\snake_archive_sdl\zonetexte.h
+
+1773135798 c:\temp\snake_vscode\snake_archive_sdl\boutonclick.h
+
+1773684687 c:\temp\snake_vscode\snake_archive_sdl\initialisationjeu.h
+
+1773684687 c:\temp\snake_vscode\snake_archive_sdl\gestionjeu.h
+
+1773653321 source:c:\temp\snake_vscode\snake_archive_sdl\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"ConfigurationJeu.h"
+	"MesTypes.h"
+	"VariablesGlobales.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsBoiteSaisie.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"InitialisationJeu.h"
+
+1773136619 source:c:\temp\snake_vscode\snake_archive_sdl\menuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"ConfigurationJeu.h"
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+	"OutilsDessin.h"
+	"OutilsZoneTexte.h"
+	"OutilsBouton.h"
+	"GestionJeu.h"
+	"InitialisationJeu.h"
+
+1773137625 source:c:\temp\snake_vscode\snake_archive_sdl\menuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"MesVariablesGlobales.h"
+	"OutilsDessin.h"
+	"OutilsZoneTexte.h"
+	"OutilsBouton.h"
+	"GestionJeu.h"
+
+1773151108 source:c:\temp\snake_vscode\snake_archive_sdl\mesvariablesglobales.c
+	<SDL3/SDL.h>
+	"MesTypes.h"
+	"TypeBoiteSaisie.h"
+	"TypeBouton.h"
+	"TypeZoneTexte.h"
+
+1773151063 source:c:\temp\snake_vscode\snake_archive_sdl\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"ConfigurationJeu.h"
+	"MesVariablesGlobales.h"
+
+1773133564 source:c:\temp\snake_vscode\snake_archive_sdl\zonetexte.c
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3/SDL.h>
+	<stdio.h>
+	<string.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1773745367 source:c:\temp\snake_vscode\snake_archive_sdl\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<math.h>
+	<SDL3/SDL.h>
+	<SDL3/SDL_main.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	"ConfigurationJeu.h"
+	"MesTypes.h"
+	"VariablesGlobales.h"
+	"Bibliotheque_header/Initialisation_SDL.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsEvenement.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"InitialisationJeu.h"
+	"GestionMenuAcceuil.h"
+	"GestionMenuParametrage.h"
+	"GestionJeu.h"
+	"GestionGraphismes.h"
+	"InitialisationTexture.h"
+
+1773660149 c:\temp\snake_vscode\snake_archive_sdl\configurationjeu.h
+
+1772643731 c:\temp\snake_vscode\snake_archive_sdl\menuacceuil.h
+
+1772639528 c:\temp\snake_vscode\snake_archive_sdl\menuparametrage.h
+
+1773134439 source:c:\temp\snake_vscode\snake_archive_sdl\boitesaisietexte.c
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	"MesVariablesglobales.h"
+
+1773135248 c:\temp\snake_vscode\snake_archive_sdl\boitesaisietexte.h
+
+1773150719 c:\temp\snake_vscode\snake_archive_sdl\typeboitesaisie.h
+
+1773151382 source:c:\temp\snake_vscode\snake_archive_sdl\outilsboitesaisie.c
+	<stdio.h>
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	"MesVariablesglobales.h"
+
+1773151375 c:\temp\snake_vscode\snake_archive_sdl\outilsboitesaisie.h
+
+1773136206 c:\temp\snake_vscode\snake_archive_sdl\typebouton.h
+
+1773140183 source:c:\temp\snake_vscode\snake_archive_sdl\outilsbouton.c
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3/SDL.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1773140199 c:\temp\snake_vscode\snake_archive_sdl\outilsbouton.h
+
+1773136575 c:\temp\snake_vscode\snake_archive_sdl\typezonetexte.h
+
+1773148053 c:\temp\snake_vscode\snake_archive_sdl\outilszonetexte.h
+
+1773151141 source:c:\temp\snake_vscode\snake_archive_sdl\outilszonetexte.c
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3/SDL.h>
+	<stdio.h>
+	<string.h>
+	"MesVariablesGlobales.h"
+	"MesTypes.h"
+
+1773744553 c:\temp\snake_vscode\snake_archive_sdl\gestiongraphismes.h
+
+1773745367 source:c:\temp\snake_vscode\snake_archive_sdl\gestionmenuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"ConfigurationJeu.h"
+	"VariablesGlobales.h"
+	"MesTypes.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"Bibliotheque_header/OutilsBouton.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"GestionJeu.h"
+	"InitialisationJeu.h"
+
+1773745378 c:\temp\snake_vscode\snake_archive_sdl\gestionmenuacceuil.h
+
+1773744553 source:c:\temp\snake_vscode\snake_archive_sdl\gestiongraphismes.c
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	"ConfigurationJeu.h"
+	"VariablesGlobales.h"
+	"InitialisationJeu.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsBouton.h"
+	"Bibliotheque_header/OutilsBoiteSaisie.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"GestionMenuParametrage.h"
+	"GestionJeu.h"
+	"GestionGraphismes.h"
+
+1773743422 c:\temp\snake_vscode\snake_archive_sdl\gestionmenuparametrage.h
+
+1773743601 source:c:\temp\snake_vscode\snake_archive_sdl\gestionmenuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"VariablesGlobales.h"
+	"ConfigurationJeu.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"Bibliotheque_header/OutilsBouton.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"GestionJeu.h"
+	"InitialisationJeu.h"
+
+1773145610 source:c:\temp\snake_vscode\snake_archive_sdl\gestionevenements.c
+	<SDL3/SDL.h>
+
+1773145812 source:c:\temp\snake_vscode\snake_archive_sdl\outilsevenement.c
+	<SDL3/SDL.h>
+
+1773145812 c:\temp\snake_vscode\snake_archive_sdl\outilsevenement.h
+
+1773152378 source:c:\temp\snake_vscode\snake_archive_sdl\initialisation_sdl.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"ConfigurationJeu.h"
+	"MesVariablesGlobales.h"
+
+1773151899 c:\temp\snake_vscode\snake_archive_sdl\initialisation_sdl.h
+
+1773152215 c:\temp\snake_vscode\snake_archive_sdl\initialisationtexture.h
+
+1773684526 source:c:\temp\snake_vscode\snake_archive_sdl\initialisationtexture.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"ConfigurationJeu.h"
+	"VariablesGlobales.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+
+1773768025 source:c:\temp\snake_vscode\snake_archive_sdl_depart\gestiongraphismes.c
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	"ConfigurationJeu.h"
+	"VariablesGlobales.h"
+	"InitialisationJeu.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsBouton.h"
+	"Bibliotheque_header/OutilsBoiteSaisie.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"GestionMenuParametrage.h"
+	"GestionJeu.h"
+	"GestionGraphismes.h"
+
+1773660149 c:\temp\snake_vscode\snake_archive_sdl_depart\configurationjeu.h
+
+1773266905 c:\temp\snake_vscode\snake_archive_sdl_depart\mesvariablesglobales.h
+	"mesTypes.h"
+	"Bibliotheque_header/TypeBoiteSaisie.h"
+	"Bibliotheque_header/TypeBouton.h"
+	"Bibliotheque_header/TypeZoneTexte.h"
+
+1773684733 c:\temp\snake_vscode\snake_archive_sdl_depart\mestypes.h
+	<SDL3_ttf/SDL_ttf.h>
+
+1773684687 c:\temp\snake_vscode\snake_archive_sdl_depart\initialisationjeu.h
+
+1773743422 c:\temp\snake_vscode\snake_archive_sdl_depart\gestionmenuparametrage.h
+
+1773684687 c:\temp\snake_vscode\snake_archive_sdl_depart\gestionjeu.h
+
+1773744553 c:\temp\snake_vscode\snake_archive_sdl_depart\gestiongraphismes.h
+
+1773684745 source:c:\temp\snake_vscode\snake_archive_sdl_depart\gestionjeu.c
+	<math.h>
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"ConfigurationJeu.h"
+	"MesTypes.h"
+	"VariablesGlobales.h"
+	"Bibliotheque_header/TypeBoiteSaisie.h"
+	"Bibliotheque_header/OutilsBoiteSaisie.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"Bibliotheque_header/OutilsBouton.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"InitialisationJeu.h"
+	"GestionJeu.h"
+
+1773767844 source:c:\temp\snake_vscode\snake_archive_sdl_depart\gestionmenuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"ConfigurationJeu.h"
+	"VariablesGlobales.h"
+	"MesTypes.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"Bibliotheque_header/OutilsBouton.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"GestionJeu.h"
+	"InitialisationJeu.h"
+
+1773765249 source:c:\temp\snake_vscode\snake_archive_sdl_depart\gestionmenuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"VariablesGlobales.h"
+	"ConfigurationJeu.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"Bibliotheque_header/OutilsBouton.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"GestionJeu.h"
+	"InitialisationJeu.h"
+
+1773152378 source:c:\temp\snake_vscode\snake_archive_sdl_depart\initialisation_sdl.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"ConfigurationJeu.h"
+	"MesVariablesGlobales.h"
+
+1773761518 source:c:\temp\snake_vscode\snake_archive_sdl_depart\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"ConfigurationJeu.h"
+	"MesTypes.h"
+	"VariablesGlobales.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsBoiteSaisie.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"InitialisationJeu.h"
+
+1773767999 source:c:\temp\snake_vscode\snake_archive_sdl_depart\initialisationtexture.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"ConfigurationJeu.h"
+	"VariablesGlobales.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+
+1773857587 source:c:\temp\snake_vscode\snake_archive_sdl_depart\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<math.h>
+	<SDL3/SDL.h>
+	<SDL3/SDL_main.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	"ConfigurationJeu.h"
+	"MesTypes.h"
+	"VariablesGlobales.h"
+	"Bibliotheque_header/Initialisation_SDL.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsEvenement.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"InitialisationJeu.h"
+	"GestionMenuAcceuil.h"
+	"GestionMenuParametrage.h"
+	"GestionJeu.h"
+	"GestionGraphismes.h"
+	"InitialisationTexture.h"
+
+1773745378 c:\temp\snake_vscode\snake_archive_sdl_depart\gestionmenuacceuil.h
+
+1773151899 c:\temp\snake_vscode\snake_archive_sdl_depart\initialisation_sdl.h
+
+1773152215 c:\temp\snake_vscode\snake_archive_sdl_depart\initialisationtexture.h
+
+1773267152 source:c:\temp\snake_vscode\snake_archive_sdl_depart\mesvariablesglobales.c
+	<SDL3/SDL.h>
+	"MesTypes.h"
+	"Bibliotheque_header/TypeBoiteSaisie.h"
+	"Bibliotheque_header/TypeBouton.h"
+	"Bibliotheque_header/TypeZoneTexte.h"
+
+1773145812 source:c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_source\outilsevenement.c
+	<SDL3/SDL.h>
+
+1764251704 source:c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_source\outilssouris.c
+
+1773150719 c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_header\typeboitesaisie.h
+
+1773237996 c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_header\typebouton.h
+
+1773136575 c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_header\typezonetexte.h
+
+1773239129 source:c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_source\outilsboitesaisie.c
+	<stdio.h>
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	"../Bibliotheque_header/TypeBoiteSaisie.h"
+
+1773655047 source:c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_source\outilsbouton.c
+	<stdio.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3/SDL.h>
+	"../Bibliotheque_header/TypeBoiteSaisie.h"
+	"../Bibliotheque_header/TypeBouton.h"
+
+1773763665 source:c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_source\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"../ConfigurationJeu.h"
+
+1773857585 source:c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_source\outilszonetexte.c
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3/SDL.h>
+	<stdio.h>
+	<string.h>
+	"../Bibliotheque_header/TypeZoneTexte.h"
+
+1773148053 c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_header\outilszonetexte.h
+
+1773763647 c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_header\outilsdessin.h
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"../VariablesGlobales.h"
+
+1773653815 c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_header\outilsbouton.h
+
+1773239100 c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_header\outilsboitesaisie.h
+
+1773145812 c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_header\outilsevenement.h
+
+1773220393 source:c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_source\initialisation_sdl.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"../ConfigurationJeu.h"
+
+1773220393 c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_header\initialisation_sdl.h
+
+1773219369 source:c:\temp\snake_vscode\snake_archive_sdl_depart\outilscouleur.c
+	<SDL3/SDL.h>
+
+1773654663 source:c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_source\outilscouleur.c
+	<SDL3/SDL.h>
+
+1773230023 c:\temp\snake_vscode\snake_archive_sdl_depart\bibliotheque_header\outilscouleur.h
+
+1773220393 source:c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_source\initialisation_sdl.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"../ConfigurationJeu.h"
+
+1773660149 c:\temp\snake_vscode\snake_archive_sdl_start\configurationjeu.h
+
+1773239129 source:c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_source\outilsboitesaisie.c
+	<stdio.h>
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	"../Bibliotheque_header/TypeBoiteSaisie.h"
+
+1773150719 c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_header\typeboitesaisie.h
+
+1773655047 source:c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_source\outilsbouton.c
+	<stdio.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3/SDL.h>
+	"../Bibliotheque_header/TypeBoiteSaisie.h"
+	"../Bibliotheque_header/TypeBouton.h"
+
+1773237996 c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_header\typebouton.h
+
+1773654663 source:c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_source\outilscouleur.c
+	<SDL3/SDL.h>
+
+1773684804 source:c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_source\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"../ConfigurationJeu.h"
+
+1773145812 source:c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_source\outilsevenement.c
+	<SDL3/SDL.h>
+
+1773655078 source:c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_source\outilszonetexte.c
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3/SDL.h>
+	<stdio.h>
+	<string.h>
+	"../Bibliotheque_header/TypeZoneTexte.h"
+
+1773136575 c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_header\typezonetexte.h
+
+1773684745 source:c:\temp\snake_vscode\snake_archive_sdl_start\gestionjeu.c
+	<math.h>
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	"ConfigurationJeu.h"
+	"MesTypes.h"
+	"VariablesGlobales.h"
+	"Bibliotheque_header/TypeBoiteSaisie.h"
+	"Bibliotheque_header/OutilsBoiteSaisie.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"Bibliotheque_header/OutilsBouton.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"InitialisationJeu.h"
+	"GestionJeu.h"
+
+1773684733 c:\temp\snake_vscode\snake_archive_sdl_start\mestypes.h
+	<SDL3_ttf/SDL_ttf.h>
+
+1773742591 c:\temp\snake_vscode\snake_archive_sdl_start\variablesglobales.h
+	"mesTypes.h"
+	"Bibliotheque_header/TypeBoiteSaisie.h"
+	"Bibliotheque_header/TypeBouton.h"
+	"Bibliotheque_header/TypeZoneTexte.h"
+
+1773239100 c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_header\outilsboitesaisie.h
+
+1773651104 c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_header\outilsdessin.h
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"../VariablesGlobales.h"
+
+1773148053 c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_header\outilszonetexte.h
+
+1773653815 c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_header\outilsbouton.h
+
+1773230023 c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_header\outilscouleur.h
+
+1773684687 c:\temp\snake_vscode\snake_archive_sdl_start\initialisationjeu.h
+
+1773684687 c:\temp\snake_vscode\snake_archive_sdl_start\gestionjeu.h
+
+1773743536 source:c:\temp\snake_vscode\snake_archive_sdl_start\gestionmenuacceuil.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"ConfigurationJeu.h"
+	"VariablesGlobales.h"
+	"MesTypes.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"Bibliotheque_header/OutilsBouton.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"GestionJeu.h"
+	"InitialisationJeu.h"
+
+1773743601 source:c:\temp\snake_vscode\snake_archive_sdl_start\gestionmenuparametrage.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	"MesTypes.h"
+	"VariablesGlobales.h"
+	"ConfigurationJeu.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"Bibliotheque_header/OutilsBouton.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"GestionJeu.h"
+	"InitialisationJeu.h"
+
+1773653321 source:c:\temp\snake_vscode\snake_archive_sdl_start\initialisationjeu.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"ConfigurationJeu.h"
+	"MesTypes.h"
+	"VariablesGlobales.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsBoiteSaisie.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"InitialisationJeu.h"
+
+1773684526 source:c:\temp\snake_vscode\snake_archive_sdl_start\initialisationtexture.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"ConfigurationJeu.h"
+	"VariablesGlobales.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+
+1773742591 source:c:\temp\snake_vscode\snake_archive_sdl_start\variablesglobales.c
+	<SDL3/SDL.h>
+	"MesTypes.h"
+	"Bibliotheque_header/TypeBoiteSaisie.h"
+	"Bibliotheque_header/TypeBouton.h"
+	"Bibliotheque_header/TypeZoneTexte.h"
+
+1773743009 source:c:\temp\snake_vscode\snake_archive_sdl_start\gestiongraphismes.c
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	"ConfigurationJeu.h"
+	"VariablesGlobales.h"
+	"InitialisationJeu.h"
+	"Bibliotheque_header/OutilsZoneTexte.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsBouton.h"
+	"Bibliotheque_header/OutilsBoiteSaisie.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"GestionMenuParametrage.h"
+	"GestionJeu.h"
+	"GestionGraphismes.h"
+
+1773743422 c:\temp\snake_vscode\snake_archive_sdl_start\gestionmenuparametrage.h
+
+1773743009 c:\temp\snake_vscode\snake_archive_sdl_start\gestiongraphismes.h
+
+1773743613 source:c:\temp\snake_vscode\snake_archive_sdl_start\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<math.h>
+	<SDL3/SDL.h>
+	<SDL3/SDL_main.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	"ConfigurationJeu.h"
+	"MesTypes.h"
+	"VariablesGlobales.h"
+	"Bibliotheque_header/Initialisation_SDL.h"
+	"Bibliotheque_header/OutilsDessin.h"
+	"Bibliotheque_header/OutilsEvenement.h"
+	"Bibliotheque_header/OutilsCouleur.h"
+	"InitialisationJeu.h"
+	"GestionMenuAcceuil.h"
+	"GestionMenuParametrage.h"
+	"GestionJeu.h"
+	"GestionGraphismes.h"
+	"InitialisationTexture.h"
+
+1773220393 c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_header\initialisation_sdl.h
+
+1773145812 c:\temp\snake_vscode\snake_archive_sdl_start\bibliotheque_header\outilsevenement.h
+
+1773742972 c:\temp\snake_vscode\snake_archive_sdl_start\gestionmenuacceuil.h
+
+1773152215 c:\temp\snake_vscode\snake_archive_sdl_start\initialisationtexture.h
+
+1773220393 source:c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_source\initialisation_sdl.c
+	<SDL3/SDL.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3_image/SDL_image.h>
+	<stdio.h>
+	"../ConfigurationJeu.h"
+
+1773239129 source:c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_source\outilsboitesaisie.c
+	<stdio.h>
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	"../Bibliotheque_header/TypeBoiteSaisie.h"
+
+1773150719 c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_header\typeboitesaisie.h
+
+1773655047 source:c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_source\outilsbouton.c
+	<stdio.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3/SDL.h>
+	"../Bibliotheque_header/TypeBoiteSaisie.h"
+	"../Bibliotheque_header/TypeBouton.h"
+
+1773237996 c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_header\typebouton.h
+
+1773654663 source:c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_source\outilscouleur.c
+	<SDL3/SDL.h>
+
+1773684804 source:c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_source\outilsdessin.c
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"../ConfigurationJeu.h"
+
+1773145812 source:c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_source\outilsevenement.c
+	<SDL3/SDL.h>
+
+1773655078 source:c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_source\outilszonetexte.c
+	<SDL3_ttf/SDL_ttf.h>
+	<SDL3/SDL.h>
+	<stdio.h>
+	<string.h>
+	"../Bibliotheque_header/TypeZoneTexte.h"
+
+1773136575 c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_header\typezonetexte.h
+
+1773761403 c:\temp\snake_vscode\snake_archive_sdl\variablesglobales.h
+	"mesTypes.h"
+	"Bibliotheque_header/TypeBoiteSaisie.h"
+	"Bibliotheque_header/TypeBouton.h"
+	"Bibliotheque_header/TypeZoneTexte.h"
+
+1773148053 c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_header\outilszonetexte.h
+
+1773651104 c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_header\outilsdessin.h
+	<SDL3/SDL.h>
+	<SDL3_image/SDL_image.h>
+	<SDL3_ttf/SDL_ttf.h>
+	<stdio.h>
+	<math.h>
+	"../VariablesGlobales.h"
+
+1773653815 c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_header\outilsbouton.h
+
+1773239100 c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_header\outilsboitesaisie.h
+
+1773230023 c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_header\outilscouleur.h
+
+1773220393 c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_header\initialisation_sdl.h
+
+1773145812 c:\temp\snake_vscode\snake_archive_sdl\bibliotheque_header\outilsevenement.h
+
+1773742591 source:c:\temp\snake_vscode\snake_archive_sdl\variablesglobales.c
+	<SDL3/SDL.h>
+	"MesTypes.h"
+	"Bibliotheque_header/TypeBoiteSaisie.h"
+	"Bibliotheque_header/TypeBouton.h"
+	"Bibliotheque_header/TypeZoneTexte.h"
+
+1773765341 c:\temp\snake_vscode\snake_archive_sdl_depart\variablesglobales.h
+	"mesTypes.h"
+	"Bibliotheque_header/TypeBoiteSaisie.h"
+	"Bibliotheque_header/TypeBouton.h"
+	"Bibliotheque_header/TypeZoneTexte.h"
+
+1773765713 source:c:\temp\snake_vscode\snake_archive_sdl_depart\variablesglobales.c
+	<SDL3/SDL.h>
+	"MesTypes.h"
+	"Bibliotheque_header/TypeBoiteSaisie.h"
+	"Bibliotheque_header/TypeBouton.h"
+	"Bibliotheque_header/TypeZoneTexte.h"
+
