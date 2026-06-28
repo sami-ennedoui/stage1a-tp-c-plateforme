@@ -4,12 +4,13 @@ import html
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QListWidget,
                              QPlainTextEdit, QTextEdit, QPushButton, QLabel, QTabWidget,
                              QListWidgetItem, QInputDialog, QComboBox)
-from PyQt6.QtCore import Qt, QThread, pyqtSignal
+from PyQt6.QtCore import Qt, QThread, QTimer, pyqtSignal
 from PyQt6.QtGui import QFont
 
 import chemins
 import coloration
 import executeur
+import lsp_clangd
 import progression
 import tuteur_ia
 import theme
@@ -75,6 +76,21 @@ class Fenetre(QMainWindow):
         # coloration syntaxique C, gardée en attribut pour ne pas être ramassée
         self._color_code = coloration.ColorationC(self.editeur.document())
         self._color_test = coloration.ColorationC(self.editeur_test.document())
+
+        # diagnostics LSP clangd, désactivés proprement si clangd est absent
+        self._client_lsp: lsp_clangd.ClientClangd | None = None
+        self._timer_lsp = QTimer(self)
+        self._timer_lsp.setSingleShot(True)
+        self._timer_lsp.setInterval(400)
+        self._timer_lsp.timeout.connect(self._envoyer_code_a_clangd)
+        self.label_lsp = QLabel()
+        self.label_lsp.setVisible(False)
+        self.label_lsp.setObjectName("avertissement_lsp")
+        if not lsp_clangd.clangd_disponible():
+            self.label_lsp.setText(
+                "clangd absent, diagnostics live indisponibles. Installe clang-tools-extra."
+            )
+            self.label_lsp.setVisible(True)
         self.label_cran = QLabel()
         self.choix_cran = QComboBox()    # redescendre sous le cran débloqué pour moins d'aide
         self.choix_cran.currentIndexChanged.connect(self._changer_cran)
@@ -110,6 +126,7 @@ class Fenetre(QMainWindow):
         centre.addWidget(self.enonce, 2)
         centre.addWidget(_titre("ATELIER"))
         centre.addWidget(self.onglets, 5)
+        centre.addWidget(self.label_lsp)
         centre.addLayout(barre)
         centre.addWidget(_titre("CONSOLE"))
         centre.addWidget(self.console, 3)
@@ -130,6 +147,9 @@ class Fenetre(QMainWindow):
         conteneur = QWidget()
         conteneur.setLayout(racine)
         self.setCentralWidget(conteneur)
+
+        # anti-rebond : textChanged déclenche le timer, pas l'envoi direct
+        self.editeur.textChanged.connect(self._timer_lsp.start)
 
         self._remplir_liste()
         self.liste.setCurrentRow(0)
@@ -156,6 +176,7 @@ class Fenetre(QMainWindow):
         self.onglets.setTabVisible(1, a_ecrire)
         self.b_jeu.setVisible(self.etape.type == "jalon")
         self._maj_cran()
+        self._demarrer_lsp()
 
     def _maj_cran(self):
         dispo = progression.cran_disponible(self.prog)
@@ -236,6 +257,39 @@ class Fenetre(QMainWindow):
         self._fil = FilTuteur(self.etape, self.editeur.toPlainText(), question, niveau)
         self._fil.repondu.connect(self.reponse_tuteur.setPlainText)
         self._fil.start()
+
+
+    def _demarrer_lsp(self) -> None:
+        """Arrête le client précédent si besoin, puis en lance un nouveau pour l'étape courante."""
+        if not lsp_clangd.clangd_disponible():
+            return
+        if self._client_lsp is not None:
+            self._client_lsp.diagnostics_recus.disconnect()
+            self._client_lsp.arreter()
+            self._client_lsp.wait(msecs=2000)
+            self._client_lsp = None
+        # efface les soulignements de l'étape précédente
+        self.editeur.setExtraSelections([])
+        code = self.editeur.toPlainText()
+        self._client_lsp = lsp_clangd.ClientClangd(self.etape, parent=self)
+        self._client_lsp.diagnostics_recus.connect(self._appliquer_diagnostics)
+        self._client_lsp.demarrer(code)
+
+    def _envoyer_code_a_clangd(self) -> None:
+        """Appelée par le timer anti-rebond : transmet le code courant à clangd."""
+        if self._client_lsp is not None:
+            self._client_lsp.notifier_changement(self.editeur.toPlainText())
+
+    def _appliquer_diagnostics(self, diagnostics: list) -> None:
+        """Reçoit la liste de Diagnostic depuis le fil LSP et met à jour les soulignements."""
+        lsp_clangd.appliquer_diagnostics(self.editeur, diagnostics)
+
+    def closeEvent(self, event) -> None:
+        """Arrête proprement le client LSP avant de fermer la fenêtre."""
+        if self._client_lsp is not None:
+            self._client_lsp.arreter()
+            self._client_lsp.wait(msecs=2000)
+        super().closeEvent(event)
 
 
 def construire(app, demo=False):
