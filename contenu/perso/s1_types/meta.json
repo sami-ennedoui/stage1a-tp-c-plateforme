@@ -1,0 +1,10 @@
+{
+  "id": "s1_types",
+  "titre": "S1, les types et la division entière",
+  "type": "perso",
+  "mode": "test_fourni",
+  "recette": "perso",
+  "cran_debloque": 1,
+  "noeud_cours": "Types et conversions, division entière contre division réelle",
+  "fichier_edite": "soumission.c"
+}

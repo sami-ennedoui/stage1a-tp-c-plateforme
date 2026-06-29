@@ -1,0 +1,4 @@
+{
+  "ordre": ["s1_types", "s2_pointeurs", "s3_tableaux", "s4_sousprog"],
+  "mode": "isole"
+}

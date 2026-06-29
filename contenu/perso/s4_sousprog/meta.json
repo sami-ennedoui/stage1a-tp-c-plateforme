@@ -1,0 +1,10 @@
+{
+  "id": "s4_sousprog",
+  "titre": "S4, un sous-programme qui en réutilise un autre",
+  "type": "perso",
+  "mode": "test_fourni",
+  "recette": "perso",
+  "cran_debloque": 3,
+  "noeud_cours": "Sous-programmes, décomposition et réutilisation",
+  "fichier_edite": "soumission.c"
+}

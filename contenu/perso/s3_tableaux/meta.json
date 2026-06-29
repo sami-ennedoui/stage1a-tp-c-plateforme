@@ -1,0 +1,10 @@
+{
+  "id": "s3_tableaux",
+  "titre": "S3, parcourir un tableau pour trouver le maximum",
+  "type": "perso",
+  "mode": "test_fourni",
+  "recette": "perso",
+  "cran_debloque": 3,
+  "noeud_cours": "Tableaux, parcours avec une boucle et un indice",
+  "fichier_edite": "soumission.c"
+}
