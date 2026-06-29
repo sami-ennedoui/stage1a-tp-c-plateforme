@@ -143,3 +143,60 @@ def porte_perso(etape: Etape, code_eleve: str) -> Resultat:
         sources = [soumission, etape.dossier / "tests.c"]
         includes = [etape.dossier]
         return _compiler_et_lancer(sources, includes)
+
+
+def porte_logique(espace, fichier_edite: str, code_etudiant: str,
+                  harnais: Path, sources: list[str]) -> Resultat:
+    """Écrit le code de l'étudiant dans l'espace, compile le harnais logique avec les sources du
+    projet et pkg-config sdl3, exécute sans fenêtre et renvoie un Resultat. Le code de sortie
+    fait foi.
+
+    Paramètres
+    ----------
+    espace : EspaceProjet
+        La copie de travail déjà initialisée.
+    fichier_edite : str
+        Chemin du fichier que l'étudiant modifie, relatif à la racine du projet copié,
+        par exemple 'SNAKE/GestionJeu.c'.
+    code_etudiant : str
+        Contenu source à poser dans le fichier édité.
+    harnais : Path
+        Chemin absolu du fichier de harnais à compiler, par exemple
+        chemins.PROJET_CORRIGE / 'tests_logique' / 'test_deplacement.c'.
+    sources : list[str]
+        Chemins des fichiers .c nécessaires à la compilation, relatifs à la racine du projet copié,
+        par exemple ['SNAKE/GestionJeu.c', 'SNAKE/VariablesGlobales.c', 'SNAKE/InitialisationJeu.c'].
+    """
+    espace.ecrire_fichier(fichier_edite, code_etudiant)
+    srcs = [Path(harnais)] + [espace.chemin_racine / s for s in sources]
+    includes = [espace.dossier_snake]
+    cflags = chemins.cflags_sdl(avec_ttf_image=False)
+    libs = chemins.libs_sdl(avec_ttf_image=False)
+    return _compiler_et_lancer(srcs, includes, cflags, libs)
+
+
+def construire_et_jouer_projet(espace, lancer: bool = True) -> Resultat:
+    """Lance build.sh sur l'espace et, si le build réussit et que lancer est True, ouvre
+    le binaire snake en sous-processus détaché sans bloquer. Renvoie l'erreur de compilation
+    si le build échoue. Passer lancer=False dans les tests unitaires pour éviter d'ouvrir
+    une fenêtre réelle."""
+    build = subprocess.run(
+        ["bash", str(espace.build_sh)],
+        capture_output=True,
+        text=True,
+        cwd=str(espace.build_sh.parent),
+    )
+    if build.returncode != 0:
+        return Resultat(False, "Erreur de build :\n" + build.stderr + build.stdout)
+    binaire = espace.dossier_snake / "snake"
+    if not binaire.exists():
+        return Resultat(False, "Le build s'est terminé sans erreur mais le binaire est introuvable.")
+    if lancer:
+        subprocess.Popen(
+            [str(binaire)],
+            cwd=str(espace.dossier_snake),
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+        )
+        return Resultat(True, "Build réussi. Jeu lancé.")
+    return Resultat(True, "Build réussi.")

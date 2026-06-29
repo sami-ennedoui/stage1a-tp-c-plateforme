@@ -19,6 +19,13 @@ class Etape:
     dossier: Path
 
 
+@dataclass
+class Parcours:
+    """Représente un parcours complet avec sa liste d'étapes et son mode d'exécution."""
+    etapes: list[Etape]
+    mode: str            # "isole" | "projet"
+
+
 def charger_etape(dossier: Path) -> Etape:
     meta = json.loads((dossier / "meta.json").read_text(encoding="utf-8"))
     return Etape(
@@ -35,5 +42,14 @@ def charger_etape(dossier: Path) -> Etape:
 
 
 def charger_parcours(dossier_contenu: Path = chemins.CONTENU) -> list[Etape]:
-    ordre = json.loads((dossier_contenu / "parcours.json").read_text(encoding="utf-8"))["ordre"]
-    return [charger_etape(dossier_contenu / i) for i in ordre]
+    """Renvoie la liste des étapes dans l'ordre du parcours. Rétrocompatible."""
+    donnees = json.loads((dossier_contenu / "parcours.json").read_text(encoding="utf-8"))
+    return [charger_etape(dossier_contenu / i) for i in donnees["ordre"]]
+
+
+def charger_parcours_complet(dossier_contenu: Path = chemins.CONTENU) -> Parcours:
+    """Renvoie un objet Parcours avec les étapes et le mode ('isole' par défaut si absent)."""
+    donnees = json.loads((dossier_contenu / "parcours.json").read_text(encoding="utf-8"))
+    mode = donnees.get("mode", "isole")
+    etapes = [charger_etape(dossier_contenu / i) for i in donnees["ordre"]]
+    return Parcours(etapes=etapes, mode=mode)

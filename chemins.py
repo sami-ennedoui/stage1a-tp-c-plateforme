@@ -3,8 +3,17 @@ from pathlib import Path
 import subprocess
 
 RACINE = Path(__file__).resolve().parent
-CONTENU = RACINE / "contenu"
+# CONTENU pointe sur le parcours hybride ; tout le code existant continue de fonctionner.
+CONTENU = RACINE / "contenu" / "hybride"
 PROGRESSION_FICHIER = RACINE / "progression.json"
+
+PROJET_CORRIGE = RACINE / "projet-corrige"
+PROJET_SNAKE = RACINE / "projet-corrige" / "SNAKE"
+
+
+def contenu_racine(nom: str) -> Path:
+    """Renvoie le chemin d'un sous-dossier de contenu/, par exemple contenu_racine('hybride')."""
+    return RACINE / "contenu" / nom
 
 SNAKE_ROOT = Path.home() / "scratch-stage1a" / "snake-sdl" / "extracted" / "SNAKE_STAGE"
 ARCH = SNAKE_ROOT / "SNAKE_ARCHIVE_SDL_DEPART"
