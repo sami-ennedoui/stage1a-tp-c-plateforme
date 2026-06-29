@@ -17,6 +17,10 @@ extern SDL_Renderer*    renderer                       ;
 //==============================================================*/
 
 extern type_Bouton ListeBouton_Menu_Acceuil[3] ;
+extern type_Bouton ListeBouton_Menu_Parametrage[4] ;
+extern type_Bouton ListeBouton_Menu_Couleur_Snake[5] ;
+extern type_Bouton ListeBouton_Menu_Couleur_Stade[5] ;
+extern type_Bouton ListeBouton_Menu_Couleur_Bord[5] ;
 
 //===============================================================
 // D�claration des zones de texte utilis�s
@@ -29,6 +33,14 @@ extern type_ZoneTexte texteAccueil           ;
 //==============================================================*/
 
 extern SDL_Texture*     TEXTURE_FOND_ACCEUIL            ;
+
+//===============================================================
+// Couleurs modifiables du jeu (lues par SP_Dessiner_Jeu)
+//==============================================================*/
+
+extern SDL_Color couleur_serpent ;
+extern SDL_Color couleur_stade   ;
+extern SDL_Color couleur_bord    ;
 
 //===============================================================
 // Declaration des variables de l'etat du jeu Snake

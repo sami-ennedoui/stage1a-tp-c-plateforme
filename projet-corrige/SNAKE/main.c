@@ -69,6 +69,10 @@ int main(int argc, char *argv[]) {
     SP_Initialisation_SDL() ;
     SP_Initialisation_Textures();
     SP_Structure_Menu_Acceuil();
+    SP_Structure_Menu_Parametrage();
+    SP_Structure_Menu_Couleur_Snake();
+    SP_Structure_Menu_Couleur_Stade();
+    SP_Structure_Menu_Couleur_Bord();
 
     while (etatMenu != QUITTER_MENU)
     {
@@ -87,6 +91,18 @@ int main(int argc, char *argv[]) {
         {
             if ( etatMenu == MENU_ACCEUIL )
                 SP_Gestion_Evenements_MENU_ACCUEIL(e, &etatMenu) ;
+
+            else if ( etatMenu == MENU_PARAMETRAGE )
+                SP_Gestion_Evenements_Menu_Parametrage(e, &etatMenu) ;
+
+            else if ( etatMenu == MENU_COULEUR_SNAKE )
+                SP_Gestion_Evenements_Menu_Couleur_Snake(e, &etatMenu) ;
+
+            else if ( etatMenu == MENU_COULEUR_STADE )
+                SP_Gestion_Evenements_Menu_Couleur_Stade(e, &etatMenu) ;
+
+            else if ( etatMenu == MENU_COULEUR_BORD )
+                SP_Gestion_Evenements_Menu_Couleur_Bord(e, &etatMenu) ;
 
             /* Clavier en cours de partie : direction + anti demi-tour */
             else if ( etatMenu == MENU_JEU && e.type == SDL_EVENT_KEY_DOWN ) {

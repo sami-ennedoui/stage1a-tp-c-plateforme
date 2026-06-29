@@ -56,13 +56,12 @@ void SP_Dessiner_Menu_Acceuil() {
    cercle pour forcer la bonne couleur.
    =========================================================================*/
 
-/* Couleurs de rendu du jeu (meme palette que jeu_demo.c). */
+/* Couleurs fixes du jeu (fond, tete, pomme -- non modifiables depuis les menus). */
 static const SDL_Color JEU_FOND  = {30,  30,  40,  255};
-static const SDL_Color JEU_STADE = {40,  90,  50,  255};
-static const SDL_Color JEU_BORD  = {90,  140, 90,  255};
-static const SDL_Color JEU_CORPS = {70,  200, 90,  255};
 static const SDL_Color JEU_TETE  = {180, 240, 120, 255};
 static const SDL_Color JEU_POMME = {220, 60,  60,  255};
+/* couleur_serpent, couleur_stade, couleur_bord sont des globales modifiables
+   declarees dans VariablesGlobales.h et initialisees dans VariablesGlobales.c. */
 
 /* Fixe la couleur du renderer puis dessine un cercle plein.
    Compense le bug de SP_Dessiner_Cercle_Texture dont la ligne de couleur
@@ -88,24 +87,24 @@ void SP_Dessiner_Jeu(void) {
     /* Fond general */
     SP_Nettoyer_Ecran(JEU_FOND);
 
-    /* Bord du stade */
+    /* Bord du stade -- utilise la globale couleur_bord */
     SDL_FRect rect_bord = {
         (float)(marge - 6),
         (float)(marge - 6),
         (float)(STADE_LARGEUR + 12),
         (float)(STADE_HAUTEUR + 12)
     };
-    SDL_SetRenderDrawColor(renderer, JEU_BORD.r, JEU_BORD.g, JEU_BORD.b, 255);
+    SDL_SetRenderDrawColor(renderer, couleur_bord.r, couleur_bord.g, couleur_bord.b, 255);
     SDL_RenderFillRect(renderer, &rect_bord);
 
-    /* Fond du stade */
+    /* Fond du stade -- utilise la globale couleur_stade */
     SDL_FRect rect_stade = {
         (float)marge,
         (float)marge,
         (float)STADE_LARGEUR,
         (float)STADE_HAUTEUR
     };
-    SDL_SetRenderDrawColor(renderer, JEU_STADE.r, JEU_STADE.g, JEU_STADE.b, 255);
+    SDL_SetRenderDrawColor(renderer, couleur_stade.r, couleur_stade.g, couleur_stade.b, 255);
     SDL_RenderFillRect(renderer, &rect_stade);
 
     /* Pomme */
@@ -117,7 +116,7 @@ void SP_Dessiner_Jeu(void) {
     for (int i = serpent.taille - 1; i >= 1; i--) {
         float bx, by;
         centre_cellule((int)serpent.corps[i].x, (int)serpent.corps[i].y, &bx, &by);
-        cercle_colore(bx, by, TAILLE_CELLULE * 0.45f, JEU_CORPS);
+        cercle_colore(bx, by, TAILLE_CELLULE * 0.45f, couleur_serpent);
     }
 
     /* Tete */
@@ -127,14 +126,60 @@ void SP_Dessiner_Jeu(void) {
 }
 
 
-void SP_Gestion_Graphismes (int etatMenu)
+/* Fond sombre commun aux menus Parametrage. */
+static const SDL_Color FOND_MENUS = {25, 25, 50, 255};
+
+/* Menu Parametrage : fond sombre + 4 boutons. */
+void SP_Dessiner_Menu_Parametrage(void) {
+    SP_Nettoyer_Ecran(FOND_MENUS);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Parametrage[0]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Parametrage[1]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Parametrage[2]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Parametrage[3]);
+}
+
+/* Menu couleur serpent : fond sombre + 5 boutons (4 couleurs + retour). */
+void SP_Dessiner_Menu_Couleur_Snake(void) {
+    SP_Nettoyer_Ecran(FOND_MENUS);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Snake[0]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Snake[1]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Snake[2]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Snake[3]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Snake[4]);
+}
+
+/* Menu couleur fond du stade. */
+void SP_Dessiner_Menu_Couleur_Stade(void) {
+    SP_Nettoyer_Ecran(FOND_MENUS);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Stade[0]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Stade[1]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Stade[2]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Stade[3]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Stade[4]);
+}
+
+/* Menu couleur bord. */
+void SP_Dessiner_Menu_Couleur_Bord(void) {
+    SP_Nettoyer_Ecran(FOND_MENUS);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Bord[0]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Bord[1]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Bord[2]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Bord[3]);
+    SP_Dessiner_Bouton(ListeBouton_Menu_Couleur_Bord[4]);
+}
+
+void SP_Gestion_Graphismes(int etatMenu)
 {
-
-    if ( etatMenu == MENU_ACCEUIL )
+    if      (etatMenu == MENU_ACCEUIL)
         SP_Dessiner_Menu_Acceuil();
-    else if ( etatMenu == MENU_JEU )
+    else if (etatMenu == MENU_PARAMETRAGE)
+        SP_Dessiner_Menu_Parametrage();
+    else if (etatMenu == MENU_COULEUR_SNAKE)
+        SP_Dessiner_Menu_Couleur_Snake();
+    else if (etatMenu == MENU_COULEUR_STADE)
+        SP_Dessiner_Menu_Couleur_Stade();
+    else if (etatMenu == MENU_COULEUR_BORD)
+        SP_Dessiner_Menu_Couleur_Bord();
+    else if (etatMenu == MENU_JEU)
         SP_Dessiner_Jeu();
-    //else if (etatMenu == MENU_PARAMETRAGE )
-    //    SP_Dessiner_Menu_Parametrage() ;
-
 }
