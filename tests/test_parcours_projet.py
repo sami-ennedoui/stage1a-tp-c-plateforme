@@ -57,6 +57,18 @@ class TestParcoursProjet(unittest.TestCase):
                 self.assertTrue(self._passe_les_portes(etape, corrige),
                                 f"{etape.id} : le corrigé devrait passer la porte")
 
+    def test_tuteur_trouve_le_corrige_projet(self):
+        # régression : en mode projet le tuteur lisait etape.dossier/corrige.c, absent des
+        # dossiers d'étape projet ; il doit pointer vers projet-corrige/<fichier_edite>
+        import tuteur_ia
+        for etape in self.parcours.etapes:
+            chemin = tuteur_ia._chemin_corrige(etape)
+            with self.subTest(etape=etape.id):
+                self.assertTrue(chemin.exists(),
+                                f"{etape.id} : le corrigé {chemin} devrait exister")
+                self.assertTrue(chemin.read_text(encoding="utf-8").strip(),
+                                f"{etape.id} : le corrigé ne devrait pas être vide")
+
 
 if __name__ == "__main__":
     unittest.main()

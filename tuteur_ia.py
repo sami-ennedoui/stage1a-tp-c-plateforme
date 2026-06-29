@@ -3,7 +3,9 @@ appel du moteur en sous-processus. Aucune UI."""
 import os
 import shutil
 import subprocess
+from pathlib import Path
 
+import chemins
 from modele_etape import Etape
 
 _CONSIGNE_CRAN = {
@@ -46,6 +48,14 @@ def _lignes_significatives(code: str) -> list[str]:
     return lignes
 
 
+def _chemin_corrige(etape: Etape) -> Path:
+    """Le corrigé d'une étape isolée vit dans son dossier sous corrige.c. Celui d'une
+    étape projet vit dans projet-corrige, au même chemin relatif que le fichier édité."""
+    if etape.type == "projet":
+        return chemins.PROJET_CORRIGE / etape.fichier_edite
+    return etape.dossier / "corrige.c"
+
+
 def filtre_solution(reponse: str, corrige: str) -> str:
     """Masque dans la réponse les lignes qui reproduisent une ligne du corrigé,
     laisse passer tout le reste."""
@@ -80,5 +90,5 @@ def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int) -> 
     if r.returncode != 0 and not r.stdout.strip():
         return "Le moteur IA a renvoyé une erreur. Réessaie, ou demande à ton tuteur."
     reponse = r.stdout.strip() or r.stderr.strip()
-    corrige = (etape.dossier / "corrige.c").read_text(encoding="utf-8")
+    corrige = _chemin_corrige(etape).read_text(encoding="utf-8")
     return filtre_solution(reponse, corrige)
