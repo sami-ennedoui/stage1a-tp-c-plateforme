@@ -10,13 +10,18 @@ import chemins
 class Etape:
     id: str
     titre: str
-    type: str            # "perso" | "jalon"
-    mode: str            # "test_fourni" | "test_a_ecrire"
-    recette: str         # "perso" | "jalon_test"
-    cran_debloque: int
-    noeud_cours: str
+    type: str                    # "perso" | "jalon" | "projet"
     fichier_edite: str
     dossier: Path
+    # champs des parcours isolés, optionnels pour les étapes projet
+    mode: str = ""               # "test_fourni" | "test_a_ecrire"
+    recette: str = ""            # "perso" | "jalon_test"
+    cran_debloque: int = 0
+    noeud_cours: str = ""
+    # champs des étapes projet, optionnels pour les parcours isolés
+    harnais: list | None = None  # harnais logiques, chemins relatifs au dépôt
+    sources: list | None = None  # sources .c à compiler avec le harnais, relatives à l'espace
+    porte: str = ""              # "logique" pour un harnais, "build" pour le capstone
 
 
 @dataclass
@@ -32,12 +37,15 @@ def charger_etape(dossier: Path) -> Etape:
         id=meta["id"],
         titre=meta["titre"],
         type=meta["type"],
-        mode=meta["mode"],
-        recette=meta["recette"],
-        cran_debloque=meta["cran_debloque"],
-        noeud_cours=meta["noeud_cours"],
         fichier_edite=meta["fichier_edite"],
         dossier=dossier,
+        mode=meta.get("mode", ""),
+        recette=meta.get("recette", ""),
+        cran_debloque=meta.get("cran_debloque", 0),
+        noeud_cours=meta.get("noeud_cours", ""),
+        harnais=meta.get("harnais"),
+        sources=meta.get("sources"),
+        porte=meta.get("porte", ""),
     )
 
 

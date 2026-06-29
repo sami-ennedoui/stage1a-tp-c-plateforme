@@ -1,0 +1,6 @@
+#ifndef GESTIONEVENEMENTS_H_INCLUDED
+#define GESTIONEVENEMENTS_H_INCLUDED
+
+int SP_surveillance_Evenement(SDL_Event*);
+
+#endif // GESTIONEVENEMENTS_H_INCLUDED

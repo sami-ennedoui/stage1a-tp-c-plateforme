@@ -1,0 +1,13 @@
+{
+  "id": "deplacement",
+  "titre": "Le pas du serpent, déplacement, croissance, collision",
+  "type": "projet",
+  "fichier_edite": "SNAKE/GestionJeu.c",
+  "porte": "logique",
+  "harnais": [
+    "projet-corrige/tests_logique/test_deplacement.c",
+    "projet-corrige/tests_logique/test_croissance.c",
+    "projet-corrige/tests_logique/test_collision.c"
+  ],
+  "sources": ["SNAKE/VariablesGlobales.c", "SNAKE/InitialisationJeu.c", "SNAKE/GestionJeu.c"]
+}

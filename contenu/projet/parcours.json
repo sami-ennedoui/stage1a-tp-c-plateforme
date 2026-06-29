@@ -1,0 +1,4 @@
+{
+  "mode": "projet",
+  "ordre": ["init", "deplacement", "capstone"]
+}

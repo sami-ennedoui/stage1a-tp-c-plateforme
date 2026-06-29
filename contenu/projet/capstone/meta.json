@@ -1,0 +1,7 @@
+{
+  "id": "capstone",
+  "titre": "Le jeu complet, on compile et on joue",
+  "type": "projet",
+  "fichier_edite": "SNAKE/main.c",
+  "porte": "build"
+}

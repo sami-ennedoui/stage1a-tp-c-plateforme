@@ -1,0 +1,6 @@
+#ifndef INITIALISATION_SDL_H_INCLUDED
+#define INITIALISATION_SDL_H_INCLUDED
+
+void SP_Initialisation_SDL();
+void SP_Quitter_SDL();
+#endif // INITIALISATION_SDL_H_INCLUDED

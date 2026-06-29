@@ -10,3 +10,4 @@ projet-corrige/tests_logique/test_croissance
 projet-corrige/tests_logique/test_collision
 # Espaces de travail projet des tests (vivent hors dépôt, en /tmp)
 # Aucun binaire ni copie de l'espace projet ne doit être suivi ici.
+projet-squelette/SNAKE/snake

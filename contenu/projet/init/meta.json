@@ -1,0 +1,9 @@
+{
+  "id": "init",
+  "titre": "Initialisation de la partie",
+  "type": "projet",
+  "fichier_edite": "SNAKE/InitialisationJeu.c",
+  "porte": "logique",
+  "harnais": ["projet-corrige/tests_logique/test_init.c"],
+  "sources": ["SNAKE/VariablesGlobales.c", "SNAKE/InitialisationJeu.c", "SNAKE/GestionJeu.c"]
+}

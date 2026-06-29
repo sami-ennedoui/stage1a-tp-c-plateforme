@@ -9,6 +9,9 @@ PROGRESSION_FICHIER = RACINE / "progression.json"
 
 PROJET_CORRIGE = RACINE / "projet-corrige"
 PROJET_SNAKE = RACINE / "projet-corrige" / "SNAKE"
+# squelette à trous, point de départ de l'étudiant en parcours projet
+PROJET_SQUELETTE = RACINE / "projet-squelette"
+PROJET_SQUELETTE_SNAKE = RACINE / "projet-squelette" / "SNAKE"
 
 
 def contenu_racine(nom: str) -> Path:

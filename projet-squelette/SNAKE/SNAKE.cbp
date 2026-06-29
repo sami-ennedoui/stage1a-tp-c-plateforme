@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="SNAKE" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/SNAKE" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+				<Linker>
+					<Add directory="../SDL3/lib" />
+					<Add directory="../SDL3_image/lib" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/SNAKE" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="../include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add directory="../lib" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="../SDL3/include" />
+			<Add directory="../SDL3_image/include" />
+			<Add directory="../SDL3_ttf/include" />
+		</Compiler>
+		<Linker>
+			<Add option="-lSDL3_image" />
+			<Add option="-lSDL3_ttf" />
+			<Add option="-lSDL3" />
+			<Add directory="../SDL3/lib" />
+			<Add directory="../SDL3_image/lib" />
+			<Add directory="../SDL3_ttf/lib" />
+		</Linker>
+		<Unit filename="Bibliotheque_header/Initialisation_SDL.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Bibliotheque_header/OutilsBoiteSaisie.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Bibliotheque_header/OutilsBouton.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Bibliotheque_header/OutilsCouleur.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Bibliotheque_header/OutilsDessin.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Bibliotheque_header/OutilsEvenement.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Bibliotheque_header/OutilsZoneTexte.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Bibliotheque_header/TypeBoiteSaisie.h" />
+		<Unit filename="Bibliotheque_header/TypeBouton.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Bibliotheque_header/TypeZoneTexte.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Bibliotheque_source/Initialisation_SDL.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Bibliotheque_source/OutilsBoiteSaisie.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Bibliotheque_source/OutilsBouton.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Bibliotheque_source/OutilsCouleur.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Bibliotheque_source/OutilsDessin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Bibliotheque_source/OutilsEvenement.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Bibliotheque_source/OutilsZoneTexte.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ConfigurationJeu.h" />
+		<Unit filename="GestionGraphismes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="GestionGraphismes.h">
+			<Option target="Debug" />
+		</Unit>
+		<Unit filename="GestionJeu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="GestionJeu.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="GestionMenuAcceuil.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="GestionMenuAcceuil.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="GestionMenuParametrage.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="GestionMenuParametrage.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="InitialisationJeu.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="InitialisationJeu.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="InitialisationTexture.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="InitialisationTexture.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="MesTypes.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="VariablesGlobales.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="VariablesGlobales.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
