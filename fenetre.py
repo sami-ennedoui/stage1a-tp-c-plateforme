@@ -1,5 +1,8 @@
-"""Fenêtre de l'atelier Snake. Câble énoncé, éditeur, console, tuteur et portes."""
+"""Fenêtre de l'atelier Snake. Câble énoncé, éditeur, console, tuteur et portes.
+Deux parcours partagent ce moteur : 'hybride', des étapes isolées avec test à écrire,
+et 'projet', où l'étudiant remplit la vraie structure du jeu jusqu'à pouvoir y jouer."""
 import html
+from pathlib import Path
 
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QListWidget,
                              QPlainTextEdit, QTextEdit, QPushButton, QLabel, QTabWidget,
@@ -14,7 +17,8 @@ import lsp_clangd
 import progression
 import tuteur_ia
 import theme
-from modele_etape import charger_parcours
+from espace_projet import EspaceProjet
+from modele_etape import charger_parcours_complet
 
 
 def _titre(texte: str) -> QLabel:
@@ -37,19 +41,43 @@ class FilTuteur(QThread):
 
 
 class Fenetre(QMainWindow):
-    def __init__(self, demo=False):
+    def __init__(self, demo=False, parcours_nom="hybride"):
         super().__init__()
         self.demo = demo
-        self.setWindowTitle("Atelier Snake (mode démo)" if demo else "Atelier Snake")
-        self.parcours = charger_parcours(chemins.CONTENU)
+        self.parcours_nom = parcours_nom
+        parcours = charger_parcours_complet(chemins.contenu_racine(parcours_nom))
+        self.mode = parcours.mode
+        self.parcours = parcours.etapes
+
+        titre = "Atelier Snake"
+        if self.mode == "projet":
+            titre += ", parcours projet"
         if demo:
+            titre += " (mode démo)"
+        self.setWindowTitle(titre)
+
+        # parcours projet : une copie de travail vivante, remplie étape par étape.
+        # On part du squelette à trous. En démo on repart propre à chaque lancement.
+        self.espace = None
+        self._etape_courante = None      # étape dont l'éditeur est affiché, pour la sauvegarde
+        if self.mode == "projet":
+            self.espace = EspaceProjet(chemins.PROJET_SQUELETTE, chemins.ESPACE_SESSION)
+            if demo:
+                self.espace.reinitialiser()
+            else:
+                self.espace.initialiser()
+
+        if self.mode == "projet":
+            # le travail persistant, c'est la copie de projet elle-même, pas un fichier d'état
+            self.prog = progression.Progression([], 0)
+        elif demo:
             # mode démo : tout débloqué, cran poussé à N3 pour tester les quatre niveaux d'IA
             self.prog = progression.Progression([e.id for e in self.parcours], 3)
         else:
             self.prog = progression.charger()
         self.etape = self.parcours[0]
         # cran restauré depuis l'état sauvegardé, l'étudiant qui revient garde son niveau
-        self.niveau = progression.cran_disponible(self.prog)
+        self.niveau = 0 if self.mode == "projet" else progression.cran_disponible(self.prog)
 
         self.liste = QListWidget()
         self.liste.currentRowChanged.connect(self._changer_etape)
@@ -86,7 +114,7 @@ class Fenetre(QMainWindow):
         self.label_lsp = QLabel()
         self.label_lsp.setVisible(False)
         self.label_lsp.setObjectName("avertissement_lsp")
-        if not lsp_clangd.clangd_disponible():
+        if self.mode != "projet" and not lsp_clangd.clangd_disponible():
             self.label_lsp.setText(
                 "clangd absent, diagnostics live indisponibles. Installe clang-tools-extra."
             )
@@ -99,7 +127,7 @@ class Fenetre(QMainWindow):
         b_compiler = QPushButton("Compiler")
         b_tester = QPushButton("Tester")
         b_tester.setObjectName("primaire")     # bouton d'action principal, accent vert
-        self.b_jeu = QPushButton("Lancer le jeu")
+        self.b_jeu = QPushButton("Compiler et jouer" if self.mode == "projet" else "Lancer le jeu")
         b_aide = QPushButton("Demander de l'aide")
         self.b_corrige = QPushButton("Charger le corrigé")
         self.b_corrige.setVisible(self.demo)     # bouton du mode démo seulement
@@ -157,9 +185,14 @@ class Fenetre(QMainWindow):
     def _remplir_liste(self):
         self.liste.clear()
         for e in self.parcours:
-            ouverte = progression.etape_deverrouillee(e, self.parcours, self.prog)
             faite = e.id in self.prog.etapes_faites
-            marque = "[fait]" if faite else ("[ouvert]" if ouverte else "[verrou]")
+            if self.mode == "projet":
+                # parcours projet : on travaille sur la vraie structure, tout est ouvert
+                ouverte = True
+                marque = "[fait]" if faite else "[à faire]"
+            else:
+                ouverte = progression.etape_deverrouillee(e, self.parcours, self.prog)
+                marque = "[fait]" if faite else ("[ouvert]" if ouverte else "[verrou]")
             item = QListWidgetItem(f"{marque}  {e.titre}")
             if not ouverte:
                 item.setFlags(item.flags() & ~Qt.ItemFlag.ItemIsEnabled)
@@ -168,6 +201,12 @@ class Fenetre(QMainWindow):
     def _changer_etape(self, ligne):
         if ligne < 0:
             return
+        if self.mode == "projet":
+            self._changer_etape_projet(ligne)
+        else:
+            self._changer_etape_isole(ligne)
+
+    def _changer_etape_isole(self, ligne):
         self.etape = self.parcours[ligne]
         self.enonce.setMarkdown((self.etape.dossier / "enonce.md").read_text(encoding="utf-8"))
         self.editeur.setPlainText((self.etape.dossier / "starter.c").read_text(encoding="utf-8"))
@@ -180,8 +219,26 @@ class Fenetre(QMainWindow):
         # fil vivant, donc le smoketest sans boucle ne laisse aucun QThread orphelin
         QTimer.singleShot(0, self._demarrer_lsp)
 
+    def _changer_etape_projet(self, ligne):
+        # avant de changer, on sauve le travail de l'étape qu'on quitte dans la copie
+        if self._etape_courante is not None:
+            self.espace.ecrire_fichier(self._etape_courante.fichier_edite,
+                                       self.editeur.toPlainText())
+        self.etape = self.parcours[ligne]
+        self._etape_courante = self.etape
+        self.enonce.setMarkdown((self.etape.dossier / "enonce.md").read_text(encoding="utf-8"))
+        # le code affiché vient de la copie de travail, l'étudiant retrouve son dernier état
+        self.editeur.setPlainText(self.espace.lire_fichier(self.etape.fichier_edite))
+        self.onglets.setTabVisible(1, False)        # pas de test à écrire en parcours projet
+        self.b_jeu.setVisible(True)                 # Compiler et jouer disponible en permanence
+        self._maj_cran()
+
+    def _cran_dispo(self):
+        # parcours projet : les quatre crans d'aide sont ouverts d'emblée, pas de déverrouillage
+        return 3 if self.mode == "projet" else progression.cran_disponible(self.prog)
+
     def _maj_cran(self):
-        dispo = progression.cran_disponible(self.prog)
+        dispo = self._cran_dispo()
         if self.niveau > dispo:          # le plafond, jamais au-dessus du cran débloqué
             self.niveau = dispo
         self.choix_cran.blockSignals(True)
@@ -195,7 +252,7 @@ class Fenetre(QMainWindow):
         if i < 0:
             return
         self.niveau = i                  # l'étudiant choisit un cran <= ce qu'il a débloqué
-        dispo = progression.cran_disponible(self.prog)
+        dispo = self._cran_dispo()
         self.label_cran.setText(f"Tuteur, cran courant N{self.niveau} sur N{dispo} débloqué")
 
     def _compiler(self):
@@ -203,6 +260,9 @@ class Fenetre(QMainWindow):
         self._tester()
 
     def _tester(self):
+        if self.mode == "projet":
+            self._tester_projet()
+            return
         code = self.editeur.toPlainText()
         if self.etape.mode == "test_fourni":
             r = executeur.porte_perso(self.etape, code)
@@ -220,26 +280,63 @@ class Fenetre(QMainWindow):
             r = executeur.porte_jalon(self.etape, code, test)
             self._afficher_porte(r.ok, "Ton test est solide.\n" + r.sortie)
 
-    def _afficher_porte(self, ok, sortie):
+    def _tester_projet(self):
+        """Porte du parcours projet. Pour le capstone, on construit tout et on joue.
+        Sinon on lance chaque harnais logique sur la copie de travail."""
+        if self.etape.porte == "build":
+            self._compiler_et_jouer()
+            return
+        code = self.editeur.toPlainText()
+        self.console.setPlainText("Compilation et exécution des vérifications…")
+        ok_global = True
+        morceaux = []
+        for h in self.etape.harnais:
+            r = executeur.porte_logique(self.espace, self.etape.fichier_edite, code,
+                                        chemins.RACINE / h, self.etape.sources)
+            etat = "OK" if r.ok else "ÉCHEC"
+            morceaux.append(f"--- {Path(h).stem} : {etat} ---\n{r.sortie}".rstrip())
+            if not r.ok:
+                ok_global = False
+        self._afficher_porte(ok_global, "\n\n".join(morceaux))
+
+    def _afficher_porte(self, ok, sortie, valider=True):
         couleur = theme.ACCENT if ok else theme.ROUGE
         titre = "PORTE OUVERTE" if ok else "PORTE FERMÉE"
         self.console.setHtml(
             f'<span style="color:{couleur};font-weight:bold;font-size:15px;">{titre}</span>'
             f'<pre style="font-family:monospace;color:{theme.TEXTE};white-space:pre-wrap;">'
             f'{html.escape(sortie)}</pre>')
-        if ok:
+        if ok and valider:
             self.prog = progression.valider(self.etape, self.prog)
-            if not self.demo:                # le mode démo n'écrase pas l'état réel sauvegardé
+            if not self.demo and self.mode != "projet":   # projet : l'état vit dans la copie
                 progression.sauver(self.prog)
-            self.niveau = progression.cran_disponible(self.prog)
+            if self.mode != "projet":
+                self.niveau = progression.cran_disponible(self.prog)
+                self._maj_cran()
             self._remplir_liste()
-            self._maj_cran()
 
     def _lancer_jeu(self):
+        if self.mode == "projet":
+            self._compiler_et_jouer()
+            return
         r = executeur.lancer_jeu(self.etape, self.editeur.toPlainText())
         self.console.setPlainText(r.sortie)
 
+    def _compiler_et_jouer(self):
+        """Écrit le code courant dans la copie, construit le projet entier et lance le jeu.
+        Ne valide l'étape que si c'est bien le capstone, le simple essai du jeu ne la coche pas."""
+        self.espace.ecrire_fichier(self.etape.fichier_edite, self.editeur.toPlainText())
+        self.console.setPlainText("Construction du projet complet…")
+        r = executeur.construire_et_jouer_projet(self.espace, lancer=True)
+        self._afficher_porte(r.ok, r.sortie, valider=(r.ok and self.etape.porte == "build"))
+
     def _charger_corrige(self):
+        if self.mode == "projet":
+            # mode démo : remplit l'éditeur avec le corrigé du fichier de l'étape
+            corrige = (chemins.PROJET_CORRIGE / self.etape.fichier_edite).read_text(encoding="utf-8")
+            self.editeur.setPlainText(corrige)
+            self.console.setPlainText("Corrigé chargé. Clique Tester pour franchir la porte.")
+            return
         # mode démo : remplit l'éditeur avec le code correct, plus le test de référence pour un jalon
         self.editeur.setPlainText((self.etape.dossier / "corrige.c").read_text(encoding="utf-8"))
         if self.etape.mode == "test_a_ecrire":
@@ -253,8 +350,7 @@ class Fenetre(QMainWindow):
         question, ok = QInputDialog.getText(self, "Demander de l'aide", "Ta question :")
         if not ok or not question:
             return
-        dispo = progression.cran_disponible(self.prog)
-        niveau = min(self.niveau, dispo)
+        niveau = min(self.niveau, self._cran_dispo())
         self.reponse_tuteur.setPlainText("Le tuteur réfléchit…")
         self._fil = FilTuteur(self.etape, self.editeur.toPlainText(), question, niveau)
         self._fil.repondu.connect(self.reponse_tuteur.setPlainText)
@@ -263,6 +359,8 @@ class Fenetre(QMainWindow):
 
     def _demarrer_lsp(self) -> None:
         """Arrête le client précédent si besoin, puis en lance un nouveau pour l'étape courante."""
+        if self.mode == "projet":
+            return                       # diagnostics live réservés au parcours isolé pour l'instant
         if not lsp_clangd.clangd_disponible():
             return
         if self._client_lsp is not None:
@@ -287,13 +385,16 @@ class Fenetre(QMainWindow):
         lsp_clangd.appliquer_diagnostics(self.editeur, diagnostics)
 
     def closeEvent(self, event) -> None:
-        """Arrête proprement le client LSP avant de fermer la fenêtre."""
+        """Sauve le travail projet courant, puis arrête proprement le client LSP."""
+        if self.mode == "projet" and self._etape_courante is not None:
+            self.espace.ecrire_fichier(self._etape_courante.fichier_edite,
+                                       self.editeur.toPlainText())
         if self._client_lsp is not None:
             self._client_lsp.arreter()
             self._client_lsp.wait(2000)
         super().closeEvent(event)
 
 
-def construire(app, demo=False):
+def construire(app, demo=False, parcours_nom="hybride"):
     """Construit la fenêtre sans l'afficher. Sert au smoketest."""
-    return Fenetre(demo=demo)
+    return Fenetre(demo=demo, parcours_nom=parcours_nom)

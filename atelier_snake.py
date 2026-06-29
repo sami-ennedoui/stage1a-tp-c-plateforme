@@ -1,15 +1,27 @@
 #!/usr/bin/env python3
 """Atelier Snake. Lance l'appli, ou les autotests sans écran.
-  python3 atelier_snake.py             lance la fenêtre
-  python3 atelier_snake.py --selftest  vérifie les portes sans écran
-  python3 atelier_snake.py --smoketest construit la fenêtre sans l'afficher
-  python3 atelier_snake.py --demo      mode démo, tout débloqué, bouton Charger le corrigé, crans N0 à N3
+  python3 atelier_snake.py                    lance la fenêtre, parcours hybride
+  python3 atelier_snake.py --parcours projet  lance le parcours projet
+  python3 atelier_snake.py --selftest         vérifie les portes sans écran
+  python3 atelier_snake.py --smoketest        construit la fenêtre sans l'afficher
+  python3 atelier_snake.py --demo             mode démo, tout débloqué, bouton Charger le corrigé
+Le mode démo et --parcours se combinent : --demo --parcours projet charge le corrigé du projet.
 """
 import sys
 
 import chemins
 import executeur
-from modele_etape import charger_parcours, charger_etape
+from modele_etape import charger_etape
+
+
+def _parcours_choisi() -> str:
+    """Lit --parcours <nom> ou --parcours=<nom> dans les arguments. Défaut : hybride."""
+    for i, a in enumerate(sys.argv):
+        if a.startswith("--parcours="):
+            return a.split("=", 1)[1]
+        if a == "--parcours" and i + 1 < len(sys.argv):
+            return sys.argv[i + 1]
+    return "hybride"
 
 
 def selftest() -> int:
@@ -40,7 +52,7 @@ def smoketest() -> int:
     import theme
     app = QApplication.instance() or QApplication([])
     theme.appliquer(app)
-    f = fenetre.construire(app)
+    f = fenetre.construire(app, parcours_nom=_parcours_choisi())
     print("SMOKETEST OK, fenêtre construite :", f.windowTitle())
     return 0
 
@@ -55,7 +67,7 @@ def main():
     import theme
     app = QApplication(sys.argv)
     theme.appliquer(app)
-    f = fenetre.Fenetre(demo="--demo" in sys.argv)
+    f = fenetre.Fenetre(demo="--demo" in sys.argv, parcours_nom=_parcours_choisi())
     f.resize(1280, 800)
     f.show()
     sys.exit(app.exec())

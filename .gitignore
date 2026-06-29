@@ -11,3 +11,5 @@ projet-corrige/tests_logique/test_collision
 # Espaces de travail projet des tests (vivent hors dépôt, en /tmp)
 # Aucun binaire ni copie de l'espace projet ne doit être suivi ici.
 projet-squelette/SNAKE/snake
+# copie de travail vivante du parcours projet, remplie par l'étudiant au lancement
+espace_session/

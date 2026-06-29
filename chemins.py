@@ -12,6 +12,8 @@ PROJET_SNAKE = RACINE / "projet-corrige" / "SNAKE"
 # squelette à trous, point de départ de l'étudiant en parcours projet
 PROJET_SQUELETTE = RACINE / "projet-squelette"
 PROJET_SQUELETTE_SNAKE = RACINE / "projet-squelette" / "SNAKE"
+# copie de travail vivante du parcours projet : l'étudiant la remplit étape par étape
+ESPACE_SESSION = RACINE / "espace_session"
 
 
 def contenu_racine(nom: str) -> Path:
