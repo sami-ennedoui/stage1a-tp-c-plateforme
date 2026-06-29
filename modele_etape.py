@@ -14,10 +14,13 @@ class Etape:
     fichier_edite: str
     dossier: Path
     # champs des parcours isolés, optionnels pour les étapes projet
-    mode: str = ""               # "test_fourni" | "test_a_ecrire"
+    mode: str = ""               # "test_fourni" | "test_a_ecrire" | "programme"
     recette: str = ""            # "perso" | "jalon_test"
     cran_debloque: int = 0
     noeud_cours: str = ""
+    # champs du mode "programme" : l'étudiant écrit un programme complet
+    entree: str = ""             # entrée standard envoyée au programme
+    sortie_attendue: list | None = None  # fragments qui doivent figurer dans la sortie
     # champs des étapes projet, optionnels pour les parcours isolés
     harnais: list | None = None  # harnais logiques, chemins relatifs au dépôt
     sources: list | None = None  # sources .c à compiler avec le harnais, relatives à l'espace
@@ -46,6 +49,8 @@ def charger_etape(dossier: Path) -> Etape:
         harnais=meta.get("harnais"),
         sources=meta.get("sources"),
         porte=meta.get("porte", ""),
+        entree=meta.get("entree", ""),
+        sortie_attendue=meta.get("sortie_attendue"),
     )
 
 

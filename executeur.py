@@ -145,6 +145,39 @@ def porte_perso(etape: Etape, code_eleve: str) -> Resultat:
         return _compiler_et_lancer(sources, includes)
 
 
+def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
+    """Compile le programme complet de l'étudiant, qui contient son propre main, l'exécute
+    avec l'entrée standard fixée par l'étape, et juge la sortie.
+
+    Si etape.sortie_attendue est vide, la porte s'ouvre dès que le programme compile et
+    s'exécute sans erreur. C'est une séance d'exploration. Sinon, chaque fragment de
+    etape.sortie_attendue doit apparaître dans la sortie standard pour ouvrir la porte."""
+    with tempfile.TemporaryDirectory() as d:
+        src = Path(d) / "programme.c"
+        src.write_text(code_eleve, encoding="utf-8")
+        binaire = Path(d) / "prog"
+        cmd = ["gcc", "-Wall", "-Wno-unused-parameter", "-Wno-unused-variable",
+               f"-I{etape.dossier}", str(src), "-lm", "-o", str(binaire)]
+        comp = subprocess.run(cmd, capture_output=True, text=True)
+        if comp.returncode != 0:
+            return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
+        try:
+            run = subprocess.run([str(binaire)], capture_output=True, text=True,
+                                 timeout=15, input=etape.entree or "")
+        except subprocess.TimeoutExpired:
+            return Resultat(False, "Le programme a dépassé le délai. Attend-il une saisie au clavier ?")
+        sortie = run.stdout + run.stderr
+        if run.returncode != 0:
+            return Resultat(False, "Le programme s'est terminé en erreur :\n" + sortie)
+        attendus = etape.sortie_attendue or []
+        manquants = [f for f in attendus if f not in run.stdout]
+        if manquants:
+            return Resultat(False,
+                            "Il manque ceci dans ta sortie : " + ", ".join(repr(m) for m in manquants) +
+                            "\n\nSortie obtenue :\n" + (run.stdout or "(rien)"))
+        return Resultat(True, run.stdout if run.stdout.strip() else "Le programme compile et s'exécute.")
+
+
 def porte_logique(espace, fichier_edite: str, code_etudiant: str,
                   harnais: Path, sources: list[str]) -> Resultat:
     """Écrit le code de l'étudiant dans l'espace, compile le harnais logique avec les sources du

@@ -1,0 +1,11 @@
+{
+  "id": "tp_rectangle",
+  "titre": "Exercice 5, dessiner un rectangle",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 2,
+  "noeud_cours": "Exercice 5 du BE C, boucles for imbriquées",
+  "fichier_edite": "programme.c",
+  "entree": "6\n10\n",
+  "sortie_attendue": ["----------"]
+}

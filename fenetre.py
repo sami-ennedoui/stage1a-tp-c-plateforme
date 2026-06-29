@@ -267,6 +267,9 @@ class Fenetre(QMainWindow):
         if self.etape.mode == "test_fourni":
             r = executeur.porte_perso(self.etape, code)
             self._afficher_porte(r.ok, r.sortie)
+        elif self.etape.mode == "programme":
+            r = executeur.porte_programme(self.etape, code)
+            self._afficher_porte(r.ok, r.sortie)
         else:
             test = self.editeur_test.toPlainText()
             jug = executeur.juger_test(self.etape, test)

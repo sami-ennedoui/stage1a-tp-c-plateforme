@@ -1,0 +1,10 @@
+{
+  "id": "tp_operateurs",
+  "titre": "Exercice 2, les opérateurs",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 2 du BE C, opérateurs relationnels, logiques et bit à bit",
+  "fichier_edite": "programme.c",
+  "sortie_attendue": ["a & b = 17", "a ^ b = 4"]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "tp_controle",
+  "titre": "Exercice 3, les structures de contrôle",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 2,
+  "noeud_cours": "Exercice 3 du BE C, switch case et boucle do while",
+  "fichier_edite": "programme.c",
+  "entree": "1\n9.9\n0\n",
+  "sortie_attendue": ["9.9"]
+}

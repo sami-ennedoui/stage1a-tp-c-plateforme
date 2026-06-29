@@ -1,0 +1,11 @@
+{
+  "id": "tp_second_degre",
+  "titre": "Le capstone, l'équation du second degré",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 3,
+  "noeud_cours": "Programme final du BE C, résolution d'une équation du second degré",
+  "fichier_edite": "programme.c",
+  "entree": "1\n-5\n6\n",
+  "sortie_attendue": ["3.0", "2.0"]
+}
