@@ -30,20 +30,20 @@ int flag = SP_Surveillance_Bouton(e, ListeBouton_Menu_Acceuil, 3);
 if (flag == 0)  {
 
     printf("Tu viens d'appuyer sur Parametres \n") ;
-    //*p_etatMenu = MENU_PARAMETRAGE ;
+    *p_etatMenu = MENU_PARAMETRAGE ;
 
 }
 
 else if (flag == 1) {
 
     printf("Tu viens d'appuyer sur Jouer \n") ;
-    //*p_etatMenu = MENU_JEU ;
+    *p_etatMenu = MENU_JEU ;
 }
 
 else if (flag == 2) {
 
     printf ("Tu viens d'appuyer sur Quitter \n");
-    // *p_etatMenu = QUITTER_MENU ;
+    *p_etatMenu = QUITTER_MENU ;
 
 }
 
@@ -58,13 +58,13 @@ else if (flag == 2) {
 
 void SP_Structure_Menu_Acceuil() {
 
-// Création des boutons
+// Crï¿½ation des boutons
 
 SP_Creation_Bouton(ListeBouton_Menu_Acceuil,"arial_bold",20,0,TAILLE_CELLULE,4*TAILLE_CELLULE,TAILLE_CELLULE,"PARAMETRES",BLEU_CLAIR,ROUGE);
 SP_Creation_Bouton(ListeBouton_Menu_Acceuil+1,"arial_bold",20,0,2*TAILLE_CELLULE,4*TAILLE_CELLULE,TAILLE_CELLULE,"JOUER",BLEU_CLAIR,ROUGE);
 SP_Creation_Bouton(ListeBouton_Menu_Acceuil+2,"arial_bold",20,0,3*TAILLE_CELLULE,4*TAILLE_CELLULE,TAILLE_CELLULE,"QUITTER",BLEU_CLAIR,ROUGE);
 
-// Création des zones de texte
+// Crï¿½ation des zones de texte
 
 SP_Creation_Zone_Texte(&texteAccueil,"arial_bold",20,0,0) ;
 

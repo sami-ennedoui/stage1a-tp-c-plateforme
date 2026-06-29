@@ -3,5 +3,6 @@
 
 void SP_Gestion_Graphismes ( int);
 void SP_Dessiner_Menu_Acceuil() ;
+void SP_Dessiner_Jeu(void) ;
 
 #endif // GESTIONGRAPHISMES_H_INCLUDED

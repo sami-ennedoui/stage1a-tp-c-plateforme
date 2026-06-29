@@ -2,40 +2,30 @@
 //==================================================================================
 //==================================================================================
 // Exemple de Programme utilisant la librairie SDL3
-// Ne pas hésiter à utiliser ChatGPT pour des exemples de Code
-// Attention car les exemples sont souvent donnés avec SDL2 qui est obsolète
-// Les adaptations necessaires sont parfois guidés par le compilateur donc
-// bien regarger les messages de compilation
 //==================================================================================
 //==================================================================================
 
-//==================================================================================
-//==================================================================================
-// Inclusion des bibliothèques
-//==================================================================================
-//==================================================================================
-
-// Inclusion des bibliothèques C
+// Inclusion des bibliotheques C
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
 
-// Inclusion des bibliothèques SDL3
+// Inclusion des bibliotheques SDL3
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 #include <SDL3_image/SDL_image.h>
 #include <SDL3_ttf/SDL_ttf.h>
 
-// Inclusion fichiers de déclarations de variables et de types
+// Inclusion fichiers de declarations de variables et de types
 
 #include "ConfigurationJeu.h"
 #include "MesTypes.h"
 #include "VariablesGlobales.h"
 
-// Inclusion des bibliothèques d'outils
+// Inclusion des bibliotheques d'outils
 
 #include "Bibliotheque_header/Initialisation_SDL.h"
 #include "Bibliotheque_header/OutilsDessin.h"
@@ -59,12 +49,20 @@
 
 int main(int argc, char *argv[]) {
 
-    int etatMenu    = MENU_ACCEUIL      ;
+    int etatMenu = MENU_ACCEUIL ;
+
+    /* Vaut 1 quand SP_Initialisation_Partie a deja ete appelee pour la
+       partie en cours, 0 sinon. Evite l'appel a chaque frame. */
+    int jeu_demarre = 0 ;
+
+    /* Compteur de frames pour la cadence de jeu.
+       Un pas de serpent se produit tous les CADENCE_JEU images (~133 ms a 60 FPS). */
+    int compteur_frames = 0 ;
+    const int CADENCE_JEU = 8 ;
 
     //==================================================================================
-    // Appel à l'initialisation du jeu
-    // ==> a appeler obligatoirement au début d'un code utilisant la SDL3
-    // Contient également des instructions pour charges des images de son choix
+    // Appel a l'initialisation du jeu
+    // ==> a appeler obligatoirement au debut d'un code utilisant la SDL3
     // Voir dans "InitialisationJeu.c"
     //==================================================================================
 
@@ -75,22 +73,57 @@ int main(int argc, char *argv[]) {
     while (etatMenu != QUITTER_MENU)
     {
 
-    SDL_Event e;
+        SDL_Event e;
 
-        while ( SP_surveillance_Evenement(&e) !=0  )
-        {
-
-                if ( etatMenu == MENU_ACCEUIL ) SP_Gestion_Evenements_MENU_ACCUEIL(e,&etatMenu) ;
-
+        /* --- Entree dans le jeu : une seule initialisation par partie --- */
+        if ( etatMenu == MENU_JEU && !jeu_demarre ) {
+            SP_Initialisation_Partie() ;
+            jeu_demarre     = 1 ;
+            compteur_frames = 0 ;
         }
 
+        /* --- Traitement des evenements --- */
+        while ( SP_surveillance_Evenement(&e) != 0 )
+        {
+            if ( etatMenu == MENU_ACCEUIL )
+                SP_Gestion_Evenements_MENU_ACCUEIL(e, &etatMenu) ;
+
+            /* Clavier en cours de partie : direction + anti demi-tour */
+            else if ( etatMenu == MENU_JEU && e.type == SDL_EVENT_KEY_DOWN ) {
+                int d = SP_Gestion_Clavier(e) ;
+                if (d != -1) {
+                    /* Interdit le demi-tour direct (regle du Snake). */
+                    int demi = ( serpent.dir == LEFT  && d == RIGHT )
+                             ||( serpent.dir == RIGHT && d == LEFT  )
+                             ||( serpent.dir == UP    && d == DOWN  )
+                             ||( serpent.dir == DOWN  && d == UP   ) ;
+                    if (!demi) serpent.dir = (Direction)d ;
+                }
+            }
+        }
+
+        /* --- Cadence de jeu : un pas du serpent tous les CADENCE_JEU images --- */
+        if ( etatMenu == MENU_JEU && !partie_terminee ) {
+            compteur_frames++ ;
+            if ( compteur_frames >= CADENCE_JEU ) {
+                SP_Avancer_Serpent() ;
+                compteur_frames = 0 ;
+            }
+        }
+
+        /* --- Rendu de la frame courante --- */
         SP_Nettoyer_Ecran(NOIR) ;
-
         SP_Gestion_Graphismes(etatMenu);
-
         Mise_A_jour_Fenetre() ;
 
-        SDL_Delay(16); // ~60 FPS
+        /* --- Fin de partie : bref affichage du dernier etat, puis retour Accueil --- */
+        if ( etatMenu == MENU_JEU && partie_terminee ) {
+            SDL_Delay(1500) ;
+            etatMenu    = MENU_ACCEUIL ;
+            jeu_demarre = 0 ;
+        }
+
+        SDL_Delay(16); /* ~60 FPS */
     }
 
     SP_Quitter_SDL();
