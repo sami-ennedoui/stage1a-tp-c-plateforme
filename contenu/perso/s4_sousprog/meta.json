@@ -1,10 +1,10 @@
 {
   "id": "s4_sousprog",
-  "titre": "S4, un sous-programme qui en réutilise un autre",
+  "titre": "S4, un sous-programme qui calcule y = a*x + b",
   "type": "perso",
   "mode": "test_fourni",
   "recette": "perso",
   "cran_debloque": 3,
-  "noeud_cours": "Sous-programmes, décomposition et réutilisation",
+  "noeud_cours": "Exercice 11 du BE C, sous-programme calculer_y",
   "fichier_edite": "soumission.c"
 }

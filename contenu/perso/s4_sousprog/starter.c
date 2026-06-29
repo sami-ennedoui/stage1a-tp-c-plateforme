@@ -1,13 +1,8 @@
-/* S4. carre est déjà écrite. Écris somme_carres en t'en servant, au lieu de
-   refaire le calcul du carré toi-même. */
+/* S4. Écris calculer_y : renvoie a*x + b. */
 #include "s4_sousprog.h"
 
-int carre(int x) {
-    return x * x;
-}
-
-int somme_carres(int n) {
-    /* À TOI. Additionne les carrés de 1 à n. Pour chaque i, appelle carre(i)
-       plutôt que d'écrire i*i à la main. Pense à un total mis à zéro au départ. */
-    return 0;
+double calculer_y(double a, double b, double x) {
+    /* À TOI. Renvoie la valeur de l'équation de la droite, a*x + b. Attention à
+       l'ordre, c'est x qui est multiplié par a, puis on ajoute b. */
+    return 0.0;
 }

@@ -1,10 +1,10 @@
 {
   "id": "s2_pointeurs",
-  "titre": "S2, échanger deux variables par pointeur",
+  "titre": "S2, permuter trois variables par adresse",
   "type": "perso",
   "mode": "test_fourni",
   "recette": "perso",
   "cran_debloque": 2,
-  "noeud_cours": "Passage par pointeur, échange de deux valeurs",
+  "noeud_cours": "Exercice 13 du BE C, passage par adresse, permutation circulaire",
   "fichier_edite": "soumission.c"
 }

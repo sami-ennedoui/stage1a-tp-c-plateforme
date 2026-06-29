@@ -1,9 +1,9 @@
-# S2, deux pointeurs pour un échange
+# S2, permuter trois variables par adresse
 
-Tu as déjà vu qu'un sous-programme peut changer la variable de l'appelant s'il reçoit son adresse. On va un cran plus loin, échanger deux variables d'un coup. C'est un geste qui revient partout, par exemple pour trier ou pour permuter deux cases.
+C'est l'exercice 13 du BE, le passage par adresse. Tu dois écrire une procédure `permuter_valeur` qui reçoit trois entiers et fait tourner leurs valeurs. La première prend la valeur de la troisième, la troisième prend celle de la deuxième, et la deuxième prend l'ancienne valeur de la première.
 
-Tu dois écrire `echanger`, qui reçoit les adresses de deux entiers et troque leurs valeurs. Après l'appel, la première variable de l'appelant contient ce qu'avait la seconde, et inversement.
+Comme la procédure doit modifier les variables de l'appelant, elle reçoit leurs adresses, des pointeurs, et travaille avec l'étoile pour atteindre les valeurs derrière.
 
-Le piège : si tu écris `*a = *b` en premier, tu écrases la valeur de a avant de l'avoir mise de côté. Il te faut une variable temporaire.
+Le sujet donne l'algorithme. Tu gardes d'abord la première valeur de côté dans une variable temporaire, puis tu décales les autres, et tu finis en posant la temporaire.
 
-La porte : quand `echanger` troque bien les valeurs pour plusieurs cas, y compris deux valeurs égales, le test sort en succès.
+La porte : avec val_a, val_b et val_c valant 3, 5 et 1, on doit obtenir 1, 3 et 5, exactement le test du sujet. Quand c'est le cas, le test sort en succès.

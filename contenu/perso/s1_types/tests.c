@@ -1,21 +1,20 @@
 #include "s1_types.h"
-#include <math.h>
-
-static int proche(double x, double y) {
-    return fabs(x - y) < 1e-6;
-}
 
 int main(void) {
-    if (!proche(moyenne(2, 2, 2), 2.0)) {
-        printf("FAIL: moyenne(2,2,2) devrait valoir 2.0, lu %f\n", moyenne(2, 2, 2));
+    if (valeur_dans_char(64) != 64) {
+        printf("FAIL: 64 tient dans un char, on devrait relire 64, lu %d\n", valeur_dans_char(64));
         return 1;
     }
-    if (!proche(moyenne(1, 2, 2), 5.0 / 3.0)) {
-        printf("FAIL: moyenne(1,2,2) devrait valoir 1.6667, lu %f\n", moyenne(1, 2, 2));
+    if (valeur_dans_char(320) != 64) {
+        printf("FAIL: 320 range dans un char devrait donner 64, lu %d\n", valeur_dans_char(320));
         return 1;
     }
-    if (!proche(moyenne(0, 0, 1), 1.0 / 3.0)) {
-        printf("FAIL: moyenne(0,0,1) devrait valoir 0.3333, lu %f\n", moyenne(0, 0, 1));
+    if (valeur_dans_char(256) != 0) {
+        printf("FAIL: 256 range dans un char devrait donner 0, lu %d\n", valeur_dans_char(256));
+        return 1;
+    }
+    if (valeur_dans_char(300) != 44) {
+        printf("FAIL: 300 range dans un char devrait donner 44, lu %d\n", valeur_dans_char(300));
         return 1;
     }
     printf("TOUT PASSE\n");

@@ -1,9 +1,9 @@
-# S3, parcourir un tableau
+# S3, la longueur d'une chaîne et le zéro de fin
 
-Dans le projet Snake, le corps du serpent est un tableau de cases. Travailler sur un tableau, c'est presque toujours le parcourir avec une boucle et un indice.
+C'est l'exercice 9 du BE, les tableaux de caractères. Une chaîne comme "Salut" est un tableau de caractères, et le C ajoute tout seul un caractère spécial `\0` à la fin pour marquer où elle s'arrête. C'est pour ça que "Salut", cinq lettres, occupe six cases.
 
-Tu dois écrire `maximum`, qui reçoit un tableau de n entiers et renvoie le plus grand. Tu pars du premier élément comme meilleur candidat, puis tu compares les suivants un par un.
+Tu dois écrire `longueur`, qui renvoie le nombre de caractères d'une chaîne, sans compter ce `\0`. Tu parcours le tableau case par case et tu t'arrêtes quand tu tombes sur `\0`.
 
-Le piège : ne pars pas de zéro comme meilleur candidat. Si tous les nombres sont négatifs, zéro serait un faux maximum. Pars de la vraie première valeur du tableau, `tab[0]`.
+Indice : un compteur à zéro, et une boucle qui avance tant que la case courante n'est pas `\0`.
 
-La porte : quand `maximum` trouve le bon élément, y compris sur un tableau entièrement négatif et sur un tableau d'un seul élément, le test sort en succès.
+La porte : quand `longueur` renvoie 5 pour "Salut", l'exemple du sujet, et la bonne valeur pour d'autres chaînes, le test sort en succès.

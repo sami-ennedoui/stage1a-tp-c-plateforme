@@ -1,20 +1,21 @@
 #include "s4_sousprog.h"
+#include <math.h>
+
+static int proche(double x, double y) {
+    return fabs(x - y) < 1e-6;
+}
 
 int main(void) {
-    if (carre(5) != 25) {
-        printf("FAIL: carre(5) devrait valoir 25, lu %d\n", carre(5));
+    if (!proche(calculer_y(4, 3, 2), 11.0)) {
+        printf("FAIL: calculer_y(4,3,2) devrait valoir 11, lu %f\n", calculer_y(4, 3, 2));
         return 1;
     }
-    if (somme_carres(1) != 1) {
-        printf("FAIL: somme_carres(1) devrait valoir 1, lu %d\n", somme_carres(1));
+    if (!proche(calculer_y(0, 5, 100), 5.0)) {
+        printf("FAIL: calculer_y(0,5,100) devrait valoir 5, lu %f\n", calculer_y(0, 5, 100));
         return 1;
     }
-    if (somme_carres(3) != 14) {
-        printf("FAIL: somme_carres(3) devrait valoir 14, lu %d\n", somme_carres(3));
-        return 1;
-    }
-    if (somme_carres(5) != 55) {
-        printf("FAIL: somme_carres(5) devrait valoir 55, lu %d\n", somme_carres(5));
+    if (!proche(calculer_y(2, -1, 3), 5.0)) {
+        printf("FAIL: calculer_y(2,-1,3) devrait valoir 5, lu %f\n", calculer_y(2, -1, 3));
         return 1;
     }
     printf("TOUT PASSE\n");

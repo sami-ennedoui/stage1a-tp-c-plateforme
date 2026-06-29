@@ -1,9 +1,9 @@
-# S1, les types et la division qui ment
+# S1, les types et la taille d'un octet
 
-Quand tu écris `7 / 2` en C, tu n'obtiens pas 3.5 mais 3. Entre deux entiers, la division jette tout ce qui suit la virgule. C'est une source d'erreurs classique, et elle revient dès qu'on calcule une moyenne, une vitesse ou une position.
+C'est l'exercice 1 du BE, les types de variables. Un `char` ne tient que sur un octet, huit bits, et ne peut représenter que des valeurs de -128 à 127. Si tu y ranges un nombre trop grand, il ne garde que les huit derniers bits. Le sujet le montre avec 320, qui une fois rangé dans un `char` se relit 64.
 
-Tu dois écrire `moyenne`, qui reçoit trois entiers et renvoie leur moyenne sous forme de réel. Le piège est exactement celui du dessus. Si tu divises la somme, un entier, par 3, un autre entier, le résultat reste entier.
+Tu dois écrire `valeur_dans_char`, qui range l'entier `n` dans un `char` puis renvoie ce qu'on relit. Pour un `n` plus grand que ce qu'un octet peut tenir, la valeur change, et c'est tout l'intérêt de l'exercice.
 
-Indice : il suffit qu'un seul des deux nombres de la division soit un réel pour que tout le calcul passe en réel.
+Indice : il suffit de ranger `n` dans une variable de type `char`, puis de la renvoyer. Le C fait la troncature tout seul.
 
-La porte : quand `moyenne` renvoie la vraie valeur réelle pour plusieurs jeux de nombres, le test sort en succès.
+La porte : quand `valeur_dans_char` renvoie la bonne valeur tronquée pour plusieurs nombres, dont 320 qui donne 64, le test sort en succès.

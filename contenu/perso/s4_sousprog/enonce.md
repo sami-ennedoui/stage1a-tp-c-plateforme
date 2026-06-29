@@ -1,9 +1,9 @@
-# S4, un sous-programme qui en appelle un autre
+# S4, un sous-programme qui calcule y = a*x + b
 
-Un sous-programme s'écrit une fois et se réutilise. C'est tout l'intérêt, tu ne réécris pas le même calcul à plusieurs endroits.
+C'est l'exercice 11 du BE, les sous-programmes. Tu dois écrire `calculer_y`, qui reçoit trois réels, `a`, `b` et `x`, et renvoie la valeur de l'équation d'une droite, `y = a*x + b`.
 
-La fonction `carre` est déjà écrite, elle renvoie le carré d'un nombre. Tu dois écrire `somme_carres`, qui renvoie 1 fois 1, plus 2 fois 2, et ainsi de suite jusqu'à n fois n. Plutôt que de recopier le calcul du carré dans ta boucle, appelle `carre`.
+C'est un sous-programme simple, mais c'est le geste de base, des paramètres en entrée, un calcul, une valeur renvoyée. Le sujet en donne les spécifications, le nom, les paramètres et un test.
 
-Indice : une boucle de 1 à n, et à chaque tour tu ajoutes `carre(i)` à un total que tu as mis à zéro au départ.
+Indice : une seule ligne suffit. Renvoie directement le résultat de `a*x + b`.
 
-La porte : quand `somme_carres` donne le bon total pour plusieurs valeurs de n, le test sort en succès.
+La porte : avec `a` valant 4, `b` valant 3 et `x` valant 2, on doit obtenir 11, exactement le test du sujet. Quand c'est le cas pour ce jeu et quelques autres, le test sort en succès.

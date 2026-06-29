@@ -1,10 +1,10 @@
 {
   "id": "s3_tableaux",
-  "titre": "S3, parcourir un tableau pour trouver le maximum",
+  "titre": "S3, la longueur d'une chaîne et le zéro de fin",
   "type": "perso",
   "mode": "test_fourni",
   "recette": "perso",
   "cran_debloque": 3,
-  "noeud_cours": "Tableaux, parcours avec une boucle et un indice",
+  "noeud_cours": "Exercice 9 du BE C, tableaux de caractères et caractère de fin",
   "fichier_edite": "soumission.c"
 }

@@ -2,8 +2,6 @@
 #define S4_SOUSPROG_H
 #include <stdio.h>
 
-/* Renvoie le carré de x. Déjà écrite, tu t'en sers. */
-int carre(int x);
-/* Renvoie 1*1 + 2*2 + ... + n*n. À écrire en appelant carre. */
-int somme_carres(int n);
+/* Renvoie y = a*x + b, l'ordonnée d'une droite pour l'abscisse x. */
+double calculer_y(double a, double b, double x);
 #endif

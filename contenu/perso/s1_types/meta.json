@@ -1,10 +1,10 @@
 {
   "id": "s1_types",
-  "titre": "S1, les types et la division entière",
+  "titre": "S1, les types et la taille d'un octet",
   "type": "perso",
   "mode": "test_fourni",
   "recette": "perso",
   "cran_debloque": 1,
-  "noeud_cours": "Types et conversions, division entière contre division réelle",
+  "noeud_cours": "Exercice 1 du BE C, les types de variables et la taille d'un char",
   "fichier_edite": "soumission.c"
 }

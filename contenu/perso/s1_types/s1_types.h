@@ -2,6 +2,6 @@
 #define S1_TYPES_H
 #include <stdio.h>
 
-/* Renvoie la moyenne des trois entiers, sous forme de réel. */
-double moyenne(int a, int b, int c);
+/* Range l'entier n dans un char, puis renvoie la valeur qu'on y relit. */
+int valeur_dans_char(int n);
 #endif
