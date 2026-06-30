@@ -2,7 +2,6 @@
 #include "s3_tableaux.h"
 
 int longueur(const char chaine[]) {
-    /* À TOI. Pars d'un compteur à zéro. Avance tant que la case courante,
-       chaine[n], n'est pas le caractère de fin '\0'. Renvoie le compteur. */
+    /* À toi : complète le corps de la fonction. */
     return 0;
 }

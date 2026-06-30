@@ -2,9 +2,16 @@
 Le code de sortie du programme fait foi, pas le texte affiché."""
 from dataclasses import dataclass
 from pathlib import Path
+import os
 import shutil
 import subprocess
 import tempfile
+
+
+def _nom_binaire(base: str) -> str:
+    """Sous Windows, gcc (MinGW) ajoute .exe à la sortie ; on nomme donc le binaire
+    avec son extension pour que le chemin lancé ensuite corresponde au fichier produit."""
+    return base + ".exe" if os.name == "nt" else base
 
 import chemins
 from modele_etape import Etape
@@ -20,7 +27,7 @@ def _compiler_et_lancer(sources: list[Path], includes: list[Path],
                         cflags: list[str] = [], libs: list[str] = [],
                         timeout: int = 15) -> Resultat:
     with tempfile.TemporaryDirectory() as d:
-        binaire = Path(d) / "prog"
+        binaire = Path(d) / _nom_binaire("prog")
         cmd = ["gcc", "-Wall", "-Wno-unused-parameter", "-Wno-unused-variable"]
         cmd += [f"-I{i}" for i in includes]
         cmd += cflags
@@ -155,7 +162,7 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
     with tempfile.TemporaryDirectory() as d:
         src = Path(d) / "programme.c"
         src.write_text(code_eleve, encoding="utf-8")
-        binaire = Path(d) / "prog"
+        binaire = Path(d) / _nom_binaire("prog")
         cmd = ["gcc", "-Wall", "-Wno-unused-parameter", "-Wno-unused-variable",
                f"-I{etape.dossier}", str(src), "-lm", "-o", str(binaire)]
         comp = subprocess.run(cmd, capture_output=True, text=True)

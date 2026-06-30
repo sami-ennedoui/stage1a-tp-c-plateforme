@@ -1,6 +1,7 @@
 """Tuteur IA bridé. Prompt selon le cran, filtre déterministe qui masque la solution,
 appel du moteur en sous-processus. Aucune UI."""
 import os
+import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -31,21 +32,25 @@ def construire_prompt(etape: Etape, code_eleve: str, question: str, niveau: int)
     )
 
 
-def _lignes_significatives(code: str) -> list[str]:
-    lignes = []
-    for ligne in code.splitlines():
-        nu = ligne.strip()
-        if len(nu) < 6:            # ignore {, }, lignes trop courtes
-            continue
-        if nu.startswith("//") or nu.startswith("/*"):
-            continue
-        # continuations de commentaires bloc (« * texte » ou « */ ») mais pas les déréférencements
-        if nu == "*" or nu.startswith("* ") or nu.startswith("*/"):
-            continue
-        if nu.startswith("#include"):
-            continue
-        lignes.append(nu)
-    return lignes
+def _cle(ligne: str) -> str | None:
+    """Clé de comparaison d'une ligne : le code seul, sans le commentaire de fin de
+    ligne et sans aucune espace. Renvoie None si la ligne n'est pas une ligne de
+    solution à masquer (trop courte, #include, accolade seule, commentaire seul).
+    On compare sur cette clé pour qu'un corrigé commenté masque quand même une
+    solution propre, et pour ignorer les différences d'espacement."""
+    code = ligne.split("//", 1)[0].split("/*", 1)[0].strip()
+    if len(code) < 6:              # ignore {, }, lignes trop courtes
+        return None
+    if code.startswith("#include"):
+        return None
+    # continuations de commentaire bloc (« * texte » ou « */ ») mais pas les déréférencements
+    if code == "*" or code.startswith("* ") or code.startswith("*/"):
+        return None
+    return re.sub(r"\s+", "", code)
+
+
+def _cles_significatives(code: str) -> set[str]:
+    return {c for c in (_cle(l) for l in code.splitlines()) if c is not None}
 
 
 def _chemin_corrige(etape: Etape) -> Path:
@@ -59,10 +64,11 @@ def _chemin_corrige(etape: Etape) -> Path:
 def filtre_solution(reponse: str, corrige: str) -> str:
     """Masque dans la réponse les lignes qui reproduisent une ligne du corrigé,
     laisse passer tout le reste."""
-    cibles = set(_lignes_significatives(corrige))
+    cibles = _cles_significatives(corrige)
     sortie = []
     for ligne in reponse.splitlines():
-        if ligne.strip() in cibles:
+        cle = _cle(ligne)
+        if cle is not None and cle in cibles:
             sortie.append("    … (ligne masquée par le filtre anti-solution) …")
         else:
             sortie.append(ligne)
