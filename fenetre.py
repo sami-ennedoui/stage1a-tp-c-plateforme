@@ -159,8 +159,15 @@ class Fenetre(QMainWindow):
         centre.addWidget(self.onglets, 5)
         centre.addWidget(self.label_lsp)
         centre.addLayout(barre)
-        centre.addWidget(_titre("CONSOLE"))
-        centre.addWidget(self.console, 3)
+        # la console est enveloppée pour pouvoir la masquer (plus de place au code)
+        console_layout = QVBoxLayout()
+        console_layout.setContentsMargins(0, 0, 0, 0)
+        console_layout.setSpacing(6)
+        console_layout.addWidget(_titre("CONSOLE"))
+        console_layout.addWidget(self.console, 1)
+        self.panneau_console = QWidget()
+        self.panneau_console.setLayout(console_layout)
+        centre.addWidget(self.panneau_console, 3)
 
         droite = QVBoxLayout()
         droite.setSpacing(6)
@@ -169,21 +176,42 @@ class Fenetre(QMainWindow):
         droite.addWidget(self.choix_cran)
         droite.addWidget(self.reponse_tuteur)
 
+        # panneaux lateraux enveloppes pour pouvoir les montrer ou cacher d'un clic
+        self.panneau_parcours = QWidget()
+        self.panneau_parcours.setLayout(gauche)
+        self.panneau_tuteur = QWidget()
+        self.panneau_tuteur.setLayout(droite)
+
         racine = QHBoxLayout()
         racine.setContentsMargins(14, 14, 14, 14)
         racine.setSpacing(14)
-        racine.addLayout(gauche, 1)
+        racine.addWidget(self.panneau_parcours, 1)
         racine.addLayout(centre, 4)
-        racine.addLayout(droite, 2)
+        racine.addWidget(self.panneau_tuteur, 2)
         conteneur = QWidget()
         conteneur.setLayout(racine)
         self.setCentralWidget(conteneur)
+        self._construire_barre_affichage()
 
         # anti-rebond : textChanged déclenche le timer, pas l'envoi direct
         self.editeur.textChanged.connect(self._timer_lsp.start)
 
         self._remplir_liste()
         self.liste.setCurrentRow(0)
+
+    def _construire_barre_affichage(self):
+        """Barre en haut pour montrer ou cacher les panneaux Parcours et Tuteur, afin
+        d'alleger l'interface quand on veut se concentrer sur l'enonce et le code."""
+        barre = self.addToolBar("Affichage")
+        barre.setObjectName("barre_affichage")
+        barre.setMovable(False)
+        for texte, panneau in (("Parcours", self.panneau_parcours),
+                               ("Console", self.panneau_console),
+                               ("Tuteur IA", self.panneau_tuteur)):
+            action = barre.addAction(texte)
+            action.setCheckable(True)
+            action.setChecked(True)
+            action.toggled.connect(panneau.setVisible)
 
     def _remplir_liste(self):
         self.liste.clear()
