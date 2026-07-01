@@ -15,6 +15,12 @@ def _nom_binaire(base: str) -> str:
     return base + ".exe" if os.name == "nt" else base
 
 
+# Sous Windows, l'appli est packagée sans console (--windowed). Lancer un programme
+# console (gcc, le binaire compilé) ferait alors clignoter une fenêtre cmd. Ce drapeau
+# la supprime. Vaut 0 hors Windows, où il est sans objet.
+_SANS_FENETRE = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+
+
 def assurer_compilateur_sur_path() -> None:
     """Ajoute w64devkit\\bin au PATH s'il est trouvé à côté de l'application. Ainsi gcc
     est disponible même si l'atelier est lancé sans passer par lancer.bat (double-clic
@@ -57,13 +63,15 @@ def _compiler_et_lancer(sources: list[Path], includes: list[Path],
         cmd += libs
         cmd += ["-lm", "-o", str(binaire)]
         try:
-            comp = subprocess.run(cmd, capture_output=True, text=True)
+            comp = subprocess.run(cmd, capture_output=True, encoding="utf-8",
+                                  errors="replace", creationflags=_SANS_FENETRE)
         except FileNotFoundError:
             return _resultat_sans_gcc()
         if comp.returncode != 0:
             return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
         try:
-            run = subprocess.run([str(binaire)], capture_output=True, text=True,
+            run = subprocess.run([str(binaire)], capture_output=True, encoding="utf-8",
+                                 errors="replace", creationflags=_SANS_FENETRE,
                                  timeout=timeout)
         except subprocess.TimeoutExpired:
             return Resultat(False, "Le test a dépassé le délai, boucle infinie probable.")
@@ -149,7 +157,8 @@ def construire_apercu(etape: Etape, code_eleve: str) -> tuple[Resultat, Path | N
     cmd += [str(s) for s in sources]
     cmd += chemins.libs_sdl(avec_ttf_image=True)
     cmd += ["-lm", "-o", str(binaire)]
-    comp = subprocess.run(cmd, capture_output=True, text=True)
+    comp = subprocess.run(cmd, capture_output=True, encoding="utf-8",
+                          errors="replace", creationflags=_SANS_FENETRE)
     if comp.returncode != 0:
         shutil.rmtree(persistant, ignore_errors=True)
         return Resultat(False, "Erreur de compilation de l'aperçu :\n" + comp.stderr), None
@@ -163,7 +172,8 @@ def lancer_jeu(etape: Etape, code_eleve: str) -> Resultat:
     if not resultat.ok:
         return resultat
     subprocess.Popen([str(binaire)], cwd=str(chemins.BUILD_COPY),
-                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                     creationflags=_SANS_FENETRE)
     return Resultat(True, "Fenêtre lancée. Échap pour fermer.")
 
 
@@ -191,13 +201,15 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
         cmd = ["gcc", "-Wall", "-Wno-unused-parameter", "-Wno-unused-variable",
                f"-I{etape.dossier}", str(src), "-lm", "-o", str(binaire)]
         try:
-            comp = subprocess.run(cmd, capture_output=True, text=True)
+            comp = subprocess.run(cmd, capture_output=True, encoding="utf-8",
+                                  errors="replace", creationflags=_SANS_FENETRE)
         except FileNotFoundError:
             return _resultat_sans_gcc()
         if comp.returncode != 0:
             return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
         try:
-            run = subprocess.run([str(binaire)], capture_output=True, text=True,
+            run = subprocess.run([str(binaire)], capture_output=True, encoding="utf-8",
+                                 errors="replace", creationflags=_SANS_FENETRE,
                                  timeout=15, input=etape.entree or "")
         except subprocess.TimeoutExpired:
             return Resultat(False, "Le programme a dépassé le délai. Attend-il une saisie au clavier ?")
@@ -251,8 +263,10 @@ def construire_et_jouer_projet(espace, lancer: bool = True) -> Resultat:
     build = subprocess.run(
         ["bash", str(espace.build_sh)],
         capture_output=True,
-        text=True,
+        encoding="utf-8",
+        errors="replace",
         cwd=str(espace.build_sh.parent),
+        creationflags=_SANS_FENETRE,
     )
     if build.returncode != 0:
         return Resultat(False, "Erreur de build :\n" + build.stderr + build.stdout)
@@ -265,6 +279,7 @@ def construire_et_jouer_projet(espace, lancer: bool = True) -> Resultat:
             cwd=str(espace.dossier_snake),
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
+            creationflags=_SANS_FENETRE,
         )
         return Resultat(True, "Build réussi. Jeu lancé.")
     return Resultat(True, "Build réussi.")

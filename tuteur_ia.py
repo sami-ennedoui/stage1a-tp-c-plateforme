@@ -9,6 +9,10 @@ from pathlib import Path
 import chemins
 from modele_etape import Etape
 
+# Supprime la fenêtre cmd qui clignoterait au lancement du moteur (appli packagée
+# sans console sous Windows). Vaut 0 hors Windows, sans objet.
+_SANS_FENETRE = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+
 _CONSIGNE_CRAN = {
     0: "Cran N0. Explique seulement le concept en jeu, avec tes mots, sans donner ni "
        "écrire la moindre ligne de la solution. Pose une question qui fait réfléchir.",
@@ -120,9 +124,13 @@ def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int) -> 
     try:
         # stdin fermé : sinon 'codex exec' lit stdin et attend son EOF, ce qui bloque
         # quand le tuteur est lancé en sous-processus sans console (fenêtre PyQt).
+        # encoding utf-8 : les moteurs répondent en UTF-8 ; sans ça la sortie serait
+        # décodée dans l'encodage local (cp1252 sous Windows FR) et « cœur » deviendrait
+        # « cÅ“ur ». creationflags : pas de fenêtre cmd qui clignote au clic.
         r = subprocess.run(_commande(moteur, prompt),
                            stdin=subprocess.DEVNULL,
-                           capture_output=True, text=True, timeout=120)
+                           capture_output=True, encoding="utf-8", errors="replace",
+                           creationflags=_SANS_FENETRE, timeout=120)
     except subprocess.TimeoutExpired:
         return "Le moteur IA n'a pas répondu à temps."
     # moteur trouvé mais en échec au runtime (auth, quota), on ne renvoie pas son
