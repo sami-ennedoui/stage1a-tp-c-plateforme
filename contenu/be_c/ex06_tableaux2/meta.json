@@ -1,0 +1,11 @@
+{
+  "id": "ex06_tableaux2",
+  "titre": "Exercice 6, les tableaux (suite)",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 6 du BE C, les tableaux suite, chaines de caracteres et saisie au clavier",
+  "fichier_edite": "programme.c",
+  "entree": "Hello\n",
+  "sortie_attendue": ["La chaine contient = Salut", "Veuillez entrer une nouvelle chaine", "La nouvelle chaine contient = Hello"]
+}

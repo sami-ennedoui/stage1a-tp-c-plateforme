@@ -1,0 +1,11 @@
+{
+  "id": "ex03_structures",
+  "titre": "Exercice 3, les structures de variables",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 3 du BE C, les structures de variables, struct et typedef",
+  "fichier_edite": "programme.c",
+  "entree": "10\n",
+  "sortie_attendue": ["rayon = 5.000000", "Aire = 78.540001", "rayon = 10.000000", "Aire = 314.160004"]
+}

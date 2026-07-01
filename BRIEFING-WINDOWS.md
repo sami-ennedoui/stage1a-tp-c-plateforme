@@ -1,4 +1,26 @@
-# BRIEFING WINDOWS — tester et packager le TP C (parcours perso)
+# BRIEFING WINDOWS — tester et packager le TP C
+
+> ## MISE À JOUR 2026-07-01 (LIS CECI EN PREMIER)
+>
+> **Le contenu a changé. Le parcours à tester et à packager est désormais `be_c`, plus `perso`.**
+>
+> - `perso` était un contenu **inventé, pas fidèle** au vrai BE. Il est **remplacé** par le parcours
+>   **`be_c`** : les **14 vrais exercices du BE C** (exercices 1 à 13 + équation du second degré), en mode
+>   programme complet. Corrigé = le vrai `main.c` du BE nettoyé, énoncé fidèle avec renvoi aux slides.
+>   Les 14 séances sont **vérifiées** (corrigé ouvre la porte, starter échoue), sur la branche `version-projet`.
+> - **Ce que tu dois faire côté Windows** :
+>   1. `git pull` (ou merge `version-projet` dans ta branche `windows-packaging-tuteur-multimoteur`) pour
+>      récupérer `contenu/be_c/`.
+>   2. Le bundle et `lancer.bat` doivent lancer **`--parcours be_c`** (et non `--parcours perso`). Vérifie
+>      que la copie `plateforme/` du bundle inclut bien le dossier **`contenu/be_c/`** (14 sous-dossiers +
+>      `parcours.json`). Pour PyInstaller, `--add-data` doit inclure `contenu/be_c`.
+>   3. Teste sur Windows : la fenêtre s'ouvre sur `be_c`, chaque exercice compile, la porte s'ouvre avec le
+>      corrigé (`contenu/be_c/<exo>/corrige.c`) et pas avec le `starter.c`.
+> - **Ces écarts sont VALIDÉS tels quels (c'est une démo), ne les "corrige" pas** : `ex05_tableaux` a son
+>   débordement neutralisé pour ne pas planter ; `ex13_fichier` a une ligne de confirmation en plus pour la
+>   porte ; les fragments accentués de `sortie_attendue` ont déjà été retirés (risque console Windows cp1252).
+> - Ton travail de packaging + tuteur multi-moteur (`claude`/`codex`) sur ta branche **reste bon**, il faut
+>   juste le **combiner** avec `be_c` et repointer le lancement. Garde l'utilisateur dans la boucle.
 
 Ce fichier permet à une **nouvelle session Claude Code, lancée sur le PC Windows**, de
 reprendre seule. Lis-le en entier avant d'agir. Rendus en **français**. **Garde l'utilisateur

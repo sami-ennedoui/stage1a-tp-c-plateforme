@@ -1,0 +1,10 @@
+{
+  "id": "ex10_passage_valeur",
+  "titre": "Exercice 10, procédure avec passage par valeur",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 10 du BE C, les sous-programmes, une procédure avec passage par valeur",
+  "fichier_edite": "programme.c",
+  "sortie_attendue": ["La somme de a+b = 5", "La produit de a*b = 6"]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "ex02_operateurs",
+  "titre": "Exercice 2, les opérateurs",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 2 du BE C, les opérateurs relationnels, logiques et bit à bit",
+  "fichier_edite": "programme.c",
+  "sortie_attendue": ["Resultat de a different de b = 1", "Resultat de a egal b = 0", "Resultat de a ET BIT A BIT  b = 17", "Resultat de a OU EXCLUSIF BIT A BIT  b = 4"]
+}

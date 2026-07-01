@@ -1,0 +1,10 @@
+{
+  "id": "ex01_types",
+  "titre": "Exercice 1, les types de variables",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 1 du BE C, types de base et taille des types, slides 8 a 10 et 23 a 25",
+  "fichier_edite": "programme.c",
+  "sortie_attendue": ["char est 1 octet", "int est 4 octet", "double est 8 octet", "on obtient 64"]
+}

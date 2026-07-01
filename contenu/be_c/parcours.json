@@ -1,0 +1,19 @@
+{
+  "ordre": [
+    "ex01_types",
+    "ex02_operateurs",
+    "ex03_structures",
+    "ex04_pointeurs",
+    "ex05_tableaux",
+    "ex06_tableaux2",
+    "ex07_controle",
+    "ex08_pointeurs",
+    "ex09_sousprog",
+    "ex10_passage_valeur",
+    "ex11_sousprog2",
+    "ex12_cercle",
+    "ex13_fichier",
+    "ex_second_degre"
+  ],
+  "mode": "isole"
+}
