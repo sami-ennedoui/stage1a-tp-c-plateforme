@@ -46,6 +46,25 @@ class TestTuteur(unittest.TestCase):
         self.assertTrue(tuteur_ia.reponse_est_erreur(tuteur_ia.ERR_INDISPONIBLE))
         self.assertFalse(tuteur_ia.reponse_est_erreur("Voici une vraie piste d'aide."))
 
+    def test_prompt_sans_code_n_inclut_pas_le_bloc(self):
+        p = construire_prompt(self.etape, "", "ma question", 0)
+        self.assertNotIn("Code actuel", p)
+
+    def test_prompt_avec_code_inclut_le_bloc(self):
+        p = construire_prompt(self.etape, "int main(){return 0;}", "ma question", 0)
+        self.assertIn("Code actuel", p)
+        self.assertIn("int main(){return 0;}", p)
+
+    def test_prompt_joint_la_console_si_fournie(self):
+        p = construire_prompt(self.etape, "", "pourquoi ca casse ?", 0,
+                              console="PORTE FERMEE\nerreur de compilation ligne 3")
+        self.assertIn("console", p.lower())
+        self.assertIn("erreur de compilation ligne 3", p)
+
+    def test_prompt_sans_console_par_defaut(self):
+        p = construire_prompt(self.etape, "code", "ma question", 0)
+        self.assertNotIn("ce que la console affiche", p.lower())
+
     def test_filtre_masque_la_ligne_solution(self):
         corrige = "void f(int* p){\n    *p_etat = MENU_PARAMETRAGE;\n}\n"
         reponse = ("Voici la correction :\n"

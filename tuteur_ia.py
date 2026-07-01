@@ -36,17 +36,25 @@ def _bloc_historique(historique) -> str:
 
 
 def construire_prompt(etape: Etape, code_eleve: str, question: str, niveau: int,
-                      historique=None) -> str:
+                      historique=None, console: str = "") -> str:
     enonce = (etape.dossier / "enonce.md").read_text(encoding="utf-8")
-    return (
+    parties = [
         "Tu es un tuteur de programmation C pour un étudiant débutant. Tu n'es jamais "
-        "celui qui résout à sa place.\n\n"
-        f"{_CONSIGNE_CRAN.get(niveau, _CONSIGNE_CRAN[0])}\n\n"
-        f"Énoncé de l'étape :\n{enonce}\n\n"
-        f"Code actuel de l'étudiant :\n{code_eleve}\n\n"
-        f"{_bloc_historique(historique)}"
-        f"Question de l'étudiant :\n{question}\n"
-    )
+        "celui qui résout à sa place.",
+        _CONSIGNE_CRAN.get(niveau, _CONSIGNE_CRAN[0]),
+        f"Énoncé de l'étape :\n{enonce}",
+    ]
+    # Le code et la console ne sont joints que si l'étudiant l'a demandé (cases du
+    # dialogue d'aide). Par défaut le tuteur ne voit que l'énoncé et la question.
+    if code_eleve and code_eleve.strip():
+        parties.append(f"Code actuel de l'étudiant :\n{code_eleve}")
+    if console and console.strip():
+        parties.append(f"Ce que la console affiche (résultat de compilation ou de test) :\n{console}")
+    bloc_hist = _bloc_historique(historique)
+    if bloc_hist:
+        parties.append(bloc_hist.rstrip())
+    parties.append(f"Question de l'étudiant :\n{question}")
+    return "\n\n".join(parties) + "\n"
 
 
 def _cle(ligne: str) -> str | None:
@@ -143,11 +151,11 @@ def reponse_est_erreur(reponse: str) -> bool:
 
 
 def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int,
-                  historique=None) -> str:
+                  historique=None, console: str = "") -> str:
     moteur = _moteur_choisi()
     if moteur is None:
         return ERR_INDISPONIBLE
-    prompt = construire_prompt(etape, code_eleve, question, niveau, historique)
+    prompt = construire_prompt(etape, code_eleve, question, niveau, historique, console)
     try:
         # stdin fermé : sinon 'codex exec' lit stdin et attend son EOF, ce qui bloque
         # quand le tuteur est lancé en sous-processus sans console (fenêtre PyQt).

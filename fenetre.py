@@ -6,7 +6,8 @@ from pathlib import Path
 
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QListWidget,
                              QPlainTextEdit, QTextEdit, QPushButton, QLabel, QTabWidget,
-                             QListWidgetItem, QInputDialog, QComboBox)
+                             QListWidgetItem, QComboBox, QDialog, QLineEdit, QCheckBox,
+                             QDialogButtonBox)
 from PyQt6.QtCore import Qt, QThread, QTimer, pyqtSignal
 from PyQt6.QtGui import QFont
 
@@ -32,9 +33,9 @@ class FilTuteur(QThread):
     """Appel IA dans un fil séparé pour ne pas figer la fenêtre."""
     repondu = pyqtSignal(str)
 
-    def __init__(self, etape, code, question, niveau, historique=None):
+    def __init__(self, etape, code, question, niveau, historique=None, console=""):
         super().__init__()
-        self._args = (etape, code, question, niveau, historique)
+        self._args = (etape, code, question, niveau, historique, console)
 
     def run(self):
         self.repondu.emit(tuteur_ia.demander_aide(*self._args))
@@ -407,16 +408,47 @@ class Fenetre(QMainWindow):
                 (self.etape.dossier / "test_reference.c").read_text(encoding="utf-8"))
         self.console.setPlainText("Corrigé chargé. Clique Tester pour franchir la porte.")
 
+    def _dialogue_aide(self):
+        """Demande la question et, en option (décoché par défaut), si l'étudiant veut
+        joindre son code et/ou le rendu de la console. Renvoie (question, joindre_code,
+        joindre_console) ou None si annulé."""
+        dlg = QDialog(self)
+        dlg.setWindowTitle("Demander de l'aide")
+        lay = QVBoxLayout(dlg)
+        lay.addWidget(QLabel("Ta question :"))
+        champ = QLineEdit()
+        champ.setMinimumWidth(360)
+        lay.addWidget(champ)
+        case_code = QCheckBox("Joindre mon code")
+        case_console = QCheckBox("Joindre le rendu de la console")
+        lay.addWidget(case_code)
+        lay.addWidget(case_console)
+        boutons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok
+                                   | QDialogButtonBox.StandardButton.Cancel)
+        boutons.accepted.connect(dlg.accept)
+        boutons.rejected.connect(dlg.reject)
+        champ.returnPressed.connect(dlg.accept)
+        lay.addWidget(boutons)
+        if dlg.exec() != QDialog.DialogCode.Accepted:
+            return None
+        question = champ.text().strip()
+        if not question:
+            return None
+        return question, case_code.isChecked(), case_console.isChecked()
+
     def _demander_aide(self):
         if getattr(self, "_fil", None) is not None and self._fil.isRunning():
             return                       # un appel tuteur déjà en cours, on ne le détruit pas
-        question, ok = QInputDialog.getText(self, "Demander de l'aide", "Ta question :")
-        if not ok or not question:
+        reponse = self._dialogue_aide()
+        if reponse is None:
             return
+        question, joindre_code, joindre_console = reponse
         niveau = min(self.niveau, self._cran_dispo())
         self.reponse_tuteur.setPlainText("Le tuteur réfléchit…")
+        code = self.editeur.toPlainText() if joindre_code else ""
+        console = self.console.toPlainText() if joindre_console else ""
         historique = list(self._historique_tuteur)   # instantané passé au fil
-        self._fil = FilTuteur(self.etape, self.editeur.toPlainText(), question, niveau, historique)
+        self._fil = FilTuteur(self.etape, code, question, niveau, historique, console)
         self._fil.repondu.connect(lambda rep, q=question: self._tuteur_a_repondu(q, rep))
         self._fil.start()
 
