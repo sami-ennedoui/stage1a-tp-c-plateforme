@@ -1,13 +1,13 @@
 # Exercice 2, les opérateurs
 
-C'est l'exercice 2 du BE. Tu écris un programme complet qui déclare deux entiers, `a` initialisé à 21 et `b` initialisé à 17, puis qui montre le résultat des différentes familles d'opérateurs du C sur ces deux valeurs.
+1 - Créez un programme principal où vous déclarez et initialisez 2 variables de type `int` avec a = 17 et b = 21.
 
-Commence par les opérateurs relationnels. Affiche le résultat de `a != b`, de `a == b`, de `a > b` et de `a < b`. Chacun rend 1 quand la comparaison est vraie et 0 quand elle est fausse.
+2 - Calculez et interprétez les résultats des opérations relationnelles suivantes : `a > b`, `a < b`, `a == b`, `a != b`.
 
-Passe ensuite aux opérateurs logiques. Affiche `a && b`, le ET logique, `a || b`, le OU logique, et `!b`, la négation. Ici une valeur non nulle compte comme vraie, donc `a && b` et `a || b` valent 1, et `!b` vaut 0.
+3 - Calculez et interprétez les résultats des opérations logiques suivantes : `a && b`, `a || b`, `!a`, `!b`.
 
-Termine par les opérateurs bit à bit, qui travaillent sur la représentation binaire des nombres. Affiche `a & b`, le ET bit à bit, `a | b`, le OU bit à bit, et `a ^ b`, le OU exclusif bit à bit. Avec 21 et 17 tu obtiens 17, 21 et 4.
+4 - Calculez et interprétez les résultats des opérations bit à bit suivantes : `a & b`, `a | b`, `a ^ b`.
 
-Sers-toi de `printf` avec `%d` pour afficher chaque résultat. Reprends la mise en forme du corrigé pour tes messages.
+Sers-toi de `printf` avec `%d` pour afficher chaque résultat.
 
-La porte vérifie que les opérateurs donnent les bons résultats, en particulier `a != b` qui vaut 1, `a == b` qui vaut 0, le ET bit à bit qui vaut 17 et le OU exclusif qui vaut 4.
+La porte vérifie les résultats bit à bit (`a & b`, `a | b`, `a ^ b`) et le `!a`.

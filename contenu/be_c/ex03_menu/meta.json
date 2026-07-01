@@ -1,0 +1,17 @@
+{
+  "id": "ex03_menu",
+  "titre": "Exercice 3, les structures de contrôle",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 3 du BE C, les structures de contrôle, un menu switch case dans une boucle do while",
+  "fichier_edite": "programme.c",
+  "entree": "1\n9.9\n1\n5\n1\n2\n8.8\n0\n",
+  "sortie_attendue": [
+    "a = 1.5 - b = 0.5 - c = 0.6",
+    "Nouvelles valeurs : a = 9.9 - b = 0.5 - c = 0.6",
+    "Erreur : ce choix n'est pas propose.",
+    "Nouvelles valeurs : a = 9.9 - b = 8.8 - c = 0.6",
+    "Fin du programme."
+  ]
+}

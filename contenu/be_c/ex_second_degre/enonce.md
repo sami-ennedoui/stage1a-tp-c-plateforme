@@ -2,7 +2,9 @@
 
 C'est l'exercice du BE sur le trinôme. Tu écris un programme complet qui calcule les racines d'une équation du second degré `a*x*x + b*x + c = 0`.
 
-Le programme est découpé en quatre sous-programmes, appelés depuis le `main`.
+À partir des algorithmes dont tu as la correction sous Moodle, programme en C cette application permettant de résoudre une équation du second ordre.
+
+L'énoncé du BE est volontairement court et renvoie aux algorithmes Moodle. Voici le découpage attendu, en quatre sous-programmes appelés depuis le `main`.
 
 `Saisir_coefficients` reçoit trois `float*` et demande les coefficients `a`, `b`, `c` au clavier. Comme `a` ne doit pas être nul, tu redemandes `a` tant qu'il vaut 0, avec une boucle `do ... while`.
 

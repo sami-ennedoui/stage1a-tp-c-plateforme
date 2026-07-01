@@ -1,0 +1,14 @@
+{
+  "id": "ex08_tableaux",
+  "titre": "Exercice 8, les tableaux",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 8 du BE C, les tableaux, cases contigues en memoire et debordement",
+  "fichier_edite": "programme.c",
+  "sortie_attendue": [
+    "Valeur de la case [0] = 1",
+    "Valeur de la case [4] = 20",
+    "DANGER"
+  ]
+}

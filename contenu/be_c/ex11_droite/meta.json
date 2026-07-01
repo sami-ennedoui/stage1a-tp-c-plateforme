@@ -1,0 +1,12 @@
+{
+  "id": "ex11_droite",
+  "titre": "Exercice 11, les sous-programmes",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 11 du BE C, les sous-programmes, une fonction qui rend une valeur",
+  "fichier_edite": "programme.c",
+  "sortie_attendue": [
+    "pour x = 2.000000 vaut y = 11.000000"
+  ]
+}

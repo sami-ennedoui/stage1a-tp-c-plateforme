@@ -1,0 +1,16 @@
+{
+  "id": "ex04_devine",
+  "titre": "Exercice 4, deviner un nombre",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 4 du BE C, deviner un nombre, if imbriqué dans une boucle do while",
+  "fichier_edite": "programme.c",
+  "entree": "50\n75\n56\n",
+  "sortie_attendue": [
+    "Devinez un nombre entre 0 et 100",
+    "C'est plus grand",
+    "C'est plus petit",
+    "56 en 3 essais"
+  ]
+}

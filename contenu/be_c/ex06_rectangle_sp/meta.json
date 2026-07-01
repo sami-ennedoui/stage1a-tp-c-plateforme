@@ -1,0 +1,16 @@
+{
+  "id": "ex06_rectangle_sp",
+  "titre": "Exercice 6, les sous-programmes",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 6 du BE C, les sous-programmes, passage par valeur et par adresse sur un rectangle",
+  "fichier_edite": "programme.c",
+  "sortie_attendue": [
+    "Largeur = 4, Longueur = 7",
+    "Aire = 28",
+    "Largeur = 6, Longueur = 10",
+    "Nouvelle aire = 60",
+    "Aire = 60, Perimetre = 32"
+  ]
+}

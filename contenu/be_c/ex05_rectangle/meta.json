@@ -1,0 +1,15 @@
+{
+  "id": "ex05_rectangle",
+  "titre": "Exercice 5, les structures de contrôle",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 5 du BE C, les structures de contrôle, deux boucles for imbriquées pour dessiner un rectangle",
+  "fichier_edite": "programme.c",
+  "entree": "6\n10\n",
+  "sortie_attendue": [
+    "Nombre de lignes ?",
+    "Nombre de colonnes ?",
+    "----------\n----------\n----------\n----------\n----------\n----------"
+  ]
+}
