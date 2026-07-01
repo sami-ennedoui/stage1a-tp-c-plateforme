@@ -5,6 +5,7 @@ from pathlib import Path
 import os
 import shutil
 import subprocess
+import sys
 import tempfile
 
 
@@ -12,6 +13,27 @@ def _nom_binaire(base: str) -> str:
     """Sous Windows, gcc (MinGW) ajoute .exe à la sortie ; on nomme donc le binaire
     avec son extension pour que le chemin lancé ensuite corresponde au fichier produit."""
     return base + ".exe" if os.name == "nt" else base
+
+
+def assurer_compilateur_sur_path() -> None:
+    """Ajoute w64devkit\\bin au PATH s'il est trouvé à côté de l'application. Ainsi gcc
+    est disponible même si l'atelier est lancé sans passer par lancer.bat (double-clic
+    direct sur l'exe). Sans effet si gcc est déjà là ou si le dossier est absent."""
+    if os.name != "nt" or shutil.which("gcc"):
+        return
+    # exe figé : à côté de l'exe ; bundle portable : à côté du dossier des sources
+    base = Path(sys.executable).parent if getattr(sys, "frozen", False) \
+        else Path(__file__).resolve().parent.parent
+    wk = base / "w64devkit" / "bin"
+    if wk.is_dir():
+        os.environ["PATH"] = str(wk) + os.pathsep + os.environ.get("PATH", "")
+
+
+def _resultat_sans_gcc() -> "Resultat":
+    return Resultat(False,
+                    "Le compilateur gcc est introuvable.\n"
+                    "Lance l'atelier avec lancer.bat (il ajoute le compilateur au PATH), "
+                    "ou vérifie que le dossier w64devkit est bien à côté.")
 
 import chemins
 from modele_etape import Etape
@@ -34,7 +56,10 @@ def _compiler_et_lancer(sources: list[Path], includes: list[Path],
         cmd += [str(s) for s in sources]
         cmd += libs
         cmd += ["-lm", "-o", str(binaire)]
-        comp = subprocess.run(cmd, capture_output=True, text=True)
+        try:
+            comp = subprocess.run(cmd, capture_output=True, text=True)
+        except FileNotFoundError:
+            return _resultat_sans_gcc()
         if comp.returncode != 0:
             return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
         try:
@@ -165,7 +190,10 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
         binaire = Path(d) / _nom_binaire("prog")
         cmd = ["gcc", "-Wall", "-Wno-unused-parameter", "-Wno-unused-variable",
                f"-I{etape.dossier}", str(src), "-lm", "-o", str(binaire)]
-        comp = subprocess.run(cmd, capture_output=True, text=True)
+        try:
+            comp = subprocess.run(cmd, capture_output=True, text=True)
+        except FileNotFoundError:
+            return _resultat_sans_gcc()
         if comp.returncode != 0:
             return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
         try:

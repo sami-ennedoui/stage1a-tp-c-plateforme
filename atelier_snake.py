@@ -58,6 +58,7 @@ def smoketest() -> int:
 
 
 def main():
+    executeur.assurer_compilateur_sur_path()
     if "--selftest" in sys.argv:
         sys.exit(1 if selftest() else 0)
     if "--smoketest" in sys.argv:
