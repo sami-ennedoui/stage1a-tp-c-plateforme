@@ -6,7 +6,7 @@ from pathlib import Path
 
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QListWidget,
                              QPlainTextEdit, QTextEdit, QPushButton, QLabel, QTabWidget,
-                             QListWidgetItem, QComboBox, QDialog, QLineEdit, QCheckBox,
+                             QListWidgetItem, QDialog, QLineEdit, QCheckBox,
                              QDialogButtonBox)
 from PyQt6.QtCore import Qt, QThread, QTimer, pyqtSignal
 from PyQt6.QtGui import QFont
@@ -133,9 +133,6 @@ class Fenetre(QMainWindow):
                 "clangd absent, diagnostics live indisponibles. Installe clang-tools-extra."
             )
             self.label_lsp.setVisible(True)
-        self.label_cran = QLabel()
-        self.choix_cran = QComboBox()    # redescendre sous le cran débloqué pour moins d'aide
-        self.choix_cran.currentIndexChanged.connect(self._changer_cran)
         self.reponse_tuteur = QTextEdit(readOnly=True)
 
         b_compiler = QPushButton("Compiler")
@@ -183,8 +180,6 @@ class Fenetre(QMainWindow):
         droite = QVBoxLayout()
         droite.setSpacing(6)
         droite.addWidget(_titre("TUTEUR IA"))
-        droite.addWidget(self.label_cran)
-        droite.addWidget(self.choix_cran)
         droite.addWidget(self.reponse_tuteur)
 
         # panneaux lateraux enveloppes pour pouvoir les montrer ou cacher d'un clic
@@ -292,22 +287,9 @@ class Fenetre(QMainWindow):
         return 3 if self.mode == "projet" else progression.cran_disponible(self.prog)
 
     def _maj_cran(self):
-        dispo = self._cran_dispo()
-        if self.niveau > dispo:          # le plafond, jamais au-dessus du cran débloqué
-            self.niveau = dispo
-        self.choix_cran.blockSignals(True)
-        self.choix_cran.clear()
-        self.choix_cran.addItems([f"N{i}" for i in range(dispo + 1)])
-        self.choix_cran.setCurrentIndex(self.niveau)
-        self.choix_cran.blockSignals(False)
-        self.label_cran.setText(f"Tuteur, cran courant N{self.niveau} sur N{dispo} débloqué")
-
-    def _changer_cran(self, i):
-        if i < 0:
-            return
-        self.niveau = i                  # l'étudiant choisit un cran <= ce qu'il a débloqué
-        dispo = self._cran_dispo()
-        self.label_cran.setText(f"Tuteur, cran courant N{self.niveau} sur N{dispo} débloqué")
+        # le tuteur utilise automatiquement le meilleur cran débloqué ; l'aide devient
+        # plus directe au fil des exercices validés, sans réglage manuel à l'écran
+        self.niveau = self._cran_dispo()
 
     def _compiler(self):
         self.console.setPlainText("Compilation et exécution en cours…")
@@ -443,7 +425,7 @@ class Fenetre(QMainWindow):
         if reponse is None:
             return
         question, joindre_code, joindre_console = reponse
-        niveau = min(self.niveau, self._cran_dispo())
+        niveau = self._cran_dispo()
         self.reponse_tuteur.setPlainText("Le tuteur réfléchit…")
         code = self.editeur.toPlainText() if joindre_code else ""
         console = self.console.toPlainText() if joindre_console else ""
