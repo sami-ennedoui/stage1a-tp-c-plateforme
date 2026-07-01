@@ -1,0 +1,10 @@
+{
+  "id": "ex11_sousprog2",
+  "titre": "Exercice 11, les sous-programmes",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 11 du BE C, les sous-programmes, passage par adresse et permutation",
+  "fichier_edite": "programme.c",
+  "sortie_attendue": ["AVANT PERMUTATION  3 5 1", "APRES PERMUTATION  1 3 5"]
+}
