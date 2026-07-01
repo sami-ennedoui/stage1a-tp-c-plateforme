@@ -86,6 +86,16 @@ class Fenetre(QMainWindow):
         self.liste.currentRowChanged.connect(self._changer_etape)
 
         self.enonce = QTextEdit(readOnly=True)
+        # l'enonce est rendu en markdown ; on force une police lisible (le defaut Qt
+        # est petit) et un peu d'air entre les puces via la feuille de style du document
+        _police_enonce = QFont()
+        _police_enonce.setPointSize(11)
+        self.enonce.document().setDefaultFont(_police_enonce)
+        self.enonce.document().setDefaultStyleSheet(
+            "li { margin-bottom: 6px; } "
+            "h1 { color: %s; } "
+            "p { margin-bottom: 6px; }" % theme.ACCENT
+        )
         self.editeur = QPlainTextEdit()
         self.editeur_test = QPlainTextEdit()
         self.onglets = QTabWidget()
