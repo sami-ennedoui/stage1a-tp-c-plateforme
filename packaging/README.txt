@@ -1,15 +1,14 @@
-TP C, quatre seances pour apprendre les bases du C
-==================================================
+TP C, les exercices d'introduction au langage C
+===============================================
 
 A quoi ca sert
 --------------
-Quatre courtes seances, guidees, pour decouvrir les bases du langage C :
-  1. les types et la taille d'un octet (le debordement d'un char) ;
-  2. le passage par adresse avec des pointeurs ;
-  3. les chaines de caracteres et le zero de fin ;
-  4. un premier sous-programme qui renvoie une valeur.
-Tu ecris une fonction, tu cliques pour compiler et tester : une porte
-s'ouvre quand ta reponse est juste.
+Les 14 exercices d'introduction au langage C : types et taille des types,
+operateurs, structures, pointeurs, tableaux, structures de controle,
+sous-programmes, passage par adresse, lecture d'un fichier, et l'equation du
+second degre. Pour chaque exercice tu ecris un petit programme complet, tu
+cliques pour compiler et tester, et une porte s'ouvre quand la sortie est
+correcte.
 
 Prerequis
 ---------
@@ -20,24 +19,24 @@ Comment lancer
 --------------
   1. Decompresse ce dossier ou tu veux (le Bureau, par exemple).
   2. Double-clique sur lancer.bat.
-La fenetre s'ouvre sur la premiere seance.
+La fenetre s'ouvre sur le premier exercice.
 
 Si quelque chose cloche, lance d'abord diagnostic.bat : il verifie que gcc,
 Python et l'affichage repondent, et affiche un message clair.
 
-Comment ca marche, seance par seance
-------------------------------------
+Comment ca marche, exercice par exercice
+----------------------------------------
   - Lis l'enonce en haut de la fenetre.
-  - Complete la fonction dans l'editeur.
+  - Ecris ton programme dans l'editeur.
   - Clique sur "Compiler et tester". Si la porte s'ouvre, c'est gagne ;
-    sinon le message t'explique ce qui ne va pas.
-Les seances sont independantes : fais-les dans l'ordre que tu veux.
+    sinon le message t'explique ce qui manque dans ta sortie.
+Les exercices sont independants : fais-les dans l'ordre que tu veux.
 
 Le tuteur IA (optionnel)
 ------------------------
-Un bouton d'aide peut te repondre pendant une seance, sans jamais donner la
+Un bouton d'aide peut te repondre pendant un exercice, sans jamais donner la
 solution toute faite : il reste socratique et masque les lignes du corrige.
-Il est OPTIONNEL. Les quatre seances fonctionnent entierement sans lui.
+Il est OPTIONNEL. Les exercices fonctionnent entierement sans lui.
 
 Pour l'activer, il faut un outil IA en ligne de commande, installe et
 connecte avec ton propre compte. Deux sont reconnus :
