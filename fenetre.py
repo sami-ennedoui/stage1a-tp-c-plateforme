@@ -247,10 +247,20 @@ class Fenetre(QMainWindow):
         else:
             self._changer_etape_isole(ligne)
 
+    def _maj_enonce(self):
+        """Affiche l'énoncé de l'étape courante. Si l'exercice est validé et qu'un
+        approfondissement.md existe, on l'ajoute dessous : c'est le niveau caché,
+        débloqué une fois la porte de base franchie."""
+        md = (self.etape.dossier / "enonce.md").read_text(encoding="utf-8")
+        appro = self.etape.dossier / "approfondissement.md"
+        if appro.exists() and self.etape.id in self.prog.etapes_faites:
+            md += "\n\n---\n\n" + appro.read_text(encoding="utf-8")
+        self.enonce.setMarkdown(md)
+
     def _changer_etape_isole(self, ligne):
         self.etape = self.parcours[ligne]
         self._historique_tuteur = []     # nouvel exercice, le tuteur repart sans historique
-        self.enonce.setMarkdown((self.etape.dossier / "enonce.md").read_text(encoding="utf-8"))
+        self._maj_enonce()
         self.editeur.setPlainText((self.etape.dossier / "starter.c").read_text(encoding="utf-8"))
         self.editeur_test.setPlainText("")
         a_ecrire = self.etape.mode == "test_a_ecrire"
@@ -360,6 +370,13 @@ class Fenetre(QMainWindow):
                 self.niveau = progression.cran_disponible(self.prog)
                 self._maj_cran()
             self._remplir_liste()
+            # niveau caché : révéler l'approfondissement dès que la porte de base passe
+            if (self.etape.dossier / "approfondissement.md").exists():
+                self._maj_enonce()
+                self.console.append(
+                    f'<span style="color:{theme.BLEU};font-weight:bold;">'
+                    "Niveau caché débloqué : un approfondissement est apparu sous "
+                    "l'énoncé.</span>")
 
     def _lancer_jeu(self):
         if self.mode == "projet":
