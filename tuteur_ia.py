@@ -13,14 +13,29 @@ from modele_etape import Etape
 # sans console sous Windows). Vaut 0 hors Windows, sans objet.
 _SANS_FENETRE = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
+# Style imposé à tous les crans : réponses courtes et directes, pas de flatterie,
+# pas de pluie de questions. L'étudiant veut être débloqué, pas coaché.
+_STYLE = (
+    "Style de réponse, à respecter strictement :\n"
+    "- Va droit au but. Réponds en 2 à 5 phrases, pas un cours.\n"
+    "- Aucune formule flatteuse ni de remplissage : jamais de « bonne question », "
+    "« bon réflexe », « tu as raison », « c'est exactement le cœur de l'exercice », etc. "
+    "Commence directement par le fond.\n"
+    "- Nomme clairement ce qui ne va pas et le concept en jeu ; ne fais pas deviner "
+    "l'évidence par une énigme.\n"
+    "- Au plus UNE question à la fin, et seulement si elle est vraiment utile. Ne pose "
+    "pas une liste de questions."
+)
+
 _CONSIGNE_CRAN = {
-    0: "Cran N0. Explique seulement le concept en jeu, avec tes mots, sans donner ni "
-       "écrire la moindre ligne de la solution. Pose une question qui fait réfléchir.",
+    0: "Cran N0. Explique directement le concept ou l'erreur en jeu, sans donner ni "
+       "écrire la ligne de solution. Tu peux nommer précisément ce qui cloche (le type, "
+       "le format, la syntaxe) ; l'étudiant écrit la correction lui-même.",
     1: "Cran N1. Tu peux donner un squelette vide ou une analogie, mais pas la solution "
        "écrite. Montre la forme, pas le contenu.",
     2: "Cran N2. Tu peux proposer une piste candidate, mais demande à l'étudiant de la "
        "justifier et de la vérifier lui-même, sans affirmer qu'elle est correcte.",
-    3: "Cran N3. Tu es libre d'aider comme tu veux.",
+    3: "Cran N3. Tu es libre d'aider comme tu veux, mais reste concis et direct.",
 }
 
 
@@ -41,6 +56,7 @@ def construire_prompt(etape: Etape, code_eleve: str, question: str, niveau: int,
     parties = [
         "Tu es un tuteur de programmation C pour un étudiant débutant. Tu n'es jamais "
         "celui qui résout à sa place.",
+        _STYLE,
         _CONSIGNE_CRAN.get(niveau, _CONSIGNE_CRAN[0]),
         f"Énoncé de l'étape :\n{enonce}",
     ]

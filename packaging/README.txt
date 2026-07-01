@@ -35,8 +35,9 @@ Les exercices sont independants : fais-les dans l'ordre que tu veux.
 Le tuteur IA (optionnel)
 ------------------------
 Un bouton d'aide peut te repondre pendant un exercice, sans jamais donner la
-solution toute faite : il reste socratique et masque les lignes du corrige.
-Il est OPTIONNEL. Les exercices fonctionnent entierement sans lui.
+solution toute faite : il repond court et direct, nomme ce qui cloche et le
+concept en jeu, mais te laisse ecrire la correction (il masque les lignes du
+corrige). Il est OPTIONNEL. Les exercices fonctionnent entierement sans lui.
 
 Pour l'activer, il faut un outil IA en ligne de commande, installe et
 connecte avec ton propre compte. Deux sont reconnus :
