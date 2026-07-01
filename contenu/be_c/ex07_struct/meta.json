@@ -1,0 +1,13 @@
+{
+  "id": "ex07_struct",
+  "titre": "Exercice 7, les structures de variables",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 7 du BE C, les structures de variables, un type rectangle avec typedef struct et deux sous-programmes",
+  "fichier_edite": "programme.c",
+  "sortie_attendue": [
+    "Longueur = 7, Largeur = 4, Aire = 28, Perimetre = 22",
+    "Longueur = 10, Largeur = 6, Aire = 60, Perimetre = 32"
+  ]
+}

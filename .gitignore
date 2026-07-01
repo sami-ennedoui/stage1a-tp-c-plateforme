@@ -13,3 +13,6 @@ projet-corrige/tests_logique/test_collision
 projet-squelette/SNAKE/snake
 # copie de travail vivante du parcours projet, remplie par l'étudiant au lancement
 espace_session/
+
+# artefact ecrit par l exercice 10 (ecriture fichier) quand sa porte tourne
+resultats.txt

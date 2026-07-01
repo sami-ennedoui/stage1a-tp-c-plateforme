@@ -1,0 +1,13 @@
+{
+  "id": "ex10_fichier",
+  "titre": "Exercice 10, écriture dans un fichier texte",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 10 du BE C, fichiers en mode texte, fopen, fprintf et fclose",
+  "fichier_edite": "programme.c",
+  "entree": "resultats.txt\n",
+  "sortie_attendue": [
+    "Fichier resultats.txt ecrit."
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "id": "ex04_pointeurs",
+  "titre": "Exercice 4, les pointeurs",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 4 du BE C, les pointeurs, adresse, contenu et incrementation",
+  "fichier_edite": "programme.c",
+  "sortie_attendue": [
+    "de val est 123",
+    "de p_val est 0",
+    "de val est maintenant 12",
+    "augmentee de +4 car un int est",
+    "car un double est code sur 8 octets"
+  ]
+}

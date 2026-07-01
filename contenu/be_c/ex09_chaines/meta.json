@@ -1,0 +1,15 @@
+{
+  "id": "ex09_chaines",
+  "titre": "Exercice 9, les tableaux de caractères",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 9 du BE C, les tableaux de caracteres, chaines et saisie au clavier",
+  "fichier_edite": "programme.c",
+  "entree": "Hello\n",
+  "sortie_attendue": [
+    "La chaine contient = Salut",
+    "Veuillez entrer une nouvelle chaine",
+    "La nouvelle chaine contient = Hello"
+  ]
+}

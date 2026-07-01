@@ -1,16 +1,13 @@
-# Exercice 2 — les opérateurs
+# Exercice 2, les opérateurs
 
-Deux entiers `a = 21` et `b = 17`. Affiche (avec `%d`) le résultat des opérateurs :
+1 - Créez un programme principal où vous déclarez et initialisez 2 variables de type `int` avec a = 17 et b = 21.
 
-- relationnels : `a != b`, `a == b`, `a > b`, `a < b` (1 si vrai, 0 si faux)
-- logiques : `a && b`, `a || b`, `!b`
-- bit à bit : `a & b`, `a | b`, `a ^ b`
+2 - Calculez et interprétez les résultats des opérations relationnelles suivantes : `a > b`, `a < b`, `a == b`, `a != b`.
 
-Sortie attendue (reprends ces libellés) :
+3 - Calculez et interprétez les résultats des opérations logiques suivantes : `a && b`, `a || b`, `!a`, `!b`.
 
-- `Resultat de a different de b = 1`
-- `Resultat de a egal b = 0`
-- `Resultat de a ET BIT A BIT  b = 17`
-- `Resultat de a OU EXCLUSIF BIT A BIT  b = 4`
+4 - Calculez et interprétez les résultats des opérations bit à bit suivantes : `a & b`, `a | b`, `a ^ b`.
 
-But : les familles d'opérateurs du C.
+Sers-toi de `printf` avec `%d` pour afficher chaque résultat.
+
+La porte vérifie les résultats bit à bit (`a & b`, `a | b`, `a ^ b`) et le `!a`.

@@ -7,5 +7,7 @@
   "noeud_cours": "Équation du second degré du BE C, sous-programmes, passage par adresse et racines d'un trinôme",
   "fichier_edite": "programme.c",
   "entree": "1\n-3\n2\n",
-  "sortie_attendue": ["s1=1.000000 et s2=2.000000."]
+  "sortie_attendue": [
+    "s1=1.000000 et s2=2.000000."
+  ]
 }

@@ -1,37 +1,28 @@
 #include <stdio.h>
 
-/* Exercice 2 du BE : les opérateurs relationnels, logiques et bit à bit. */
+/* Exercice 2 du BE : les operateurs relationnels, logiques et bit a bit,
+   avec a = 17 et b = 21. */
 
 int main(void)
 {
-    /* Déclaration de variables avec initialisation */
-    int a = 21;
-    int b = 17;
+    int a = 17;
+    int b = 21;
 
-    /* Opérateurs relationnels */
-    printf(" ===== Operateurs relationnelles =====\n");
-    printf("a = %d , b= %d , Resultat de a different de b = %d \n", a, b, a != b);
-    printf("a = %d , b= %d , Resultat de a egal b = %d \n", a, b, a == b);
-    printf("a = %d , b= %d , Resultat de a > b = %d \n", a, b, a > b);
-    printf("a = %d , b= %d , Resultat de a < b = %d \n", a, b, a < b);
+    printf("a = %d, b = %d\n\n", a, b);
 
-    printf("\n");
+    printf("a > b = %d\n", a > b);
+    printf("a < b = %d\n", a < b);
+    printf("a == b = %d\n", a == b);
+    printf("a != b = %d\n\n", a != b);
 
-    /* Opérateurs logiques */
-    printf(" ===== Operateurs logiques =====\n");
-    printf("a = %d , b= %d , Resultat de a ET  b = %d \n", a, b, a && b);
-    printf("a = %d , b= %d , Resultat de a OU  b = %d \n", a, b, a || b);
-    printf("a = %d ,  Resultat de non a = %d \n", a, !b);
+    printf("a && b = %d\n", a && b);
+    printf("a || b = %d\n", a || b);
+    printf("!a = %d\n", !a);
+    printf("!b = %d\n\n", !b);
 
-    printf("\n");
-
-    /* Opérateurs bit à bit */
-    printf(" ===== Operateurs bit a bit =====\n");
-    printf("a = %d , b= %d , Resultat de a ET BIT A BIT  b = %d \n", a, b, a & b);
-    printf("a = %d , b= %d , Resultat de a OU BIT A BIT  b = %d \n", a, b, a | b);
-    printf("a = %d , b= %d , Resultat de a OU EXCLUSIF BIT A BIT  b = %d \n", a, b, a ^ b);
-
-    printf("\n");
+    printf("a & b = %d\n", a & b);
+    printf("a | b = %d\n", a | b);
+    printf("a ^ b = %d\n", a ^ b);
 
     return 0;
 }

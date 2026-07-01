@@ -1,24 +1,21 @@
 #include <stdio.h>
 
-/* Exercice 1 du BE : les types de base et leur taille. */
+/* Exercice 1 du BE : declarer une variable de chaque type de base et
+   afficher chacune avec le format printf qui lui correspond. */
 
 int main(void)
 {
-    short var_short = 10;
-    char var_char = 320;      /* ne tient pas sur un octet, sera tronque */
-    float var_float = 3.40e30;
-    int var_int = 260;
-    double var_double = 63;
+    short  var_short  = 12;
+    int    var_int    = 260;
+    char   var_char   = 'A';
+    float  var_float  = 3.5;
+    double var_double = 2.5;
 
-    printf(" La taille d'un short est %d octet(s) \n", (int)sizeof(var_short));
-    printf(" La taille d'un char est %d octet(s) \n", (int)sizeof(var_char));
-    printf(" La taille d'un float est %d octet(s) \n", (int)sizeof(var_float));
-    printf(" La taille d'un double est %d octet(s) \n", (int)sizeof(var_double));
-    printf(" La taille d'un int est %d octet(s) \n", (int)sizeof(var_int));
-
-    /* Un char signe code une valeur de -128 a 127. 320 vaut (1 0100 0000) en binaire,
-       on ne garde que les 8 bits de poids faible, (0100 0000) = 64. */
-    printf(" Si var_char [-128 ; +127 ] est initialisee a 320 , on obtient %d \n", var_char);
+    printf("short : %d\n", var_short);
+    printf("int : %i\n", var_int);
+    printf("char : %c\n", var_char);
+    printf("float : %f\n", var_float);
+    printf("double : %e\n", var_double);
 
     return 0;
 }

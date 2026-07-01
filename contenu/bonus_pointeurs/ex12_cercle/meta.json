@@ -1,0 +1,16 @@
+{
+  "id": "ex12_cercle",
+  "titre": "Exercice 12, les paramètres d'un cercle",
+  "type": "programme",
+  "mode": "programme",
+  "cran_debloque": 1,
+  "noeud_cours": "Exercice 12 du BE C, structures, pointeurs et passage par adresse",
+  "fichier_edite": "programme.c",
+  "entree": "1\n",
+  "sortie_attendue": [
+    "Le rayon du cercle est 1.000000",
+    "Le diametre du cercle est 2.0",
+    "Le perimetre du cercle est 6.28",
+    "L'aire du cercle est 3.142"
+  ]
+}
