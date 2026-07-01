@@ -67,13 +67,18 @@ Structure cible :
 TP-C-perso/
 ├── lancer.bat          (copie depuis packaging/ de ce dépôt)
 ├── diagnostic.bat      (copie depuis packaging/)
-├── README-2A.txt       (copie depuis packaging/)
+├── README.txt          (copie depuis packaging/)
 ├── python/             décompresser python-3.12.10-embed-amd64.zip ici
 │                        PUIS éditer python312._pth pour qu'il contienne EXACTEMENT :
 │                            python312.zip
 │                            .
 │                            Lib\site-packages
+│                            ..\plateforme
 │                            import site
+│                        (la ligne ..\plateforme est INDISPENSABLE : avec un ._pth, le Python
+│                         embeddable ne met pas le dossier du script sur sys.path, donc sans
+│                         elle l'appli plante sur « ModuleNotFoundError: No module named 'chemins' » ;
+│                         PYTHONPATH est ignoré quand un ._pth existe.)
 │                        PUIS décompresser les 3 wheels (ce sont des zip) dans python/Lib/site-packages/
 ├── w64devkit/          extraire le 7z ici → doit donner w64devkit/bin/gcc.exe
 └── plateforme/         copier depuis ce dépôt : tous les *.py + le dossier contenu/perso/
@@ -137,5 +142,5 @@ dépendances), le C++ si le perso reste C-only. **Relance `lancer.bat` après ch
   **ce fichier suffit pour démarrer**. À la fin, redonne à l'utilisateur un compte rendu de ce qui
   marche, ce qui a été corrigé, et le poids final.
 
-Les fichiers `lancer.bat`, `diagnostic.bat`, `README-2A.txt` prêts à l'emploi sont dans
+Les fichiers `lancer.bat`, `diagnostic.bat`, `README.txt` prêts à l'emploi sont dans
 `packaging/` de ce dépôt (encodés en CRLF).

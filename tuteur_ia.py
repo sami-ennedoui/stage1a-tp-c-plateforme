@@ -75,20 +75,54 @@ def filtre_solution(reponse: str, corrige: str) -> str:
     return "\n".join(sortie)
 
 
+# Moteurs IA supportés, dans l'ordre d'essai de l'auto-détection.
+_MOTEURS = ("claude", "codex")
+
+
+def _binaire(moteur: str) -> str:
+    """Nom de l'exécutable d'un moteur ('claude:opus' -> 'claude')."""
+    return moteur.split(":", 1)[0]
+
+
+def _moteur_choisi() -> str | None:
+    """Moteur IA à utiliser. La variable ATELIER_AI le force (si l'exécutable est
+    présent) ; sinon on prend le premier moteur connu trouvé sur le PATH. Renvoie
+    None si aucun moteur n'est disponible : l'atelier marche alors sans tuteur."""
+    force = os.environ.get("ATELIER_AI")
+    if force:
+        return force if shutil.which(_binaire(force)) else None
+    for m in _MOTEURS:
+        if shutil.which(m):
+            return m
+    return None
+
+
+def _commande(moteur: str, prompt: str) -> list[str]:
+    """Commande d'un tour non interactif, propre à chaque moteur.
+    claude : 'claude -p <prompt>'. codex : 'codex exec <prompt>' avec
+    --skip-git-repo-check (l'atelier ne tourne pas dans un dépôt git) ; le bac à
+    sable de codex reste en lecture seule, le tuteur ne fait que répondre."""
+    binaire = _binaire(moteur)
+    if binaire == "codex":
+        return ["codex", "exec", "--skip-git-repo-check", prompt]
+    return [binaire, "-p", prompt]
+
+
 def moteur_disponible() -> bool:
-    moteur = os.environ.get("ATELIER_AI", "claude")
-    binaire = moteur.split(":", 1)[0]
-    return shutil.which(binaire) is not None
+    return _moteur_choisi() is not None
 
 
 def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int) -> str:
-    if not moteur_disponible():
+    moteur = _moteur_choisi()
+    if moteur is None:
         return "Moteur IA indisponible. Le reste de l'atelier marche, compiler, tester, lancer."
     prompt = construire_prompt(etape, code_eleve, question, niveau)
-    moteur = os.environ.get("ATELIER_AI", "claude")
     try:
-        r = subprocess.run([moteur.split(":", 1)[0], "-p", prompt],
-                           capture_output=True, text=True, timeout=60)
+        # stdin fermé : sinon 'codex exec' lit stdin et attend son EOF, ce qui bloque
+        # quand le tuteur est lancé en sous-processus sans console (fenêtre PyQt).
+        r = subprocess.run(_commande(moteur, prompt),
+                           stdin=subprocess.DEVNULL,
+                           capture_output=True, text=True, timeout=120)
     except subprocess.TimeoutExpired:
         return "Le moteur IA n'a pas répondu à temps."
     # moteur trouvé mais en échec au runtime (auth, quota), on ne renvoie pas son

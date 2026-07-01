@@ -1,5 +1,9 @@
+import os
 import unittest
+from unittest import mock
+
 import chemins
+import tuteur_ia
 from modele_etape import charger_etape
 from tuteur_ia import construire_prompt, filtre_solution
 
@@ -60,6 +64,46 @@ class TestTuteur(unittest.TestCase):
         self.assertNotIn("return a*x+b;", filtre)
         self.assertIn("Essaie", filtre)
         self.assertIn("C'est tout", filtre)
+
+
+class TestMoteur(unittest.TestCase):
+    """Sélection du moteur IA et construction de la commande selon le moteur."""
+
+    def test_commande_claude_utilise_p(self):
+        self.assertEqual(tuteur_ia._commande("claude", "PROMPT"),
+                         ["claude", "-p", "PROMPT"])
+
+    def test_commande_codex_utilise_exec(self):
+        self.assertEqual(tuteur_ia._commande("codex", "PROMPT"),
+                         ["codex", "exec", "--skip-git-repo-check", "PROMPT"])
+
+    def test_atelier_ai_force_le_moteur_si_present(self):
+        with mock.patch.dict(os.environ, {"ATELIER_AI": "codex"}, clear=True), \
+             mock.patch("tuteur_ia.shutil.which", lambda b: "/x/" + b):
+            self.assertEqual(tuteur_ia._moteur_choisi(), "codex")
+
+    def test_atelier_ai_ignore_si_absent_du_path(self):
+        with mock.patch.dict(os.environ, {"ATELIER_AI": "codex"}, clear=True), \
+             mock.patch("tuteur_ia.shutil.which", lambda b: None):
+            self.assertIsNone(tuteur_ia._moteur_choisi())
+
+    def test_autodetection_prefere_claude(self):
+        with mock.patch.dict(os.environ, {}, clear=True), \
+             mock.patch("tuteur_ia.shutil.which",
+                        lambda b: "/x/" + b if b in ("claude", "codex") else None):
+            self.assertEqual(tuteur_ia._moteur_choisi(), "claude")
+
+    def test_autodetection_retombe_sur_codex(self):
+        with mock.patch.dict(os.environ, {}, clear=True), \
+             mock.patch("tuteur_ia.shutil.which",
+                        lambda b: "/x/codex" if b == "codex" else None):
+            self.assertEqual(tuteur_ia._moteur_choisi(), "codex")
+
+    def test_aucun_moteur_disponible(self):
+        with mock.patch.dict(os.environ, {}, clear=True), \
+             mock.patch("tuteur_ia.shutil.which", lambda b: None):
+            self.assertIsNone(tuteur_ia._moteur_choisi())
+            self.assertFalse(tuteur_ia.moteur_disponible())
 
 
 if __name__ == "__main__":
