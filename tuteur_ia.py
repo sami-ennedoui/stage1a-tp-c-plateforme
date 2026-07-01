@@ -24,7 +24,19 @@ _CONSIGNE_CRAN = {
 }
 
 
-def construire_prompt(etape: Etape, code_eleve: str, question: str, niveau: int) -> str:
+def _bloc_historique(historique) -> str:
+    """Rend les échanges précédents de l'exercice sous forme de texte injectable dans le
+    prompt, pour que le tuteur suive le fil (mémoire gérée par l'appli, cf. approche B).
+    historique est une liste de couples (question, réponse). Vide -> chaîne vide."""
+    if not historique:
+        return ""
+    tours = "\n\n".join(f"Étudiant : {q}\nToi (tuteur) : {r}" for q, r in historique)
+    return ("Échanges précédents dans cet exercice (garde le fil, ne te répète pas, "
+            "tiens compte de ce que l'étudiant a déjà répondu) :\n" + tours + "\n\n")
+
+
+def construire_prompt(etape: Etape, code_eleve: str, question: str, niveau: int,
+                      historique=None) -> str:
     enonce = (etape.dossier / "enonce.md").read_text(encoding="utf-8")
     return (
         "Tu es un tuteur de programmation C pour un étudiant débutant. Tu n'es jamais "
@@ -32,6 +44,7 @@ def construire_prompt(etape: Etape, code_eleve: str, question: str, niveau: int)
         f"{_CONSIGNE_CRAN.get(niveau, _CONSIGNE_CRAN[0])}\n\n"
         f"Énoncé de l'étape :\n{enonce}\n\n"
         f"Code actuel de l'étudiant :\n{code_eleve}\n\n"
+        f"{_bloc_historique(historique)}"
         f"Question de l'étudiant :\n{question}\n"
     )
 
@@ -116,11 +129,25 @@ def moteur_disponible() -> bool:
     return _moteur_choisi() is not None
 
 
-def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int) -> str:
+# Messages renvoyés quand l'aide n'a pas pu être produite. Exposés pour que l'appelant
+# (la fenêtre) sache ne pas les mémoriser dans l'historique de conversation.
+ERR_INDISPONIBLE = "Moteur IA indisponible. Le reste de l'atelier marche, compiler, tester, lancer."
+ERR_TIMEOUT = "Le moteur IA n'a pas répondu à temps."
+ERR_RUNTIME = "Le moteur IA a renvoyé une erreur. Réessaie, ou demande à ton tuteur."
+_ERREURS = {ERR_INDISPONIBLE, ERR_TIMEOUT, ERR_RUNTIME}
+
+
+def reponse_est_erreur(reponse: str) -> bool:
+    """Vrai si la réponse est un message d'échec du tuteur (à ne pas mémoriser)."""
+    return reponse in _ERREURS
+
+
+def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int,
+                  historique=None) -> str:
     moteur = _moteur_choisi()
     if moteur is None:
-        return "Moteur IA indisponible. Le reste de l'atelier marche, compiler, tester, lancer."
-    prompt = construire_prompt(etape, code_eleve, question, niveau)
+        return ERR_INDISPONIBLE
+    prompt = construire_prompt(etape, code_eleve, question, niveau, historique)
     try:
         # stdin fermé : sinon 'codex exec' lit stdin et attend son EOF, ce qui bloque
         # quand le tuteur est lancé en sous-processus sans console (fenêtre PyQt).
@@ -132,11 +159,11 @@ def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int) -> 
                            capture_output=True, encoding="utf-8", errors="replace",
                            creationflags=_SANS_FENETRE, timeout=120)
     except subprocess.TimeoutExpired:
-        return "Le moteur IA n'a pas répondu à temps."
+        return ERR_TIMEOUT
     # moteur trouvé mais en échec au runtime (auth, quota), on ne renvoie pas son
     # erreur brute comme si c'était une aide, et on ne la passe pas au filtre.
     if r.returncode != 0 and not r.stdout.strip():
-        return "Le moteur IA a renvoyé une erreur. Réessaie, ou demande à ton tuteur."
+        return ERR_RUNTIME
     reponse = r.stdout.strip() or r.stderr.strip()
     corrige = _chemin_corrige(etape).read_text(encoding="utf-8")
     return filtre_solution(reponse, corrige)

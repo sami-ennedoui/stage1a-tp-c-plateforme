@@ -29,6 +29,23 @@ class TestTuteur(unittest.TestCase):
         p = construire_prompt(self.etape, "code", "comment faire ?", 3)
         self.assertIn("libre", p.lower())
 
+    def test_prompt_sans_historique_n_en_parle_pas(self):
+        p = construire_prompt(self.etape, "code", "ma question", 0)
+        self.assertNotIn("Échanges précédents", p)
+
+    def test_prompt_injecte_l_historique(self):
+        hist = [("pourquoi 320 donne 64 ?", "reflechis au nombre de bits")]
+        p = construire_prompt(self.etape, "code", "et 256 alors ?", 0, historique=hist)
+        self.assertIn("Échanges précédents", p)
+        self.assertIn("pourquoi 320 donne 64 ?", p)
+        self.assertIn("reflechis au nombre de bits", p)
+        self.assertIn("et 256 alors ?", p)      # la question courante reste présente
+
+    def test_reponse_est_erreur(self):
+        self.assertTrue(tuteur_ia.reponse_est_erreur(tuteur_ia.ERR_TIMEOUT))
+        self.assertTrue(tuteur_ia.reponse_est_erreur(tuteur_ia.ERR_INDISPONIBLE))
+        self.assertFalse(tuteur_ia.reponse_est_erreur("Voici une vraie piste d'aide."))
+
     def test_filtre_masque_la_ligne_solution(self):
         corrige = "void f(int* p){\n    *p_etat = MENU_PARAMETRAGE;\n}\n"
         reponse = ("Voici la correction :\n"

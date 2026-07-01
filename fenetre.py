@@ -32,9 +32,9 @@ class FilTuteur(QThread):
     """Appel IA dans un fil séparé pour ne pas figer la fenêtre."""
     repondu = pyqtSignal(str)
 
-    def __init__(self, etape, code, question, niveau):
+    def __init__(self, etape, code, question, niveau, historique=None):
         super().__init__()
-        self._args = (etape, code, question, niveau)
+        self._args = (etape, code, question, niveau, historique)
 
     def run(self):
         self.repondu.emit(tuteur_ia.demander_aide(*self._args))
@@ -60,6 +60,9 @@ class Fenetre(QMainWindow):
         # On part du squelette à trous. En démo on repart propre à chaque lancement.
         self.espace = None
         self._etape_courante = None      # étape dont l'éditeur est affiché, pour la sauvegarde
+        # mémoire du tuteur : les (question, réponse) de l'exercice courant, remises à zéro
+        # quand on change d'exercice, pour que le tuteur suive le fil d'un échange
+        self._historique_tuteur = []
         if self.mode == "projet":
             self.espace = EspaceProjet(chemins.PROJET_SQUELETTE, chemins.ESPACE_SESSION)
             if demo:
@@ -208,6 +211,7 @@ class Fenetre(QMainWindow):
 
     def _changer_etape_isole(self, ligne):
         self.etape = self.parcours[ligne]
+        self._historique_tuteur = []     # nouvel exercice, le tuteur repart sans historique
         self.enonce.setMarkdown((self.etape.dossier / "enonce.md").read_text(encoding="utf-8"))
         self.editeur.setPlainText((self.etape.dossier / "starter.c").read_text(encoding="utf-8"))
         self.editeur_test.setPlainText("")
@@ -226,6 +230,7 @@ class Fenetre(QMainWindow):
                                        self.editeur.toPlainText())
         self.etape = self.parcours[ligne]
         self._etape_courante = self.etape
+        self._historique_tuteur = []     # nouvel exercice, le tuteur repart sans historique
         self.enonce.setMarkdown((self.etape.dossier / "enonce.md").read_text(encoding="utf-8"))
         # le code affiché vient de la copie de travail, l'étudiant retrouve son dernier état
         self.editeur.setPlainText(self.espace.lire_fichier(self.etape.fichier_edite))
@@ -355,9 +360,16 @@ class Fenetre(QMainWindow):
             return
         niveau = min(self.niveau, self._cran_dispo())
         self.reponse_tuteur.setPlainText("Le tuteur réfléchit…")
-        self._fil = FilTuteur(self.etape, self.editeur.toPlainText(), question, niveau)
-        self._fil.repondu.connect(self.reponse_tuteur.setPlainText)
+        historique = list(self._historique_tuteur)   # instantané passé au fil
+        self._fil = FilTuteur(self.etape, self.editeur.toPlainText(), question, niveau, historique)
+        self._fil.repondu.connect(lambda rep, q=question: self._tuteur_a_repondu(q, rep))
         self._fil.start()
+
+    def _tuteur_a_repondu(self, question, reponse):
+        self.reponse_tuteur.setPlainText(reponse)
+        # on ne mémorise que les vraies réponses, pas les messages d'erreur du moteur
+        if not tuteur_ia.reponse_est_erreur(reponse):
+            self._historique_tuteur.append((question, reponse))
 
 
     def _demarrer_lsp(self) -> None:
