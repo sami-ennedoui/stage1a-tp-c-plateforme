@@ -16,3 +16,6 @@ espace_session/
 
 # artefact ecrit par l exercice 10 (ecriture fichier) quand sa porte tourne
 resultats.txt
+
+# traces de session ecrites par journal_session.py (donnees de demo, hors depot)
+journaux/
