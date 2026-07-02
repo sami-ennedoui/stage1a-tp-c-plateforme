@@ -34,4 +34,8 @@ FIN Algorithme
 
 Dans le programme principal, initialise `a` à 4, `b` à 3 et `x` à 2. Appelle la fonction, récupère la valeur rendue dans une variable, puis affiche l'ordonnée. Avec ces valeurs, tu obtiens `y = 4 * 2 + 3 = 11`.
 
-La porte vérifie que le programme affiche l'ordonnée `y = 11.000000` pour `x = 2.000000`.
+La porte vérifie l'ordonnée affichée. Ton programme doit afficher exactement cette ligne (recopie-la telle quelle) :
+
+```
+pour x = 2.000000 vaut y = 11.000000
+```

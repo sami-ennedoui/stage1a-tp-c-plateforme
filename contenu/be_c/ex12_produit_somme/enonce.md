@@ -34,4 +34,9 @@ FIN Algorithme
 
 Dans le programme principal, initialise `a` à 3 et `b` à 2, puis appelle la procédure. Les deux paramètres sont passés par valeur, la procédure reçoit une copie des nombres. Avec ces valeurs, la somme vaut 5 et le produit vaut 6.
 
-La porte vérifie que le programme affiche la somme `a+b = 5` et le produit `a*b = 6`.
+La porte vérifie que le programme affiche la somme et le produit. Ton programme doit afficher exactement ces deux lignes (recopie les libellés tels quels) :
+
+```
+La somme de a+b = 5
+Le produit de a*b = 6
+```

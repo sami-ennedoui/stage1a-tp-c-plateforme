@@ -12,4 +12,11 @@ Quand la bonne valeur est trouvée, le programme sort de la boucle et affiche le
 
 Le jeu est interactif. La porte lui envoie les propositions 50, puis 75, puis 56. Avec un nombre caché à 56, cela donne d'abord `C'est plus grand`, puis `C'est plus petit`, puis la victoire en 3 essais.
 
-La porte vérifie que le programme affiche bien le titre, les deux indices `C'est plus grand` et `C'est plus petit` dans le bon ordre, et qu'il annonce la victoire en 3 essais.
+La porte vérifie le titre, les deux indices dans le bon ordre et l'annonce de la victoire. Ta sortie doit contenir exactement ces lignes (recopie-les telles quelles ; le reste est libre) :
+
+```
+Devinez un nombre entre 0 et 100
+C'est plus grand
+C'est plus petit
+56 en 3 essais
+```

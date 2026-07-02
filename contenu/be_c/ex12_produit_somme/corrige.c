@@ -20,7 +20,7 @@ void somme_produit(int a, int b)
     produit = a * b;
 
     printf("La somme de a+b = %d\n", somme);
-    printf("La produit de a*b = %d\n", produit);
+    printf("Le produit de a*b = %d\n", produit);
 }
 
 /* programme principal

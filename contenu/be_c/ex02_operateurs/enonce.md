@@ -10,4 +10,11 @@
 
 Sers-toi de `printf` avec `%d` pour afficher chaque résultat.
 
-La porte vérifie les résultats bit à bit (`a & b`, `a | b`, `a ^ b`) et le `!a`.
+La porte vérifie les résultats bit à bit (`a & b`, `a | b`, `a ^ b`) et le `!a`. Ton programme doit afficher exactement ces lignes (recopie les libellés tels quels) :
+
+```
+a & b = 17
+a | b = 21
+a ^ b = 4
+!a = 0
+```

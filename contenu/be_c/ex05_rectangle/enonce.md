@@ -8,4 +8,15 @@ Le principe est celui de deux boucles imbriquées. Une première boucle `for` pa
 
 Le programme est interactif. La porte fournit à ta place le nombre de lignes et le nombre de colonnes. Elle demande 6 lignes et 10 colonnes, comme dans l'exemple du slide, ce qui doit produire six lignes de dix tirets.
 
-La porte vérifie que le programme demande le nombre de lignes puis le nombre de colonnes, et qu'il affiche bien six lignes de dix tirets les unes sous les autres.
+La porte vérifie les deux invites puis le rectangle. Ta sortie doit contenir exactement ces libellés d'invite, puis six lignes de dix tirets (recopie les invites telles quelles) :
+
+```
+Nombre de lignes ?
+Nombre de colonnes ?
+----------
+----------
+----------
+----------
+----------
+----------
+```

@@ -11,4 +11,10 @@ Comme pour un tableau d'entiers, le nom du tableau vaut l'adresse de sa premièr
 
 Dans la plateforme, la saisie clavier est fixée à l'avance, le programme reçoit le mot `Hello`.
 
-La porte vérifie que la chaîne de départ est bien `Salut` et que la chaîne saisie, `Hello`, est bien relue et réaffichée.
+La porte vérifie l'affichage de la chaîne de départ puis de la chaîne saisie. Ta sortie doit contenir exactement ces lignes (recopie les libellés tels quels ; le reste, invites et saisie, est libre) :
+
+```
+La chaine contient = Salut
+Veuillez entrer une nouvelle chaine
+La nouvelle chaine contient = Hello
+```

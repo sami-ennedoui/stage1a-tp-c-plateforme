@@ -12,4 +12,10 @@ Le troisième point est un avertissement. En C rien ne vérifie que tu restes da
 
 Les adresses affichées changent à chaque exécution, c'est normal, seule leur progression compte.
 
-La porte vérifie que la case 0 vaut 1, que la case 4 vaut 20, et que le programme signale le danger de l'écriture hors des bornes.
+La porte vérifie la valeur de la case 0, celle de la case 4, et le signalement du danger. Ta sortie doit contenir exactement ces lignes (les adresses affichées, elles, sont libres) :
+
+```
+Valeur de la case [0] = 1
+Valeur de la case [4] = 20
+DANGER
+```

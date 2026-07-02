@@ -8,6 +8,6 @@
   "fichier_edite": "programme.c",
   "sortie_attendue": [
     "La somme de a+b = 5",
-    "La produit de a*b = 6"
+    "Le produit de a*b = 6"
   ]
 }

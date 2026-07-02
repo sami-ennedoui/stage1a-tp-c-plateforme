@@ -16,4 +16,12 @@ Si l'utilisateur répond par un choix non proposé, afficher un message d'erreur
 
 Le programme est interactif. La porte joue un scénario complet à ta place. Elle choisit d'abord de modifier a et lui donne la valeur 9.9, puis demande à continuer. Elle tape ensuite le choix 5, qui n'est pas proposé, pour déclencher le message d'erreur. Elle continue, modifie b avec la valeur 8.8, puis répond qu'elle ne veut plus rien modifier, ce qui arrête la boucle.
 
-La porte vérifie que le programme affiche les valeurs de départ `a = 1.5 - b = 0.5 - c = 0.6`, que la modification de a donne bien `a = 9.9`, que le choix invalide déclenche le message `Erreur : ce choix n'est pas propose.`, que la modification de b donne `a = 9.9 - b = 8.8 - c = 0.6`, et que le programme se termine par `Fin du programme.`.
+La porte suit le scénario complet. Ta sortie doit contenir exactement ces lignes (recopie les libellés tels quels, notamment le préfixe `Nouvelles valeurs :` ; le reste, menu et invites, est libre) :
+
+```
+a = 1.5 - b = 0.5 - c = 0.6
+Nouvelles valeurs : a = 9.9 - b = 0.5 - c = 0.6
+Erreur : ce choix n'est pas propose.
+Nouvelles valeurs : a = 9.9 - b = 8.8 - c = 0.6
+Fin du programme.
+```
