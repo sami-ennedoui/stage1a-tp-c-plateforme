@@ -68,7 +68,10 @@ def main():
     import theme
     app = QApplication(sys.argv)
     theme.appliquer(app)
-    f = fenetre.Fenetre(demo="--demo" in sys.argv, parcours_nom=_parcours_choisi())
+    # tracer=True : session réelle, on écrit le journal d'événements (journaux/).
+    # Le mode démo et le smoketest restent muets (voir Fenetre).
+    f = fenetre.Fenetre(demo="--demo" in sys.argv, parcours_nom=_parcours_choisi(),
+                        tracer=True)
     f.resize(1280, 800)
     f.show()
     sys.exit(app.exec())

@@ -102,6 +102,12 @@ def _chemin_corrige(etape: Etape) -> Path:
     return etape.dossier / "corrige.c"
 
 
+# Marque insérée à la place d'une ligne de solution reproduite. Exposée pour que
+# l'appli sache, après coup, si le filtre a réellement masqué quelque chose (signal
+# de recherche : mesure si la bride sert face à un chercheur de solution).
+MARQUE_MASQUE = "… (ligne masquée par le filtre anti-solution) …"
+
+
 def filtre_solution(reponse: str, corrige: str) -> str:
     """Masque dans la réponse les lignes qui reproduisent une ligne du corrigé,
     laisse passer tout le reste."""
@@ -110,10 +116,15 @@ def filtre_solution(reponse: str, corrige: str) -> str:
     for ligne in reponse.splitlines():
         cle = _cle(ligne)
         if cle is not None and cle in cibles:
-            sortie.append("    … (ligne masquée par le filtre anti-solution) …")
+            sortie.append("    " + MARQUE_MASQUE)
         else:
             sortie.append(ligne)
     return "\n".join(sortie)
+
+
+def filtre_a_masque(reponse: str) -> bool:
+    """Vrai si `reponse` (déjà passée au filtre) contient au moins une ligne masquée."""
+    return MARQUE_MASQUE in reponse
 
 
 # Moteurs IA supportés, dans l'ordre d'essai de l'auto-détection.

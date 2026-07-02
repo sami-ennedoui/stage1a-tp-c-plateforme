@@ -18,6 +18,7 @@ import lsp_clangd
 import progression
 import tuteur_ia
 import theme
+from journal_session import Journal, JournalMuet
 from espace_projet import EspaceProjet
 from modele_etape import charger_parcours_complet
 
@@ -54,7 +55,7 @@ class FilGeneration(QThread):
 
 
 class Fenetre(QMainWindow):
-    def __init__(self, demo=False, parcours_nom="hybride"):
+    def __init__(self, demo=False, parcours_nom="hybride", tracer=False):
         super().__init__()
         self.demo = demo
         self.parcours_nom = parcours_nom
@@ -68,6 +69,17 @@ class Fenetre(QMainWindow):
         if demo:
             titre += " (mode démo)"
         self.setWindowTitle(titre)
+
+        # Journal de session (instrumentation pédagogique). On ne trace qu'en session
+        # réelle : jamais en démo (le tuteur écrit alors le code) ni au smoketest/tests,
+        # où le journal reste muet (mêmes méthodes, n'écrit rien). Voir journal_session.py.
+        self._trace_active = tracer and not demo
+        if self._trace_active:
+            self.journal = Journal(meta={"parcours": parcours_nom, "mode": self.mode,
+                                         "moteur": tuteur_ia._moteur_choisi()})
+        else:
+            self.journal = JournalMuet()
+        self._exo_valide_courant = False        # l'exo affiché est-il déjà validé (pour l'inactivité)
 
         # parcours projet : une copie de travail vivante, remplie étape par étape.
         # On part du squelette à trous. En démo on repart propre à chaque lancement.
@@ -137,6 +149,13 @@ class Fenetre(QMainWindow):
         self._timer_lsp.setSingleShot(True)
         self._timer_lsp.setInterval(400)
         self._timer_lsp.timeout.connect(self._envoyer_code_a_clangd)
+        # veille : si l'étudiant ne fait rien pendant 90 s sur un exo non validé, on le
+        # note (rend le profil « passif » visible). Le timer est remis à zéro à chaque
+        # action (frappe, test, demande d'aide) via _reveil.
+        self._timer_inactif = QTimer(self)
+        self._timer_inactif.setSingleShot(True)
+        self._timer_inactif.setInterval(90000)
+        self._timer_inactif.timeout.connect(self._sur_inactivite)
         self.label_lsp = QLabel()
         self.label_lsp.setVisible(False)
         self.label_lsp.setObjectName("avertissement_lsp")
@@ -216,9 +235,26 @@ class Fenetre(QMainWindow):
 
         # anti-rebond : textChanged déclenche le timer, pas l'envoi direct
         self.editeur.textChanged.connect(self._timer_lsp.start)
+        # toute frappe compte comme une activité : réarme le compteur d'inactivité
+        self.editeur.textChanged.connect(self._reveil)
 
         self._remplir_liste()
         self.liste.setCurrentRow(0)
+        if self._trace_active:
+            self._timer_inactif.start()
+
+    def _reveil(self):
+        """Remet à zéro le compteur d'inactivité : appelé à chaque action de l'étudiant."""
+        if self._trace_active:
+            self._timer_inactif.start()
+
+    def _sur_inactivite(self):
+        """90 s sans action sur un exercice non validé : on le trace, puis on ré-arme
+        pour capter une inactivité prolongée en plusieurs tranches."""
+        etape = getattr(self, "etape", None)
+        if etape is not None and not self._exo_valide_courant:
+            self.journal.event("inactivite", exo=etape.id, secondes=90)
+        self._timer_inactif.start()
 
     def _construire_barre_affichage(self):
         """Barre en haut pour montrer ou cacher les panneaux Parcours et Tuteur, afin
@@ -271,6 +307,9 @@ class Fenetre(QMainWindow):
     def _changer_etape_isole(self, ligne):
         self.etape = self.parcours[ligne]
         self._historique_tuteur = []     # nouvel exercice, le tuteur repart sans historique
+        self._exo_valide_courant = self.etape.id in self.prog.etapes_faites
+        self.journal.event("exo_ouvert", exo=self.etape.id)
+        self._reveil()
         self._maj_enonce()
         self.editeur.setPlainText((self.etape.dossier / "starter.c").read_text(encoding="utf-8"))
         self.editeur_test.setPlainText("")
@@ -290,6 +329,9 @@ class Fenetre(QMainWindow):
         self.etape = self.parcours[ligne]
         self._etape_courante = self.etape
         self._historique_tuteur = []     # nouvel exercice, le tuteur repart sans historique
+        self._exo_valide_courant = self.etape.id in self.prog.etapes_faites
+        self.journal.event("exo_ouvert", exo=self.etape.id)
+        self._reveil()
         self.enonce.setMarkdown((self.etape.dossier / "enonce.md").read_text(encoding="utf-8"))
         # le code affiché vient de la copie de travail, l'étudiant retrouve son dernier état
         self.editeur.setPlainText(self.espace.lire_fichier(self.etape.fichier_edite))
@@ -354,6 +396,10 @@ class Fenetre(QMainWindow):
         self._afficher_porte(ok_global, "\n\n".join(morceaux))
 
     def _afficher_porte(self, ok, sortie, valider=True):
+        self.journal.event("test_porte", exo=self.etape.id, ok=bool(ok))
+        self._reveil()
+        if ok and valider:
+            self._exo_valide_courant = True
         couleur = theme.ACCENT if ok else theme.ROUGE
         titre = "PORTE OUVERTE" if ok else "PORTE FERMÉE"
         self.console.setHtml(
@@ -461,6 +507,11 @@ class Fenetre(QMainWindow):
         if reponse is None:
             return
         question, niveau, joindre_code, joindre_console = reponse
+        self._cran_derniere_aide = niveau
+        self.journal.event("tuteur_demande", exo=self.etape.id, cran=niveau,
+                           longueur_question=len(question),
+                           joint_code=joindre_code, joint_console=joindre_console)
+        self._reveil()
         self.reponse_tuteur.setPlainText("Le tuteur réfléchit…")
         code = self.editeur.toPlainText() if joindre_code else ""
         console = self.console.toPlainText() if joindre_console else ""
@@ -471,8 +522,14 @@ class Fenetre(QMainWindow):
 
     def _tuteur_a_repondu(self, question, reponse):
         self.reponse_tuteur.setPlainText(reponse)
+        erreur = tuteur_ia.reponse_est_erreur(reponse)
+        self.journal.event("tuteur_reponse", exo=self.etape.id,
+                           cran=getattr(self, "_cran_derniere_aide", None),
+                           longueur_reponse=len(reponse),
+                           filtre_a_masque=tuteur_ia.filtre_a_masque(reponse),
+                           erreur=erreur)
         # on ne mémorise que les vraies réponses, pas les messages d'erreur du moteur
-        if not tuteur_ia.reponse_est_erreur(reponse):
+        if not erreur:
             self._historique_tuteur.append((question, reponse))
 
     def _dialogue_generation(self):
@@ -504,6 +561,7 @@ class Fenetre(QMainWindow):
         variante = self._dialogue_generation()
         if variante is None:
             return
+        self.journal.event("tuteur_ecrit_code", exo=self.etape.id, variante=variante)
         self.console.setPlainText("Le tuteur écrit le code…")
         self._fil_gen = FilGeneration(self.etape, variante)
         self._fil_gen.genere.connect(self._code_genere)
@@ -545,7 +603,9 @@ class Fenetre(QMainWindow):
         lsp_clangd.appliquer_diagnostics(self.editeur, diagnostics)
 
     def closeEvent(self, event) -> None:
-        """Sauve le travail projet courant, puis arrête proprement le client LSP."""
+        """Sauve le travail projet courant, clôt le journal, puis arrête le client LSP."""
+        self._timer_inactif.stop()
+        self.journal.fin()
         if self.mode == "projet" and self._etape_courante is not None:
             self.espace.ecrire_fichier(self._etape_courante.fichier_edite,
                                        self.editeur.toPlainText())
