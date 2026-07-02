@@ -10,7 +10,7 @@ from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QLi
                              QListWidgetItem, QDialog, QLineEdit, QCheckBox,
                              QDialogButtonBox, QComboBox)
 from PyQt6.QtCore import Qt, QThread, QTimer, pyqtSignal
-from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QFont, QTextCursor
 
 import chemins
 import coloration
@@ -126,6 +126,16 @@ class Fenetre(QMainWindow):
             "h1 { color: %s; } "
             "p { margin-bottom: 6px; }" % theme.ACCENT
         )
+        # badge persistant du niveau caché : reste affiché tant que l'exercice validé a un
+        # approfondissement (contrairement à la note console, éphémère). Un faux débutant
+        # pressé ne peut pas le manquer : il est au-dessus de la ligne de flottaison.
+        self.badge_appro = QLabel("▼  NIVEAU CACHÉ DÉBLOQUÉ  —  un approfondissement est ajouté sous l'énoncé")
+        self.badge_appro.setObjectName("badge_appro")
+        self.badge_appro.setStyleSheet(
+            "#badge_appro { background:%s; color:%s; font-weight:bold; "
+            "padding:6px 10px; border-radius:4px; }" % (theme.ACCENT, theme.FOND)
+        )
+        self.badge_appro.setVisible(False)
         self.editeur = QPlainTextEdit()
         self.editeur_test = QPlainTextEdit()
         self.onglets = QTabWidget()
@@ -201,6 +211,7 @@ class Fenetre(QMainWindow):
         centre = QVBoxLayout()
         centre.setSpacing(6)
         centre.addWidget(_titre("ÉNONCÉ"))
+        centre.addWidget(self.badge_appro)
         centre.addWidget(self.enonce, 2)
         centre.addWidget(_titre("ATELIER"))
         centre.addWidget(self.onglets, 5)
@@ -254,15 +265,17 @@ class Fenetre(QMainWindow):
             self._timer_inactif.start()
 
     def _sur_inactivite(self):
-        """90 s sans action sur un exercice non validé : on le trace ET on montre un
-        coup de pouce visible (sinon l'étudiant bloqué reste sans signal à l'écran), puis
-        on ré-arme pour capter une inactivité prolongée en plusieurs tranches."""
+        """90 s sans action sur un exercice non validé : on le trace au journal (rend le
+        profil « passif » visible pour un enseignant), puis on ré-arme pour capter une
+        inactivité prolongée en plusieurs tranches.
+
+        On ne pousse PAS de coup de pouce à l'écran : décision de conception fondée sur la
+        biblio (Prather 2024 « widening gap » ; Shen-Tamkin, aide tirée >> aide poussée).
+        L'aide reste tirée par l'étudiant, jamais poussée vers lui. On garde seulement la
+        mesure au journal."""
         etape = getattr(self, "etape", None)
         if etape is not None and not self._exo_valide_courant:
             self.journal.event("inactivite", exo=etape.id, secondes=90)
-            self.statusBar().showMessage(
-                "Bloqué ? Clique « Demander de l'aide » pour un indice, "
-                "ou relis l'énoncé en haut.", 20000)
         self._timer_inactif.start()
 
     def _construire_barre_affichage(self):
@@ -309,9 +322,13 @@ class Fenetre(QMainWindow):
         débloqué une fois la porte de base franchie."""
         md = (self.etape.dossier / "enonce.md").read_text(encoding="utf-8")
         appro = self.etape.dossier / "approfondissement.md"
-        if appro.exists() and self.etape.id in self.prog.etapes_faites:
+        debloque = appro.exists() and self.etape.id in self.prog.etapes_faites
+        if debloque:
             md += "\n\n---\n\n" + appro.read_text(encoding="utf-8")
         self.enonce.setMarkdown(md)
+        # le badge reste affiché tant que l'exo validé a un approfondissement : signal
+        # persistant, corrigé à chaque changement d'exercice comme à la révélation.
+        self.badge_appro.setVisible(debloque)
 
     def _changer_etape_isole(self, ligne):
         self.etape = self.parcours[ligne]
@@ -432,11 +449,16 @@ class Fenetre(QMainWindow):
             self._remplir_liste()
             # niveau caché : révéler l'approfondissement dès que la porte de base passe
             if (self.etape.dossier / "approfondissement.md").exists():
-                self._maj_enonce()
+                self._maj_enonce()   # ajoute l'approfondissement et allume le badge persistant
+                # l'amener dans le champ de vision : il est sous la ligne de flottaison, un
+                # faux débutant pressé ne scrollerait pas jusqu'en bas de lui-même.
+                self.enonce.moveCursor(QTextCursor.MoveOperation.Start)
+                if self.enonce.find("Approfondissement"):
+                    self.enonce.ensureCursorVisible()
                 self.console.append(
-                    f'<span style="color:{theme.BLEU};font-weight:bold;">'
+                    f'<span style="color:{theme.ACCENT};font-weight:bold;">'
                     "Niveau caché débloqué : un approfondissement est apparu sous "
-                    "l'énoncé.</span>")
+                    "l'énoncé (voir le bandeau vert).</span>")
 
     def _lancer_jeu(self):
         if self.mode == "projet":

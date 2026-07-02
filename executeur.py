@@ -17,6 +17,27 @@ def _nom_binaire(base: str) -> str:
     return base + ".exe" if os.name == "nt" else base
 
 
+def _masquer_chemin_temp(texte: str, dossier: str) -> str:
+    """Retire le chemin absolu du dossier temporaire des diagnostics du compilateur.
+
+    Deux raisons : ce chemin (par ex. C:\\Users\\<compte>\\AppData\\Local\\Temp\\...) fait
+    fuiter le nom de compte Windows de l'utilisateur dans chaque message d'erreur, et il
+    est long et intimidant pour un débutant. On ne garde que le nom de fichier, donc gcc
+    affiche « programme.c:6:10: error: ... » au lieu du chemin complet. On couvre les trois
+    formes de séparateur car gcc (MinGW) peut renvoyer le chemin avec \\ ou /.
+
+    On retire d'abord le dossier précis (laisse juste « programme.c »), puis, en repli, la
+    racine temp du système : ainsi un fichier source écrit dans un autre dossier temp par
+    l'appelant (test_eleve.c, soumission.c...) perd aussi le préfixe qui contient le nom de
+    compte, même si son dossier exact n'est pas celui passé ici."""
+    prefixes = [dossier + os.sep, dossier + "\\", dossier + "/"]
+    racine_temp = tempfile.gettempdir()
+    prefixes += [racine_temp + os.sep, racine_temp + "\\", racine_temp + "/"]
+    for prefixe in prefixes:
+        texte = texte.replace(prefixe, "")
+    return texte
+
+
 # Sous Windows, l'appli est packagée sans console (--windowed). Lancer un programme
 # console (gcc, le binaire compilé) ferait alors clignoter une fenêtre cmd. Ce drapeau
 # la supprime. Vaut 0 hors Windows, où il est sans objet.
@@ -128,7 +149,7 @@ def _compiler_et_lancer(sources: list[Path], includes: list[Path],
         except FileNotFoundError:
             return _resultat_sans_gcc()
         if comp.returncode != 0:
-            return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
+            return Resultat(False, "Erreur de compilation :\n" + _masquer_chemin_temp(comp.stderr, d))
         try:
             run = subprocess.run([str(binaire)], capture_output=True, encoding="utf-8",
                                  errors="replace", creationflags=_SANS_FENETRE,
@@ -220,8 +241,9 @@ def construire_apercu(etape: Etape, code_eleve: str) -> tuple[Resultat, Path | N
     comp = subprocess.run(cmd, capture_output=True, encoding="utf-8",
                           errors="replace", creationflags=_SANS_FENETRE)
     if comp.returncode != 0:
+        message = _masquer_chemin_temp(comp.stderr, str(persistant))
         shutil.rmtree(persistant, ignore_errors=True)
-        return Resultat(False, "Erreur de compilation de l'aperçu :\n" + comp.stderr), None
+        return Resultat(False, "Erreur de compilation de l'aperçu :\n" + message), None
     return Resultat(True, "Aperçu construit."), binaire
 
 
@@ -269,7 +291,7 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
         except FileNotFoundError:
             return _resultat_sans_gcc()
         if comp.returncode != 0:
-            return Resultat(False, "Erreur de compilation :\n" + comp.stderr,
+            return Resultat(False, "Erreur de compilation :\n" + _masquer_chemin_temp(comp.stderr, d),
                             categorie="erreur_compilation")
         rc, sortie, delai, tronque = _executer_cape([str(binaire)], etape.entree or "", timeout=15)
         if delai:

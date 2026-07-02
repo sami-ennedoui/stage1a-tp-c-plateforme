@@ -28,9 +28,15 @@ Comment ca marche, exercice par exercice
 ----------------------------------------
   - Lis l'enonce en haut de la fenetre.
   - Ecris ton programme dans l'editeur.
-  - Clique sur "Compiler et tester". Si la porte s'ouvre, c'est gagne ;
-    sinon le message t'explique ce qui manque dans ta sortie.
+  - Clique sur "Compiler" pour voir les erreurs du compilateur (elles
+    pointent la ligne et la colonne exactes).
+  - Clique sur "Tester" pour franchir la porte : si elle s'ouvre, c'est
+    gagne ; sinon le message t'explique ce qui manque dans ta sortie.
 Les exercices sont independants : fais-les dans l'ordre que tu veux.
+
+Quand tu valides un exercice, un niveau cache peut se debloquer : un
+bandeau vert apparait sous le titre ENONCE et un approfondissement
+s'ajoute au bas de l'enonce (il va un peu plus loin que la consigne).
 
 Le tuteur IA (optionnel)
 ------------------------
