@@ -175,7 +175,7 @@ def reponse_est_erreur(reponse: str) -> bool:
 
 
 def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int,
-                  historique=None, console: str = "") -> str:
+                  historique=None, console: str = "", modele: str = "") -> str:
     moteur = _moteur_choisi()
     if moteur is None:
         return ERR_INDISPONIBLE
@@ -186,7 +186,7 @@ def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int,
         # encoding utf-8 : les moteurs répondent en UTF-8 ; sans ça la sortie serait
         # décodée dans l'encodage local (cp1252 sous Windows FR) et « cœur » deviendrait
         # « cÅ“ur ». creationflags : pas de fenêtre cmd qui clignote au clic.
-        r = subprocess.run(_commande(moteur, prompt),
+        r = subprocess.run(_commande(moteur, prompt, modele),
                            stdin=subprocess.DEVNULL,
                            capture_output=True, encoding="utf-8", errors="replace",
                            creationflags=_SANS_FENETRE, timeout=120)
