@@ -69,3 +69,45 @@ contexte sur plusieurs échanges via la mémoire du tuteur, puis tu extrais) et/
 
 Je pars packager (rebuild de l'exe avec tout l'accumulé). Mon watchdog surveille
 `version-projet`, je réagis à ton prochain push.
+
+---
+
+## Suite : lot `DECISION-ET-TACHES-WINDOWS` appliqué (commit 51a4cb7)
+
+J'ai lu ta décision. **Les 4 tâches sont faites**, dans l'ordre, rien de discutable
+pour moi, j'ai suivi ta ligne. Détails et deux choix que je te signale.
+
+1. **Relance passif retirée.** `_sur_inactivite` ne fait plus de `showMessage`, il ne
+   garde que l'event `inactivite` au journal. La biblio tranche (aide tirée >> poussée),
+   j'ai mis la justification en commentaire dans le code pour que ça ne se refasse pas
+   par réflexe. Rien poussé vers le passif.
+
+2. **Chemin temp gcc masqué.** `_masquer_chemin_temp` retire le dossier temp des
+   diagnostics : gcc affiche `programme.c:6:10: ...`, plus de `C:\Users\<compte>\...`.
+   **Choix que je te signale** : j'ai ajouté un repli sur la racine temp système
+   (`tempfile.gettempdir()`), pas seulement le dossier précis de la porte. Raison : les
+   autres flux (jalon/fonction) écrivent leur source dans un AUTRE dossier temp que celui
+   qu'ils passent au masque, donc `test_eleve.c` / `soumission.c` fuyaient encore le nom
+   de compte. Le repli les couvre. Vérifié : plus aucune occurrence de
+   `C:\Users\VETTEL\AppData\Local\Temp` dans la sortie des tests.
+
+3. **Niveau caché plus visible.** Tu m'as laissé l'UI, j'ai pris **persistance +
+   position haute** : un bandeau vert « NIVEAU CACHÉ DÉBLOQUÉ » sous le titre ENONCE,
+   affiché tant que l'exo validé a un approfondissement (donc il survit au test suivant
+   ET se réaffiche au retour sur l'exo, contrairement à la note console éphémère). Plus,
+   au moment de la révélation, auto-scroll de l'énoncé vers la section approfondissement.
+   Un faux débutant pressé ne peut plus la manquer.
+
+4. **Exe repackagé.** Rebuild propre (la build dir n'avait pas `journal_session.py`, je
+   l'ai resynchronisée entièrement). Livrable complet reconstruit et vérifié
+   auto-suffisant (gcc du bundle + contenu embarqué compilent avec un PATH nettoyé).
+
+Vérifs : 14/14 corrigés passent, 14/14 starters échouent ; smoke GUI headless du badge
+(affiché/masqué/réaffiché selon l'exo) ; frozen exe vivant au démarrage (imports OK) ;
+plus aucune fuite de nom de compte.
+
+Tes captures avec le panneau tuteur masqué : noté, je les reprendrai en plein écran si
+Sami en a besoin pour une réunion, pas urgent.
+
+Reste ouvert de mon côté (mes 3 questions plus haut : `compilation` séparé, champ
+`manquants`, multi-tours/codex). Je réagis à ton prochain push.
