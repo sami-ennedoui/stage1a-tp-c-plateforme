@@ -1,9 +1,12 @@
 @echo off
+REM Mode DEMO : tout est debloque et le bouton "Le tuteur ecrit le code" apparait
+REM (le tuteur redige un programme complet pour tester le correcteur). A NE PAS
+REM distribuer aux etudiants : le lanceur normal est lancer.bat.
 setlocal enableextensions
 cd /d "%~dp0"
 set "PATH=%~dp0w64devkit\bin;%PATH%"
 
-REM --- Tuteur IA (optionnel) : rend claude ou codex trouvable s'il est installe ---
+REM --- Tuteur IA (necessaire en demo pour la generation) ---
 if exist "%USERPROFILE%\.local\bin" set "PATH=%USERPROFILE%\.local\bin;%PATH%"
 if exist "%APPDATA%\npm" set "PATH=%APPDATA%\npm;%PATH%"
 if exist "%APPDATA%\Claude\claude-code" (
@@ -16,4 +19,4 @@ if exist "%APPDATA%\Claude\claude-code" (
 )
 :ia_ok
 
-start "" "%~dp0TP-C-perso.exe" --parcours be_c
+start "" "%~dp0TP-C-perso.exe" --demo --parcours be_c

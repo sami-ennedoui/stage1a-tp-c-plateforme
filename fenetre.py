@@ -41,6 +41,18 @@ class FilTuteur(QThread):
         self.repondu.emit(tuteur_ia.demander_aide(*self._args))
 
 
+class FilGeneration(QThread):
+    """Mode démo : le tuteur écrit le programme lui-même, dans un fil séparé."""
+    genere = pyqtSignal(str)
+
+    def __init__(self, etape, variante=""):
+        super().__init__()
+        self._args = (etape, variante)
+
+    def run(self):
+        self.genere.emit(tuteur_ia.generer_solution(*self._args))
+
+
 class Fenetre(QMainWindow):
     def __init__(self, demo=False, parcours_nom="hybride"):
         super().__init__()
@@ -140,17 +152,20 @@ class Fenetre(QMainWindow):
         b_tester.setObjectName("primaire")     # bouton d'action principal, accent vert
         self.b_jeu = QPushButton("Compiler et jouer" if self.mode == "projet" else "Lancer le jeu")
         b_aide = QPushButton("Demander de l'aide")
+        self.b_ecrire = QPushButton("Le tuteur écrit le code")
+        self.b_ecrire.setVisible(self.demo)      # bouton du mode démo seulement
         self.b_corrige = QPushButton("Charger le corrigé")
         self.b_corrige.setVisible(self.demo)     # bouton du mode démo seulement
         b_compiler.clicked.connect(self._compiler)
         b_tester.clicked.connect(self._tester)
         self.b_jeu.clicked.connect(self._lancer_jeu)
         b_aide.clicked.connect(self._demander_aide)
+        self.b_ecrire.clicked.connect(self._tuteur_ecrit_code)
         self.b_corrige.clicked.connect(self._charger_corrige)
 
         barre = QHBoxLayout()
         barre.setSpacing(8)
-        for b in (b_compiler, b_tester, self.b_jeu, b_aide, self.b_corrige):
+        for b in (b_compiler, b_tester, self.b_jeu, b_aide, self.b_ecrire, self.b_corrige):
             barre.addWidget(b)
         barre.addStretch(1)
 
@@ -439,6 +454,47 @@ class Fenetre(QMainWindow):
         # on ne mémorise que les vraies réponses, pas les messages d'erreur du moteur
         if not tuteur_ia.reponse_est_erreur(reponse):
             self._historique_tuteur.append((question, reponse))
+
+    def _dialogue_generation(self):
+        """Mode démo. Demande une consigne optionnelle au tuteur qui va écrire le code
+        (vide = solution correcte ; sinon on peut réclamer une variante buggée pour voir
+        comment la porte réagit). Renvoie la consigne (str, possiblement vide) ou None."""
+        dlg = QDialog(self)
+        dlg.setWindowTitle("Le tuteur écrit le code")
+        lay = QVBoxLayout(dlg)
+        lay.addWidget(QLabel("Consigne au tuteur (laisse vide pour une solution correcte) :"))
+        champ = QLineEdit()
+        champ.setMinimumWidth(420)
+        champ.setPlaceholderText("ex. introduis une erreur de format d'affichage")
+        lay.addWidget(champ)
+        boutons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok
+                                   | QDialogButtonBox.StandardButton.Cancel)
+        boutons.accepted.connect(dlg.accept)
+        boutons.rejected.connect(dlg.reject)
+        champ.returnPressed.connect(dlg.accept)
+        lay.addWidget(boutons)
+        if dlg.exec() != QDialog.DialogCode.Accepted:
+            return None
+        return champ.text().strip()
+
+    def _tuteur_ecrit_code(self):
+        """Mode démo : le tuteur génère un programme complet et le place dans l'éditeur."""
+        if getattr(self, "_fil_gen", None) is not None and self._fil_gen.isRunning():
+            return
+        variante = self._dialogue_generation()
+        if variante is None:
+            return
+        self.console.setPlainText("Le tuteur écrit le code…")
+        self._fil_gen = FilGeneration(self.etape, variante)
+        self._fil_gen.genere.connect(self._code_genere)
+        self._fil_gen.start()
+
+    def _code_genere(self, code):
+        if tuteur_ia.reponse_est_erreur(code):
+            self.console.setPlainText(code)     # message d'indisponibilité du moteur
+            return
+        self.editeur.setPlainText(code)
+        self.console.setPlainText("Code généré par le tuteur. Clique Tester pour voir la porte.")
 
 
     def _demarrer_lsp(self) -> None:

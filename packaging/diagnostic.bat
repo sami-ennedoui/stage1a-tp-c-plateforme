@@ -1,30 +1,20 @@
 @echo off
 setlocal enableextensions
 cd /d "%~dp0"
-set "PATH=%~dp0w64devkit\bin;%~dp0python;%PATH%"
+set "PATH=%~dp0w64devkit\bin;%PATH%"
+if exist "%USERPROFILE%\.local\bin" set "PATH=%USERPROFILE%\.local\bin;%PATH%"
+if exist "%APPDATA%\npm" set "PATH=%APPDATA%\npm;%PATH%"
 
-REM --- Tuteur IA (optionnel) : ajoute claude au PATH s'il est installe mais absent ---
-where claude >nul 2>nul
-if not errorlevel 1 goto claude_ok
-if exist "%APPDATA%\Claude\claude-code" (
-  for /f "delims=" %%d in ('dir /b /ad /o-n "%APPDATA%\Claude\claude-code" 2^>nul') do (
-    if exist "%APPDATA%\Claude\claude-code\%%d\claude.exe" (
-      set "PATH=%APPDATA%\Claude\claude-code\%%d;%PATH%"
-      goto claude_ok
-    )
-  )
-)
-if exist "%APPDATA%\npm\claude.cmd" set "PATH=%APPDATA%\npm;%PATH%"
-:claude_ok
-
-echo === gcc ===
+echo === Compilateur gcc (indispensable) ===
 gcc --version
-echo === python ===
-"%~dp0python\python.exe" --version
-echo === import PyQt6 ===
-"%~dp0python\python.exe" -c "from PyQt6.QtWidgets import QApplication; print('PyQt6 OK')"
-echo === claude (tuteur IA, optionnel) ===
-where claude
 echo.
-echo Diagnostic termine.
+echo === Application ===
+if exist "%~dp0TP-C-perso.exe" (echo TP-C-perso.exe present) else (echo TP-C-perso.exe INTROUVABLE)
+echo.
+echo === Tuteur IA (optionnel : claude ou codex) ===
+where claude
+where codex
+echo.
+echo Diagnostic termine. Si gcc affiche une version, le coeur de l'atelier fonctionne.
+echo Le tuteur IA est optionnel : il s'active si claude ou codex apparait ci-dessus.
 pause

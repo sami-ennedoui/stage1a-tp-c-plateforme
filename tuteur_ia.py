@@ -191,3 +191,52 @@ def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int,
     reponse = r.stdout.strip() or r.stderr.strip()
     corrige = _chemin_corrige(etape).read_text(encoding="utf-8")
     return filtre_solution(reponse, corrige)
+
+
+# --- Mode démo : le tuteur écrit le programme lui-même -----------------------
+# Réservé au mode démo (banc de tests, exploration du correcteur). Ici on NE passe
+# PAS le filtre anti-solution : le but est justement d'obtenir un programme complet
+# et de voir comment la porte réagit à différentes réponses.
+
+_CONSIGNE_GENERATION = (
+    "Tu es en MODE DÉMO, tu n'es pas un tuteur ici. Écris un programme C complet qui "
+    "résout l'exercice ci-dessous et respecte la sortie attendue. Réponds UNIQUEMENT par "
+    "le code, dans un seul bloc ```c ... ```, sans aucune explication avant ni après."
+)
+
+
+def construire_prompt_generation(etape: Etape, variante: str = "") -> str:
+    enonce = (etape.dossier / "enonce.md").read_text(encoding="utf-8")
+    parties = [_CONSIGNE_GENERATION, f"Énoncé :\n{enonce}"]
+    if variante and variante.strip():
+        parties.append("Contrainte supplémentaire imposée pour ce test :\n" + variante.strip())
+    return "\n\n".join(parties) + "\n"
+
+
+def _extraire_code(reponse: str) -> str:
+    """Récupère le premier bloc ```c ... ``` de la réponse. À défaut de bloc, renvoie la
+    réponse brute (certains moteurs répondent sans clôture markdown)."""
+    m = re.search(r"```(?:[cC])?\s*\n?(.*?)```", reponse, re.DOTALL)
+    code = m.group(1) if m else reponse
+    return code.strip() + "\n"
+
+
+def generer_solution(etape: Etape, variante: str = "", timeout: int = 120) -> str:
+    """MODE DÉMO seulement. Demande au moteur d'écrire un programme complet pour l'étape
+    et renvoie le code (sans filtre). `variante` est une contrainte optionnelle ('' pour
+    une solution correcte, ou p. ex. 'introduis une erreur de format' pour tester le rejet
+    par la porte). Renvoie un des messages ERR_* si le moteur n'a pas répondu."""
+    moteur = _moteur_choisi()
+    if moteur is None:
+        return ERR_INDISPONIBLE
+    prompt = construire_prompt_generation(etape, variante)
+    try:
+        r = subprocess.run(_commande(moteur, prompt),
+                           stdin=subprocess.DEVNULL,
+                           capture_output=True, encoding="utf-8", errors="replace",
+                           creationflags=_SANS_FENETRE, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return ERR_TIMEOUT
+    if r.returncode != 0 and not r.stdout.strip():
+        return ERR_RUNTIME
+    return _extraire_code(r.stdout.strip() or r.stderr.strip())
