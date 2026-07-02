@@ -3,6 +3,7 @@ Le code de sortie du programme fait foi, pas le texte affiché."""
 from dataclasses import dataclass
 from pathlib import Path
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -191,9 +192,12 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
     """Compile le programme complet de l'étudiant, qui contient son propre main, l'exécute
     avec l'entrée standard fixée par l'étape, et juge la sortie.
 
-    Si etape.sortie_attendue est vide, la porte s'ouvre dès que le programme compile et
-    s'exécute sans erreur. C'est une séance d'exploration. Sinon, chaque fragment de
-    etape.sortie_attendue doit apparaître dans la sortie standard pour ouvrir la porte."""
+    Si etape.sortie_attendue et etape.sortie_motifs sont vides, la porte s'ouvre dès que
+    le programme compile et s'exécute sans erreur. C'est une séance d'exploration. Sinon :
+      - chaque fragment littéral de sortie_attendue doit apparaître tel quel ;
+      - chaque motif de sortie_motifs (regex + libellé lisible) doit se retrouver dans la
+        sortie. Les motifs servent quand l'énoncé n'impose pas de valeur précise : on
+        vérifie le libellé et le format, pas la valeur (ex. ex01, les types)."""
     with tempfile.TemporaryDirectory() as d:
         src = Path(d) / "programme.c"
         src.write_text(code_eleve, encoding="utf-8")
@@ -217,10 +221,13 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
         if run.returncode != 0:
             return Resultat(False, "Le programme s'est terminé en erreur :\n" + sortie)
         attendus = etape.sortie_attendue or []
-        manquants = [f for f in attendus if f not in run.stdout]
+        manquants = [repr(f) for f in attendus if f not in run.stdout]
+        motifs = etape.sortie_motifs or []
+        manquants += [m.get("attendu", m["motif"]) for m in motifs
+                      if not re.search(m["motif"], run.stdout)]
         if manquants:
             return Resultat(False,
-                            "Il manque ceci dans ta sortie : " + ", ".join(repr(m) for m in manquants) +
+                            "Il manque ceci dans ta sortie : " + ", ".join(manquants) +
                             "\n\nSortie obtenue :\n" + (run.stdout or "(rien)"))
         return Resultat(True, run.stdout if run.stdout.strip() else "Le programme compile et s'exécute.")
 

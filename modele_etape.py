@@ -20,7 +20,11 @@ class Etape:
     noeud_cours: str = ""
     # champs du mode "programme" : l'étudiant écrit un programme complet
     entree: str = ""             # entrée standard envoyée au programme
-    sortie_attendue: list | None = None  # fragments qui doivent figurer dans la sortie
+    sortie_attendue: list | None = None  # fragments littéraux qui doivent figurer dans la sortie
+    # motifs tolérants (valeurs libres) : liste de {"motif": <regex>, "attendu": <texte lisible>}
+    # chaque regex doit se retrouver dans la sortie (re.search). Sert quand l'énoncé
+    # n'impose pas de valeur précise, seulement un libellé et un format (ex. ex01).
+    sortie_motifs: list | None = None
     # champs des étapes projet, optionnels pour les parcours isolés
     harnais: list | None = None  # harnais logiques, chemins relatifs au dépôt
     sources: list | None = None  # sources .c à compiler avec le harnais, relatives à l'espace
@@ -51,6 +55,7 @@ def charger_etape(dossier: Path) -> Etape:
         porte=meta.get("porte", ""),
         entree=meta.get("entree", ""),
         sortie_attendue=meta.get("sortie_attendue"),
+        sortie_motifs=meta.get("sortie_motifs"),
     )
 
 

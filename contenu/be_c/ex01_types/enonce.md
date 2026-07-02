@@ -4,4 +4,14 @@
 
 2 - Utilisez les `printf` et `scanf` associés à ces différents types de variable (`%c`, `%f`, `%i`, `%d`, `%e`). (slides 23 à 25)
 
-La porte vérifie que ton programme affiche une variable de chaque type avec le bon format.
+Affiche une ligne par variable, préfixée par le nom du type, par exemple :
+
+```
+short : 12
+int : 260
+char : A
+float : 3.500000
+double : 2.500000e+00
+```
+
+Les valeurs sont libres, choisis celles que tu veux : la porte ne vérifie pas les nombres, seulement que chaque type est affiché avec le bon format (`%d`/`%i` pour `short` et `int`, `%c` pour `char`, `%f` pour `float`, `%e` pour `double`).

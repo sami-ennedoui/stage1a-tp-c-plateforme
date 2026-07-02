@@ -6,11 +6,11 @@
   "cran_debloque": 1,
   "noeud_cours": "Exercice 1 du BE C, les types de base et leur format d'affichage, slides 8 a 10 et 23 a 25",
   "fichier_edite": "programme.c",
-  "sortie_attendue": [
-    "short : 12",
-    "int : 260",
-    "char : A",
-    "float : 3.500000",
-    "double : 2.500000e+00"
+  "sortie_motifs": [
+    {"motif": "short\\s*:\\s*-?\\d+", "attendu": "une ligne 'short : ' suivie d'un entier (format %d ou %i)"},
+    {"motif": "int\\s*:\\s*-?\\d+", "attendu": "une ligne 'int : ' suivie d'un entier (format %d ou %i)"},
+    {"motif": "char\\s*:\\s*\\S", "attendu": "une ligne 'char : ' suivie d'un caractere (format %c)"},
+    {"motif": "float\\s*:\\s*-?\\d+\\.\\d+", "attendu": "une ligne 'float : ' suivie d'un nombre a virgule (format %f)"},
+    {"motif": "double\\s*:\\s*-?\\d+\\.\\d+[eE][+-]?\\d+", "attendu": "une ligne 'double : ' suivie d'un nombre en notation exponentielle (format %e)"}
   ]
 }
