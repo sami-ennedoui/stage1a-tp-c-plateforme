@@ -2,6 +2,7 @@
 Deux parcours partagent ce moteur : 'hybride', des étapes isolées avec test à écrire,
 et 'projet', où l'étudiant remplit la vraie structure du jeu jusqu'à pouvoir y jouer."""
 import html
+import sys
 from pathlib import Path
 
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QListWidget,
@@ -75,7 +76,11 @@ class Fenetre(QMainWindow):
         # où le journal reste muet (mêmes méthodes, n'écrit rien). Voir journal_session.py.
         self._trace_active = tracer and not demo
         if self._trace_active:
-            self.journal = Journal(meta={"parcours": parcours_nom, "mode": self.mode,
+            # exe figé : écrire journaux/ À CÔTÉ de l'exe, pas dans _internal (où pointe
+            # __file__ du module). En source, on laisse le défaut du module.
+            base = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else None
+            self.journal = Journal(dossier=(base / "journaux") if base else None,
+                                   meta={"parcours": parcours_nom, "mode": self.mode,
                                          "moteur": tuteur_ia._moteur_choisi()})
         else:
             self.journal = JournalMuet()
