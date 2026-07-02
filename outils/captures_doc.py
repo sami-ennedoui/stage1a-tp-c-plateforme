@@ -22,7 +22,7 @@ import fenetre, theme, progression, executeur, modele_etape
 progression.sauver = lambda *a, **k: None          # ne pas ecrire l'etat reel
 executeur.assurer_compilateur_sur_path()
 
-CAP = RACINE / "packaging" / "captures"
+CAP = RACINE / "captures"
 CAP.mkdir(parents=True, exist_ok=True)
 
 app = QApplication([])

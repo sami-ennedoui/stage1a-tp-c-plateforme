@@ -50,8 +50,9 @@ Dans `C:\Users\VETTEL\TP-C-perso-exe`, a cote de `w64devkit\` (a garder tel quel
 - copier `dist\TP-C-perso\TP-C-perso.exe` (ecrase l'ancien) ;
 - copier `dist\TP-C-perso\_internal\` en miroir (remplace l'ancien exactement, par
   exemple `robocopy dist\TP-C-perso\_internal _internal /MIR`) ;
-- copier depuis `packaging\` : `lancer.bat`, `diagnostic.bat`, `README.md`, `README.pdf`
-  et le dossier `captures\` ;
+- copier `lancer.bat` et `diagnostic.bat` depuis `packaging\` ;
+- copier `README.md`, `README.pdf` et le dossier `captures\` depuis la **racine du
+  depot** (la doc y vit) ;
 - `lancer_demo.bat` est **interne** (tout debloque, bouton "Le tuteur ecrit le code" et
   "Charger le corrige"). **A retirer avant de distribuer aux etudiants.**
 
@@ -61,15 +62,21 @@ Taille finale du livrable : environ 564 Mo (l'essentiel etant `w64devkit`).
 
 Les captures sont produites **sans prendre l'ecran**, par capture Qt (`widget.grab()`),
 dans des etats controles (progression neutralisee pour ne pas toucher l'etat reel). Le
-script vit dans le depot sous `outils/` (ou dans le scratchpad de la session qui l'a
-cree). Il ecrit dans `packaging/captures/` :
+script `outils/captures_doc.py` ecrit dans `captures/` a la racine :
 
 - `01-vue-ensemble.png`, `02-erreur-compilation.png`,
   `03-porte-ouverte-niveau-cache.png`, `04-demander-aide.png`.
 
-Le PDF est rendu depuis `README.md` : markdown -> HTML style (theme clair, images en
-base64) -> `msedge --headless --print-to-pdf`. Le script de generation vit sous
-`outils/doc_pdf.py`. Refaire tourner captures puis PDF quand l'UI ou le texte changent.
+Le PDF est rendu depuis `README.md` (racine) : markdown -> HTML style (theme clair,
+images en base64) -> `msedge --headless --print-to-pdf`. Le script de generation est
+`outils/doc_pdf.py`. Enchainer :
+
+```
+python outils/captures_doc.py
+python outils/doc_pdf.py
+```
+
+Refaire tourner captures puis PDF quand l'UI ou le texte changent.
 
 ## 5. Verifier
 
