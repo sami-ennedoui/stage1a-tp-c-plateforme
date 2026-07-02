@@ -104,6 +104,11 @@ from modele_etape import Etape
 class Resultat:
     ok: bool
     sortie: str
+    # categorie du resultat pour l'instrumentation (surtout porte_programme) :
+    # "ok" | "erreur_compilation" | "delai" | "erreur_execution" | "sortie_incomplete" | ""
+    categorie: str = ""
+    # fragments/libelles manquants quand categorie == "sortie_incomplete", sinon vide
+    manquants: tuple = ()
 
 
 def _compiler_et_lancer(sources: list[Path], includes: list[Path],
@@ -264,12 +269,15 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
         except FileNotFoundError:
             return _resultat_sans_gcc()
         if comp.returncode != 0:
-            return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
+            return Resultat(False, "Erreur de compilation :\n" + comp.stderr,
+                            categorie="erreur_compilation")
         rc, sortie, delai, tronque = _executer_cape([str(binaire)], etape.entree or "", timeout=15)
         if delai:
-            return Resultat(False, "Le programme a dépassé le délai. Attend-il une saisie au clavier ?")
+            return Resultat(False, "Le programme a dépassé le délai. Attend-il une saisie au clavier ?",
+                            categorie="delai")
         if rc != 0:
-            return Resultat(False, "Le programme s'est terminé en erreur :\n" + sortie)
+            return Resultat(False, "Le programme s'est terminé en erreur :\n" + sortie,
+                            categorie="erreur_execution")
         attendus = etape.sortie_attendue or []
         manquants = [repr(f) for f in attendus if f not in sortie]
         motifs = etape.sortie_motifs or []
@@ -278,9 +286,11 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
         if manquants:
             return Resultat(False,
                             "Il manque ceci dans ta sortie : " + ", ".join(manquants) +
-                            "\n\nSortie obtenue :\n" + (sortie or "(rien)"))
+                            "\n\nSortie obtenue :\n" + (sortie or "(rien)"),
+                            categorie="sortie_incomplete", manquants=tuple(manquants))
         note = "" if not tronque else "\n(sortie très volumineuse, tronquée pour l'affichage)"
-        return Resultat(True, (sortie if sortie.strip() else "Le programme compile et s'exécute.") + note)
+        return Resultat(True, (sortie if sortie.strip() else "Le programme compile et s'exécute.") + note,
+                        categorie="ok")
 
 
 def porte_logique(espace, fichier_edite: str, code_etudiant: str,

@@ -364,10 +364,10 @@ class Fenetre(QMainWindow):
         code = self.editeur.toPlainText()
         if self.etape.mode == "test_fourni":
             r = executeur.porte_perso(self.etape, code)
-            self._afficher_porte(r.ok, r.sortie)
+            self._afficher_porte(r.ok, r.sortie, categorie=r.categorie, manquants=r.manquants)
         elif self.etape.mode == "programme":
             r = executeur.porte_programme(self.etape, code)
-            self._afficher_porte(r.ok, r.sortie)
+            self._afficher_porte(r.ok, r.sortie, categorie=r.categorie, manquants=r.manquants)
         else:
             test = self.editeur_test.toPlainText()
             jug = executeur.juger_test(self.etape, test)
@@ -379,7 +379,8 @@ class Fenetre(QMainWindow):
                     "\n" + jug.sortie)
                 return
             r = executeur.porte_jalon(self.etape, code, test)
-            self._afficher_porte(r.ok, "Ton test est solide.\n" + r.sortie)
+            self._afficher_porte(r.ok, "Ton test est solide.\n" + r.sortie,
+                                 categorie=r.categorie, manquants=r.manquants)
 
     def _tester_projet(self):
         """Porte du parcours projet. Pour le capstone, on construit tout et on joue.
@@ -400,8 +401,12 @@ class Fenetre(QMainWindow):
                 ok_global = False
         self._afficher_porte(ok_global, "\n\n".join(morceaux))
 
-    def _afficher_porte(self, ok, sortie, valider=True):
-        self.journal.event("test_porte", exo=self.etape.id, ok=bool(ok))
+    def _afficher_porte(self, ok, sortie, valider=True, categorie="", manquants=()):
+        # resultat : categorie fine si la porte la fournit (porte_programme), sinon
+        # on retombe sur ok/ferme. manquants : fragments manquants si sortie_incomplete.
+        resultat = categorie if categorie else ("ok" if ok else "ferme")
+        self.journal.event("test_porte", exo=self.etape.id, ok=bool(ok),
+                           resultat=resultat, manquants=list(manquants))
         self._reveil()
         if ok and valider:
             self._exo_valide_courant = True

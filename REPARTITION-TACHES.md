@@ -68,13 +68,24 @@ Types d'événements et où les appeler :
 | `evt` | point d'accroche | champs |
 |---|---|---|
 | `session_debut` / `session_fin` | ouverture / fermeture | parcours, mode, moteur |
-| `exo_ouvert` | `_changer_etape_isole` | exo |
-| `compilation` | fin de `_compiler` | exo, ok |
-| `test_porte` | fin de `_tester` | exo, ok, manquants |
+| `exo_ouvert` | `_changer_etape_isole` / `_projet` | exo |
+| `test_porte` | `_afficher_porte` (point unique) | exo, ok, resultat, manquants |
 | `tuteur_demande` | `_demander_aide` | exo, cran, longueur_question, joint_code, joint_console |
 | `tuteur_reponse` | `_tuteur_a_repondu` | exo, cran, longueur_reponse, filtre_a_masque, erreur |
 | `tuteur_ecrit_code` | `_tuteur_ecrit_code` (démo) | exo, variante |
-| `inactivite` | QTimer de veille | exo, secondes |
+| `inactivite` | QTimer de veille (90 s) | exo, secondes |
+
+État câblé le 2026-07-02 (côté Windows). Décisions actées avec le poste Linux :
+
+- Pas d'event `compilation` séparé : dans l'appli, « Compiler » appelle `_tester`,
+  c'est le même passage de porte. Un seul `test_porte` le couvre.
+- `test_porte.resultat` : catégorie fine (au lieu du booléen `ok` seul), à 5 valeurs
+  issues des branches de `porte_programme` : `ok`, `erreur_compilation`, `delai`,
+  `erreur_execution`, `sortie_incomplete`.
+- `test_porte.manquants` : liste des fragments/libellés manquants quand `resultat`
+  vaut `sortie_incomplete`, vide sinon.
+- `session_debut` porte `parcours, mode, moteur`. En exe figé, `journaux/` est écrit
+  à côté de l'exe (pas dans `_internal`).
 
 ## Ta réponse
 
