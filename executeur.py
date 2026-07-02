@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 
 
 def _nom_binaire(base: str) -> str:
@@ -20,6 +21,59 @@ def _nom_binaire(base: str) -> str:
 # console (gcc, le binaire compilé) ferait alors clignoter une fenêtre cmd. Ce drapeau
 # la supprime. Vaut 0 hors Windows, où il est sans objet.
 _SANS_FENETRE = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+
+# Plafond de la sortie capturee d'un programme etudiant. Sans lui, un programme qui
+# inonde stdout en boucle infinie ferait bufferiser toute sa sortie en RAM jusqu'au
+# delai (des centaines de Mo). Au-dela, on jette : la memoire reste bornee.
+_TAILLE_MAX_SORTIE = 10 * 1024 * 1024
+
+
+def _executer_cape(cmd, entree="", timeout=15, cap=_TAILLE_MAX_SORTIE):
+    """Lance cmd, envoie `entree` sur son entree standard, capture stdout+stderr fusionnes
+    mais PLAFONNES a `cap` octets (au-dela on continue a lire et jeter, pour ne pas bloquer
+    le programme sur un tube plein, mais sans grossir la memoire). Coupe au bout de
+    `timeout` secondes. Renvoie (returncode, texte, delai, tronque)."""
+    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT, creationflags=_SANS_FENETRE)
+    tampon = bytearray()
+    etat = {"tronque": False}
+
+    def _lire():
+        while True:
+            bloc = proc.stdout.read(65536)
+            if not bloc:
+                break
+            reste = cap - len(tampon)
+            if reste > 0:
+                tampon.extend(bloc[:reste])
+            if len(tampon) >= cap:
+                etat["tronque"] = True
+            # on continue a vider le tube meme apres le plafond, sinon le programme
+            # se bloque sur un tube plein et on ne peut plus le tuer proprement.
+
+    lecteur = threading.Thread(target=_lire, daemon=True)
+    lecteur.start()
+    try:
+        if entree:
+            proc.stdin.write(entree.encode("utf-8"))
+    except (BrokenPipeError, OSError):
+        pass
+    try:
+        proc.stdin.close()
+    except OSError:
+        pass
+    delai = False
+    try:
+        proc.wait(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        delai = True
+        proc.kill()
+        proc.wait()
+    lecteur.join(timeout=2)
+    # decodage + fins de ligne universelles (comme le faisait subprocess.run en mode texte) :
+    # sous Windows le programme C emet \r\n, mais les fragments attendus utilisent \n.
+    texte = tampon.decode("utf-8", errors="replace").replace("\r\n", "\n").replace("\r", "\n")
+    return proc.returncode, texte, delai, etat["tronque"]
 
 
 def assurer_compilateur_sur_path() -> None:
@@ -211,25 +265,22 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
             return _resultat_sans_gcc()
         if comp.returncode != 0:
             return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
-        try:
-            run = subprocess.run([str(binaire)], capture_output=True, encoding="utf-8",
-                                 errors="replace", creationflags=_SANS_FENETRE,
-                                 timeout=15, input=etape.entree or "")
-        except subprocess.TimeoutExpired:
+        rc, sortie, delai, tronque = _executer_cape([str(binaire)], etape.entree or "", timeout=15)
+        if delai:
             return Resultat(False, "Le programme a dépassé le délai. Attend-il une saisie au clavier ?")
-        sortie = run.stdout + run.stderr
-        if run.returncode != 0:
+        if rc != 0:
             return Resultat(False, "Le programme s'est terminé en erreur :\n" + sortie)
         attendus = etape.sortie_attendue or []
-        manquants = [repr(f) for f in attendus if f not in run.stdout]
+        manquants = [repr(f) for f in attendus if f not in sortie]
         motifs = etape.sortie_motifs or []
         manquants += [m.get("attendu", m["motif"]) for m in motifs
-                      if not re.search(m["motif"], run.stdout)]
+                      if not re.search(m["motif"], sortie)]
         if manquants:
             return Resultat(False,
                             "Il manque ceci dans ta sortie : " + ", ".join(manquants) +
-                            "\n\nSortie obtenue :\n" + (run.stdout or "(rien)"))
-        return Resultat(True, run.stdout if run.stdout.strip() else "Le programme compile et s'exécute.")
+                            "\n\nSortie obtenue :\n" + (sortie or "(rien)"))
+        note = "" if not tronque else "\n(sortie très volumineuse, tronquée pour l'affichage)"
+        return Resultat(True, (sortie if sortie.strip() else "Le programme compile et s'exécute.") + note)
 
 
 def porte_logique(espace, fichier_edite: str, code_etudiant: str,

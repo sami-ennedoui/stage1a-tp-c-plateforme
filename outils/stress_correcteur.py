@@ -26,9 +26,8 @@ ETAPE = charger_etape(RACINE / "contenu" / "be_c" / "ex01_types")
 CAS = [
     ("boucle infinie sans sortie",
      "int main(void){ while(1){} return 0; }", "delai"),
-    # NB : une boucle infinie qui inonde stdout n'est PAS testee ici : capture_output
-    # bufferise sans plafond jusqu'au delai (15s) -> risque memoire. Voir le cas fini
-    # ci-dessous et l'analyse dans le rapport.
+    ("boucle infinie qui inonde stdout",
+     '#include <stdio.h>\nint main(void){ while(1){ printf("floooood "); } return 0; }', "delai/plafonne"),
     ("sortie enorme mais finie (~50 Mo)",
      '#include <stdio.h>\nint main(void){ for(long i=0;i<50000000L;i++) putchar(65); return 0; }', "gros"),
     ("crash: dereference NULL",
