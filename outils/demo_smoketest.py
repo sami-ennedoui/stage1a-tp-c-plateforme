@@ -32,6 +32,11 @@ from modele_etape import charger_etape
 # variante -> (consigne passée au tuteur, comportement attendu de la porte)
 VARIANTES = {
     "correcte": ("", "OUVRE"),
+    "style": ("Ecris une version correcte mais avec un style d'ecriture different : autres "
+              "noms de variables, autres valeurs, et surtout reformule a ta facon les "
+              "messages affiches a l'ecran (sans changer le sens).", "OUVRE"),
+    "concise": ("Ecris la version correcte la plus courte possible, un seul main, "
+                "sans commentaire.", "OUVRE"),
     "format": ("Introduis une erreur de format d'affichage typique, par exemple un %d "
                "pour un nombre a virgule. Le programme doit quand meme compiler.", "FERME"),
     "compilation": ("Introduis une petite erreur de compilation typique d'un debutant, "
@@ -54,9 +59,11 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Banc de smoke-tests du correcteur (mode démo)")
     ap.add_argument("--parcours", default="be_c")
     ap.add_argument("--moteur", choices=("claude", "codex"), help="force le moteur IA")
+    ap.add_argument("--modele", default="sonnet",
+                    help="modèle passé au moteur (ex. sonnet, haiku) ; vide = défaut du moteur")
     ap.add_argument("--exos", help="liste d'exercices séparés par des virgules")
     ap.add_argument("--tous", action="store_true", help="tous les exercices du parcours")
-    ap.add_argument("--variantes", default="correcte,format,compilation",
+    ap.add_argument("--variantes", default="correcte,style,format,compilation",
                     help="variantes à tester, séparées par des virgules "
                          f"(parmi {', '.join(VARIANTES)})")
     args = ap.parse_args()
@@ -81,7 +88,8 @@ def main() -> int:
         print("Variantes inconnues :", ", ".join(inconnues))
         return 2
 
-    print(f"Moteur : {tuteur_ia._moteur_choisi()}   parcours : {args.parcours}")
+    print(f"Moteur : {tuteur_ia._moteur_choisi()}   modele : {args.modele or '(defaut)'}"
+          f"   parcours : {args.parcours}")
     print(f"Exercices : {len(exos)}   variantes : {', '.join(variantes)}\n")
 
     conformes = 0
@@ -96,7 +104,7 @@ def main() -> int:
         print(f"== {nom} ==")
         for v in variantes:
             consigne, attendu = VARIANTES[v]
-            code = tuteur_ia.generer_solution(etape, consigne)
+            code = tuteur_ia.generer_solution(etape, consigne, modele=args.modele)
             total += 1
             if tuteur_ia.reponse_est_erreur(code):
                 print(f"   {v:12s} moteur en echec : {code}")

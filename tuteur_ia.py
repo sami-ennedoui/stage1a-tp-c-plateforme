@@ -138,15 +138,23 @@ def _moteur_choisi() -> str | None:
     return None
 
 
-def _commande(moteur: str, prompt: str) -> list[str]:
+def _commande(moteur: str, prompt: str, modele: str = "") -> list[str]:
     """Commande d'un tour non interactif, propre à chaque moteur.
     claude : 'claude -p <prompt>'. codex : 'codex exec <prompt>' avec
     --skip-git-repo-check (l'atelier ne tourne pas dans un dépôt git) ; le bac à
-    sable de codex reste en lecture seule, le tuteur ne fait que répondre."""
+    sable de codex reste en lecture seule, le tuteur ne fait que répondre.
+    modele : optionnel, force un modèle (ex. 'sonnet', 'haiku' pour claude). Sert
+    surtout au banc de tests, qui génère beaucoup et n'a pas besoin du plus gros modèle."""
     binaire = _binaire(moteur)
     if binaire == "codex":
-        return ["codex", "exec", "--skip-git-repo-check", prompt]
-    return [binaire, "-p", prompt]
+        cmd = ["codex", "exec", "--skip-git-repo-check"]
+        if modele:
+            cmd += ["--model", modele]
+        return cmd + [prompt]
+    cmd = [binaire, "-p"]
+    if modele:
+        cmd += ["--model", modele]
+    return cmd + [prompt]
 
 
 def moteur_disponible() -> bool:
@@ -221,17 +229,19 @@ def _extraire_code(reponse: str) -> str:
     return code.strip() + "\n"
 
 
-def generer_solution(etape: Etape, variante: str = "", timeout: int = 120) -> str:
+def generer_solution(etape: Etape, variante: str = "", timeout: int = 120,
+                     modele: str = "") -> str:
     """MODE DÉMO seulement. Demande au moteur d'écrire un programme complet pour l'étape
     et renvoie le code (sans filtre). `variante` est une contrainte optionnelle ('' pour
     une solution correcte, ou p. ex. 'introduis une erreur de format' pour tester le rejet
-    par la porte). Renvoie un des messages ERR_* si le moteur n'a pas répondu."""
+    par la porte). `modele` force un modèle (ex. 'sonnet', 'haiku'). Renvoie un des messages
+    ERR_* si le moteur n'a pas répondu."""
     moteur = _moteur_choisi()
     if moteur is None:
         return ERR_INDISPONIBLE
     prompt = construire_prompt_generation(etape, variante)
     try:
-        r = subprocess.run(_commande(moteur, prompt),
+        r = subprocess.run(_commande(moteur, prompt, modele),
                            stdin=subprocess.DEVNULL,
                            capture_output=True, encoding="utf-8", errors="replace",
                            creationflags=_SANS_FENETRE, timeout=timeout)
