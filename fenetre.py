@@ -316,6 +316,7 @@ class Fenetre(QMainWindow):
     def _changer_etape_isole(self, ligne):
         self.etape = self.parcours[ligne]
         self._historique_tuteur = []     # nouvel exercice, le tuteur repart sans historique
+        self.reponse_tuteur.clear()      # ne pas laisser la réponse de l'exo précédent affichée
         self._exo_valide_courant = self.etape.id in self.prog.etapes_faites
         self.journal.event("exo_ouvert", exo=self.etape.id)
         self._reveil()
@@ -338,6 +339,7 @@ class Fenetre(QMainWindow):
         self.etape = self.parcours[ligne]
         self._etape_courante = self.etape
         self._historique_tuteur = []     # nouvel exercice, le tuteur repart sans historique
+        self.reponse_tuteur.clear()      # ne pas laisser la réponse de l'exo précédent affichée
         self._exo_valide_courant = self.etape.id in self.prog.etapes_faites
         self.journal.event("exo_ouvert", exo=self.etape.id)
         self._reveil()
