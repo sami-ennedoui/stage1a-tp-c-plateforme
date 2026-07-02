@@ -1,0 +1,16 @@
+﻿Stress-test correcteur (porte_programme) - 2026-07-02, poste Windows
+Moteur : deterministe, sans IA. gcc w64devkit 2.8.0.
+
+[ok ] boucle infinie sans sortie                 FERME  15.2s  Le programme a d�pass� le d�lai. Attend-il une saisie au cla
+[ok ] boucle infinie qui inonde stdout           FERME  15.2s  Le programme a d�pass� le d�lai. Attend-il une saisie au cla
+[ok ] sortie enorme mais finie (~50 Mo)          FERME   1.0s  Il manque ceci dans ta sortie : une ligne 'short : ' suivie 
+[ok ] crash: dereference NULL                    FERME   2.3s  Le programme s'est termin� en erreur :
+[ok ] division par zero                          FERME   2.2s  Le programme s'est termin� en erreur :
+[ok ] exit code non nul                          FERME   0.1s  Le programme s'est termin� en erreur :
+[ok ] lit plus de stdin que fourni               FERME   0.1s  Il manque ceci dans ta sortie : une ligne 'short : ' suivie 
+[ok ] octets non-UTF8 dans la sortie             FERME   0.1s  Il manque ceci dans ta sortie : une ligne 'short : ' suivie 
+[ok ] pas de main                                FERME   0.1s  Erreur de compilation :
+[ok ] code vide                                  FERME   0.0s  Erreur de compilation :
+[ok ] warning mais compile (variable inutilisee) FERME   0.1s  Il manque ceci dans ta sortie : une ligne 'short : ' suivie 
+
+Aucun incident : la porte repond proprement a tous les cas (pas d'exception, pas de blocage au-dela du delai).
