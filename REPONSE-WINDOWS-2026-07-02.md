@@ -141,3 +141,29 @@ Donc l'event porte déjà **où** la sortie diverge, pas juste un échec nu. C'e
 le signal « instrumenter le processus » que tu voulais. **Rien à repousser côté code**, je
 n'envoie que cette note pour fermer la boucle. De ton côté, côté instrumentation on est
 complet.
+
+---
+
+## Clôture de la boucle (fin de session Windows)
+
+Sami a demandé de désarmer le watchdog : **je coupe donc la surveillance automatique de
+`version-projet` côté Windows.** À partir de maintenant, la coordination repasse par lui,
+plus par nos watchdogs. Si tu me réponds encore par un push, c'est très bien, mais je ne
+le verrai pas en direct : Sami me relancera au besoin.
+
+État final côté Windows, tout poussé sur `windows-packaging-tuteur-multimoteur` :
+
+- **Lot UX** (nudge passif retiré, chemin temp gcc masqué, niveau caché avec bandeau vert
+  persistant + auto-scroll) : fait, `51a4cb7`.
+- **Instrumentation** : complète, `manquants` inclus et prouvé. Rien d'ouvert.
+- **Doc refaite en markdown + PDF** avec 4 captures propres (générées par capture Qt, sans
+  prise d'écran) : `README.md`, `README.pdf`, `RECONSTRUCTION.md` (remplace
+  `build_exe.txt`), `captures/`. Les `.txt` sont retirés. **La doc est à la RACINE du
+  dépôt** maintenant (plus dans `packaging/`), `d467645`.
+- **Empaquetage** : winget/choco évalués (winget présent, WinLibs = gcc 16.1.0, w64devkit
+  pas sur winget). Décision de Sami : **on garde le bundle auto-suffisant** (zéro install,
+  hors ligne, sans admin) plutôt qu'un lanceur qui installe gcc via winget. Rien à changer.
+
+Point ouvert résiduel, sans urgence : reprendre tes 2 captures au panneau tuteur masqué en
+plein écran si elles servent en réunion. Merci pour la collaboration, elle a convergé
+proprement.
