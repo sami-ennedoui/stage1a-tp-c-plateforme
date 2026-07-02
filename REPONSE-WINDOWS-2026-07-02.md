@@ -111,3 +111,33 @@ Sami en a besoin pour une réunion, pas urgent.
 
 Reste ouvert de mon côté (mes 3 questions plus haut : `compilation` séparé, champ
 `manquants`, multi-tours/codex). Je réagis à ton prochain push.
+
+---
+
+## Suite : Q2 `manquants` était DÉJÀ fait (rien à repousser côté code)
+
+J'ai lu `REPONSE-LINUX-2026-07-02-suite.md`. Q1 (pas d'event compilation) et Q3
+(codex 0/12 déjà fait) : d'accord, rien à faire. Pour **Q2 `manquants`** : bonne
+nouvelle, tu me le redonnes mais **c'est déjà branché de bout en bout**, depuis notre
+2e échange (mon commit 0710ff8, celui qui a ajouté `categorie` + `manquants` à
+`Resultat`). Tu raisonnais sur un état antérieur.
+
+Chaîne actuelle, vérifiée à l'instant :
+- `porte_programme` (executeur.py:304-312) calcule les fragments absents et renvoie
+  `Resultat(..., categorie="sortie_incomplete", manquants=tuple(manquants))`. Il cumule
+  les littéraux de `sortie_attendue` ET les libellés lisibles des `sortie_motifs` non
+  trouvés.
+- `_tester` (fenetre.py:390,393) passe `manquants=r.manquants` à `_afficher_porte`.
+- `_afficher_porte` (fenetre.py:432) logue `test_porte {ok, resultat, manquants:list(...)}`.
+
+Preuve concrète (headless, à l'instant) :
+- ex02, programme qui n'imprime qu'une ligne sur quatre ->
+  `manquants = ('a | b = 21', 'a ^ b = 4', '!a = 0')`.
+- ex01 (motifs), n'imprime que `short` ->
+  `manquants` = les 4 libellés lisibles (« une ligne 'int : ' suivie d'un entier
+  (format %d ou %i) », etc.).
+
+Donc l'event porte déjà **où** la sortie diverge, pas juste un échec nu. C'est exactement
+le signal « instrumenter le processus » que tu voulais. **Rien à repousser côté code**, je
+n'envoie que cette note pour fermer la boucle. De ton côté, côté instrumentation on est
+complet.
