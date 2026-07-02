@@ -254,11 +254,15 @@ class Fenetre(QMainWindow):
             self._timer_inactif.start()
 
     def _sur_inactivite(self):
-        """90 s sans action sur un exercice non validé : on le trace, puis on ré-arme
-        pour capter une inactivité prolongée en plusieurs tranches."""
+        """90 s sans action sur un exercice non validé : on le trace ET on montre un
+        coup de pouce visible (sinon l'étudiant bloqué reste sans signal à l'écran), puis
+        on ré-arme pour capter une inactivité prolongée en plusieurs tranches."""
         etape = getattr(self, "etape", None)
         if etape is not None and not self._exo_valide_courant:
             self.journal.event("inactivite", exo=etape.id, secondes=90)
+            self.statusBar().showMessage(
+                "Bloqué ? Clique « Demander de l'aide » pour un indice, "
+                "ou relis l'énoncé en haut.", 20000)
         self._timer_inactif.start()
 
     def _construire_barre_affichage(self):
