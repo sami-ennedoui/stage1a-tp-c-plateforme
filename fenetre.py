@@ -7,7 +7,7 @@ from pathlib import Path
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QListWidget,
                              QPlainTextEdit, QTextEdit, QPushButton, QLabel, QTabWidget,
                              QListWidgetItem, QDialog, QLineEdit, QCheckBox,
-                             QDialogButtonBox)
+                             QDialogButtonBox, QComboBox)
 from PyQt6.QtCore import Qt, QThread, QTimer, pyqtSignal
 from PyQt6.QtGui import QFont
 
@@ -405,9 +405,19 @@ class Fenetre(QMainWindow):
                 (self.etape.dossier / "test_reference.c").read_text(encoding="utf-8"))
         self.console.setPlainText("Corrigé chargé. Clique Tester pour franchir la porte.")
 
+    # libellés du choix d'aide, du plus autonome au plus direct ; index = cran
+    _LIBELLES_CRAN = (
+        "Juste un indice, je cherche seul",
+        "Un exemple de structure",
+        "Une piste à vérifier",
+        "Aide directe",
+    )
+
     def _dialogue_aide(self):
-        """Demande la question et, en option (décoché par défaut), si l'étudiant veut
-        joindre son code et/ou le rendu de la console. Renvoie (question, joindre_code,
+        """Demande la question, le niveau d'aide voulu, et en option (décoché par défaut)
+        si l'étudiant veut joindre son code et/ou le rendu de la console. Le choix de
+        niveau va de N0 au meilleur cran débloqué : l'étudiant peut demander MOINS d'aide
+        que le maximum, jamais plus. Renvoie (question, niveau, joindre_code,
         joindre_console) ou None si annulé."""
         dlg = QDialog(self)
         dlg.setWindowTitle("Demander de l'aide")
@@ -416,6 +426,16 @@ class Fenetre(QMainWindow):
         champ = QLineEdit()
         champ.setMinimumWidth(360)
         lay.addWidget(champ)
+        # choix du niveau, seulement si plus d'un cran est débloqué
+        dispo = self._cran_dispo()
+        choix_niveau = None
+        if dispo >= 1:
+            lay.addWidget(QLabel("Niveau d'aide :"))
+            choix_niveau = QComboBox()
+            for n in range(dispo + 1):
+                choix_niveau.addItem(self._LIBELLES_CRAN[n], n)
+            choix_niveau.setCurrentIndex(dispo)   # par défaut, l'aide la plus complète débloquée
+            lay.addWidget(choix_niveau)
         case_code = QCheckBox("Joindre mon code")
         case_console = QCheckBox("Joindre le rendu de la console")
         lay.addWidget(case_code)
@@ -431,7 +451,8 @@ class Fenetre(QMainWindow):
         question = champ.text().strip()
         if not question:
             return None
-        return question, case_code.isChecked(), case_console.isChecked()
+        niveau = choix_niveau.currentData() if choix_niveau is not None else dispo
+        return question, niveau, case_code.isChecked(), case_console.isChecked()
 
     def _demander_aide(self):
         if getattr(self, "_fil", None) is not None and self._fil.isRunning():
@@ -439,8 +460,7 @@ class Fenetre(QMainWindow):
         reponse = self._dialogue_aide()
         if reponse is None:
             return
-        question, joindre_code, joindre_console = reponse
-        niveau = self._cran_dispo()
+        question, niveau, joindre_code, joindre_console = reponse
         self.reponse_tuteur.setPlainText("Le tuteur réfléchit…")
         code = self.editeur.toPlainText() if joindre_code else ""
         console = self.console.toPlainText() if joindre_console else ""
