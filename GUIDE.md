@@ -31,6 +31,22 @@ La fenetre s'ouvre sur le premier exercice.
 Si quelque chose cloche, lancez d'abord **`diagnostic.bat`** : il verifie que gcc,
 Python et l'affichage repondent, et affiche un message clair.
 
+## Si Windows affiche un avertissement au lancement
+
+L'atelier n'est pas signe par un editeur connu (c'est un projet pedagogique, pas un
+logiciel commercial). Apres un telechargement, Windows peut donc afficher **« Windows a
+protege votre PC »** (SmartScreen) au premier lancement. C'est attendu, ce n'est pas un
+virus.
+
+- **Pour lancer quand meme** : cliquez sur **« Informations complementaires »** puis sur
+  **« Executer quand meme »**. Aucun droit administrateur n'est requis.
+- **Pour eviter l'avertissement des le depart** : avant de decompresser le zip, faites un
+  **clic droit sur le fichier `.zip` -> Proprietes -> cochez « Debloquer » -> OK**, puis
+  decompressez. Les fichiers extraits ne declencheront plus SmartScreen.
+
+Si votre etablissement bloque l'execution (le bouton « Executer quand meme » est absent ou
+grise), c'est une politique de securite du poste : rapprochez-vous du service informatique.
+
 ## Comment ca marche, exercice par exercice
 
 1. Lisez l'enonce en haut de la fenetre.
