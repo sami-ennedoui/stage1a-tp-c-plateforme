@@ -1,7 +1,46 @@
 # Reconstruire le livrable Windows (exe + doc)
 
-Mode d'emploi complet pour rebatir le dossier livrable `TP-C-perso-exe` (parcours
-`be_c`) a partir du depot. Remplace l'ancien `build_exe.txt`.
+Mode d'emploi pour rebatir le bundle lancable (parcours `be_c`) a partir du depot.
+Remplace l'ancien `build_exe.txt`.
+
+Deux voies : le **script automatise** (recommande, surtout sur un PC neuf) ou les
+**etapes manuelles** detaillees plus bas.
+
+## Voie rapide : build automatise sur un PC neuf
+
+Sur un poste Windows neuf, **droits admin conseilles** (pour l'install de Python via
+winget) :
+
+1. Installer git et cloner le depot (ou telecharger le source en zip).
+2. Depuis la racine du clone, lancer :
+
+   ```
+   powershell -ExecutionPolicy Bypass -File packaging\build_windows.ps1 -Zip
+   ```
+
+Le script (`packaging/build_windows.ps1`) fait tout, de facon idempotente :
+
+- installe **Python 3.12** via winget s'il manque, puis les paquets pip
+  (`pyinstaller`, `pyqt6`, `markdown`) ;
+- telecharge et auto-extrait **w64devkit** (gcc) a la racine du depot s'il manque
+  (derniere version x64 depuis GitHub) ;
+- construit l'exe (PyInstaller), regenere les captures et le PDF ;
+- assemble le bundle dans `_bundle\TP-C-perso\` (exe, `w64devkit`, `lancer.bat`,
+  `diagnostic.bat`, `GUIDE.md` comme `README.md`, `README.pdf`, `captures\`) ;
+- verifie que l'exe assemble demarre ;
+- avec `-Zip`, produit `_bundle\TP-C-perso.zip`, pret pour une Release GitHub.
+
+Options : `-SkipInstall` (ne rien installer, environnement deja pret). Le
+`lancer_demo.bat` interne n'est pas inclus, le bundle est distribuable tel quel. Sorties
+(`w64devkit\`, `.build\`, `_bundle\`) ignorees par git.
+
+Pour **publier** ensuite le zip en Release GitHub, voir la section « Publier une Release »
+plus bas.
+
+---
+
+Le reste de ce document detaille les memes etapes a la main (utile pour comprendre ou
+depanner).
 
 ## 0. Prerequis
 
@@ -94,6 +133,27 @@ Refaire tourner captures puis PDF quand l'UI ou le texte changent.
   rester vivant quelques secondes (imports resolus, fenetre construite).
 - Auto-suffisance : avec seulement `w64devkit\bin` au PATH (aucun gcc systeme), le gcc du
   bundle compile un corrige embarque et sort le resultat attendu.
+
+## Publier une Release GitHub
+
+La charge utile (exe + w64devkit, ~800 Mo assembles) n'est pas sur git : on distribue le
+bundle par une **Release GitHub** (zip telechargeable au navigateur, meme sur un depot
+prive). Avec `gh` authentifie (`gh auth status`) et le zip a la main :
+
+```
+gh release create v0.1-demo --target <branche> --prerelease ^
+  --title "TP C, atelier d'introduction au langage C (v0.1-demo)" ^
+  --notes-file notes.md ^
+  chemin\vers\TP-C-perso.zip
+```
+
+Remplacer l'asset d'une release existante : `gh release upload v0.1-demo <zip> --clobber`.
+Mettre a jour les notes : `gh release edit v0.1-demo --notes-file notes.md`.
+
+Note distribution : l'exe n'est pas signe. Apres un telechargement navigateur, SmartScreen
+affiche « Windows a protege votre PC ». Parades sans admin, documentees dans `GUIDE.md` :
+« Informations complementaires > Executer quand meme », ou clic droit sur le zip >
+Proprietes > Debloquer avant d'extraire.
 
 ## Notes
 
