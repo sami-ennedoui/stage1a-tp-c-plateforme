@@ -51,10 +51,15 @@ Dans `C:\Users\VETTEL\TP-C-perso-exe`, a cote de `w64devkit\` (a garder tel quel
 - copier `dist\TP-C-perso\_internal\` en miroir (remplace l'ancien exactement, par
   exemple `robocopy dist\TP-C-perso\_internal _internal /MIR`) ;
 - copier `lancer.bat` et `diagnostic.bat` depuis `packaging\` ;
-- copier `README.md`, `README.pdf` et le dossier `captures\` depuis la **racine du
-  depot** (la doc y vit) ;
+- **doc utilisateur du bundle** : copier `GUIDE.md` (racine du depot) dans le bundle sous
+  le nom `README.md` (c'est la doc conviviale, ou "Python et gcc sont dans ce dossier" est
+  vrai), copier le dossier `captures\` (racine), et generer `README.pdf` (voir section 4) ;
 - `lancer_demo.bat` est **interne** (tout debloque, bouton "Le tuteur ecrit le code" et
   "Charger le corrige"). **A retirer avant de distribuer aux etudiants.**
+
+Ne PAS copier le `README.md` **racine du depot** dans le bundle : celui-la parle du depot
+source (Releases, reconstruction), il tromperait l'utilisateur du bundle. Le bundle recoit
+`GUIDE.md` renomme en `README.md`.
 
 Taille finale du livrable : environ 564 Mo (l'essentiel etant `w64devkit`).
 
@@ -67,13 +72,13 @@ script `outils/captures_doc.py` ecrit dans `captures/` a la racine :
 - `01-vue-ensemble.png`, `02-erreur-compilation.png`,
   `03-porte-ouverte-niveau-cache.png`, `04-demander-aide.png`.
 
-Le PDF est rendu depuis `README.md` (racine) : markdown -> HTML style (theme clair,
-images en base64) -> `msedge --headless --print-to-pdf`. Le script de generation est
-`outils/doc_pdf.py`. Enchainer :
+Le PDF du bundle est rendu depuis `GUIDE.md` (racine) : markdown -> HTML style (theme
+clair, images en base64) -> `msedge --headless --print-to-pdf`. Le script de generation
+est `outils/doc_pdf.py`. Enchainer (le PDF est ecrit directement dans le bundle) :
 
 ```
 python outils/captures_doc.py
-python outils/doc_pdf.py
+python outils/doc_pdf.py GUIDE.md "C:\Users\VETTEL\TP-C-perso-exe\README.pdf"
 ```
 
 Refaire tourner captures puis PDF quand l'UI ou le texte changent.

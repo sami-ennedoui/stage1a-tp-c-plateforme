@@ -4,9 +4,10 @@ Chaine : markdown -> HTML (theme clair, imprimable) avec les images embarquees e
 base64 (le PDF est donc autonome) -> msedge/chrome --headless --print-to-pdf.
 
 Usage :
-    python outils/doc_pdf.py README.md README.pdf
+    python outils/doc_pdf.py GUIDE.md chemin/vers/README.pdf
 
-Sans argument, prend README.md -> README.pdf (a la racine du depot).
+GUIDE.md est le guide utilisateur (celui livre dans le bundle). Sans argument, prend
+GUIDE.md -> GUIDE.pdf a la racine.
 """
 import base64
 import mimetypes
@@ -92,6 +93,6 @@ def rendre(md_path: Path, pdf_path: Path) -> None:
 
 
 if __name__ == "__main__":
-    md = Path(sys.argv[1]) if len(sys.argv) > 1 else RACINE / "README.md"
-    pdf = Path(sys.argv[2]) if len(sys.argv) > 2 else RACINE / "README.pdf"
+    md = Path(sys.argv[1]) if len(sys.argv) > 1 else RACINE / "GUIDE.md"
+    pdf = Path(sys.argv[2]) if len(sys.argv) > 2 else RACINE / "GUIDE.pdf"
     rendre(md, pdf)
