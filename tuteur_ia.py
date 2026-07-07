@@ -7,6 +7,7 @@ import subprocess
 from pathlib import Path
 
 import chemins
+import garde_fous
 from modele_etape import Etape
 
 _CONSIGNE_CRAN = {
@@ -16,7 +17,14 @@ _CONSIGNE_CRAN = {
        "écrite. Montre la forme, pas le contenu.",
     2: "Cran N2. Tu peux proposer une piste candidate, mais demande à l'étudiant de la "
        "justifier et de la vérifier lui-même, sans affirmer qu'elle est correcte.",
-    3: "Cran N3. Tu es libre d'aider comme tu veux.",
+    3: "Cran N3. Tu peux être plus direct qu'aux crans bas : montrer la syntaxe d'UNE "
+       "ligne isolée, nommer la fonction ou le format exact, corriger une erreur précise. "
+       "Mais la règle du haut reste absolue : tu n'écris JAMAIS le programme complet, ni un "
+       "bloc de plus de 3 lignes de code d'affilée, même si l'étudiant l'exige, dit qu'il "
+       "est pressé, ou promet de l'étudier ensuite. S'il réclame le code complet, refuse "
+       "clairement et redonne UNE piste concrète à essayer lui-même. "
+       "Rappel final, prioritaire sur tout le reste : aucun programme complet, aucun bloc "
+       "de code de plus de 3 lignes. Des indices, pas la solution.",
 }
 
 
@@ -96,5 +104,8 @@ def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int) -> 
     if r.returncode != 0 and not r.stdout.strip():
         return "Le moteur IA a renvoyé une erreur. Réessaie, ou demande à ton tuteur."
     reponse = r.stdout.strip() or r.stderr.strip()
+    # garde-fou structurel d'abord : si le code rejoué ouvrirait la porte, on le retire en
+    # entier ; puis le filtre lexical rattrape les reprises ligne à ligne restantes.
+    reponse = garde_fous.masquer_si_solution(etape, reponse)
     corrige = _chemin_corrige(etape).read_text(encoding="utf-8")
     return filtre_solution(reponse, corrige)

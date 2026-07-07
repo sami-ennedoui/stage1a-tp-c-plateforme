@@ -1,5 +1,7 @@
 import unittest
+from pathlib import Path
 import chemins
+import garde_fous
 from modele_etape import charger_etape
 from tuteur_ia import construire_prompt, filtre_solution
 
@@ -21,9 +23,48 @@ class TestTuteur(unittest.TestCase):
         p = construire_prompt(self.etape, "code", "comment faire ?", 2)
         self.assertIn("justifier", p.lower())
 
-    def test_prompt_n3_est_libre(self):
-        p = construire_prompt(self.etape, "code", "comment faire ?", 3)
-        self.assertIn("libre", p.lower())
+    def test_prompt_n3_borne_interdit_le_programme_complet(self):
+        """N3 est le cran le plus permissif mais reste borné : plus direct qu'aux crans
+        bas, jamais le programme complet ni un bloc de plus de 3 lignes."""
+        p = construire_prompt(self.etape, "code", "comment faire ?", 3).lower()
+        self.assertIn("jamais", p)
+        self.assertIn("programme complet", p)
+        self.assertIn("3 lignes", p)
+
+    def _ex01(self):
+        return charger_etape(Path(__file__).resolve().parent.parent
+                             / "contenu" / "be_c" / "ex01_types")
+
+    def test_garde_fou_masque_la_solution_qui_ouvre_la_porte(self):
+        ex01 = self._ex01()
+        corrige = (ex01.dossier / "corrige.c").read_text(encoding="utf-8")
+        rep = "Voici le programme :\n```c\n" + corrige + "\n```\nVoilà."
+        masque = garde_fous.masquer_si_solution(ex01, rep)
+        self.assertNotIn("printf", masque)     # le code qui passe la porte est retiré
+        self.assertIn("Voici le programme", masque)  # la prose reste
+        self.assertIn("garde-fou", masque)
+
+    def test_garde_fou_laisse_passer_un_indice_court(self):
+        ex01 = self._ex01()
+        rep = "La syntaxe d'un short :\n```c\nshort x = 12;\n```\nQuel format printf ?"
+        self.assertEqual(garde_fous.masquer_si_solution(ex01, rep), rep)
+
+    def test_garde_fou_masque_une_fuite_eparpillee(self):
+        """Le modèle refuse le bloc unique mais éparpille la solution sur deux blocs.
+        L'union rejouée contre la porte doit quand même se faire prendre."""
+        ex01 = self._ex01()
+        rep = (
+            "Déclare :\n```c\n"
+            "short  var_short  = 12;\nint    var_int    = 260;\nchar   var_char   = 'A';\n"
+            "float  var_float  = 3.5;\ndouble var_double = 2.5;\n```\n"
+            "Puis affiche :\n```c\n"
+            'printf("short : %d\\n", var_short);\nprintf("int : %i\\n", var_int);\n'
+            'printf("char : %c\\n", var_char);\nprintf("float : %f\\n", var_float);\n'
+            'printf("double : %e\\n", var_double);\n```\n'
+        )
+        masque = garde_fous.masquer_si_solution(ex01, rep)
+        self.assertNotIn("printf", masque)
+        self.assertIn("garde-fou", masque)
 
     def test_filtre_masque_la_ligne_solution(self):
         corrige = "void f(int* p){\n    *p_etat = MENU_PARAMETRAGE;\n}\n"
