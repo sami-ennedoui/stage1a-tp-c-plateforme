@@ -31,11 +31,13 @@ du site pour un usage comparable.
   variables d'environnement, pour que l'identité LTI du compagnon survive
   aux redéploiements.
 - `FLASK_SECRET` : une chaîne aléatoire propre au déploiement, qui signe les
-  sessions Flask.
+  sessions Flask. Elle doit toujours être définie en production ; sans elle l'application retombe sur une valeur de développement prévisible, ce qui est dangereux.
 - `TOTAL_ETAPES` : le nombre d'étapes du TP, utilisé pour calculer le
   pourcentage de progression affiché dans le carnet.
 - `COMPAGNON_BASE` : optionnelle, le chemin du fichier SQLite. Par défaut,
   le compagnon utilise `compagnon/compagnon.sqlite3`.
+
+La table config_lti dans la base est une trace du déploiement courant pour inspection. La source de vérité de la configuration est l'environnement, lu par lti.conf_outil.
 
 ## Enregistrement dans Moodle
 

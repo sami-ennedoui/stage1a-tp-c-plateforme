@@ -202,7 +202,7 @@ d'environnement, secrets LTI compris. La migration vers une machine de l'école 
 
 ## 13. Tests
 
-1. Tests unitaires du compagnon, client de test FastAPI : appairage nominal, code
+1. Tests unitaires du compagnon, client de test Flask : appairage nominal, code
    expiré, code réutilisé, réception d'événements, calcul du score, file « à pousser »
    quand Moodle ne répond pas. Les appels LTI sortants sont doublés par un faux Moodle
    local.

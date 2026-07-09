@@ -1,9 +1,12 @@
 """Routes du compagnon : lancement LTI, appairage, événements, page d'aide.
 Spec section 6.1. La logique vit dans base.py et lti.py, ici on câble."""
+import logging
 import os
 import threading
 import time
 from pathlib import Path
+
+JOURNAL = logging.getLogger("compagnon")
 
 from flask import Flask, jsonify, request
 from flask_caching import Cache
@@ -48,7 +51,7 @@ def _pousser_sans_bloquer(app, sub):
             lti.pousser_score(s, valeur, ags)
             base.marquer_poussee(app.cx, s)
         except Exception:
-            pass
+            JOURNAL.exception("poussée AGS échouée pour %s", sub)
 
 
 def pousser_en_arriere_plan(app, sub):
@@ -67,7 +70,7 @@ def repousser_notes(app) -> None:
             lti.pousser_score(sub, valeur, ags)
             base.marquer_poussee(app.cx, sub)
         except Exception:
-            pass
+            JOURNAL.exception("poussée AGS échouée pour %s", sub)
 
 
 def demarrer_rejeu(app, periode: int = 300) -> None:
@@ -92,13 +95,15 @@ def traiter_lancement(cx, donnees: dict) -> tuple[str, str]:
 
 
 def creer_app(chemin_base=None) -> Flask:
+    # les échecs de poussée doivent se voir dans les logs du serveur
+    logging.basicConfig(level=logging.INFO)
     app = Flask(__name__)
     app.config["SECRET_KEY"] = os.environ.get("FLASK_SECRET", "dev")
     app.config["SESSION_COOKIE_SAMESITE"] = "None"   # lancement depuis l'iframe Moodle
     app.config["SESSION_COOKIE_SECURE"] = True
     cache = Cache(app, config={"CACHE_TYPE": "SimpleCache"})
     app.cx = base.ouvrir(chemin_base or os.environ.get("COMPAGNON_BASE", str(BASE_DEFAUT)))
-    # la table config_lti reflète le déploiement courant, spec section 6.2
+    # la table config_lti est une trace du déploiement courant pour inspection ; la source de vérité de la configuration est l'environnement, lu par lti.conf_outil
     app.cx.execute("INSERT OR REPLACE INTO config_lti VALUES (?, ?, ?, ?, ?, ?)",
                    (os.environ["MOODLE_ISS"], os.environ["MOODLE_CLIENT_ID"],
                     os.environ["MOODLE_DEPLOYMENT_ID"], os.environ["MOODLE_AUTH_LOGIN_URL"],
