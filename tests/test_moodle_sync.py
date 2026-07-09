@@ -77,6 +77,38 @@ class TestMoodleSync(unittest.TestCase):
         d = json.loads(self.fichier.read_text(encoding="utf-8"))
         self.assertEqual(d["file"], [])
 
+    def test_evenement_ajoute_pendant_l_envoi_n_est_pas_perdu(self):
+        # Une porte deja en file avant l'appel.
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123",
+             "file": [{"etape": "perso_P0", "reussite": True, "horodatage": "t0"}]}),
+            encoding="utf-8")
+
+        def urlopen_concurrent(requete, timeout=None):
+            # Simule un signaler_porte concurrent qui ecrit dans le fichier
+            # pendant que la requete precedente est en vol.
+            d = json.loads(self.fichier.read_text(encoding="utf-8"))
+            d["file"].append({"etape": "perso_P2", "reussite": True, "horodatage": "t2"})
+            self.fichier.write_text(json.dumps(d), encoding="utf-8")
+            return reponse_http({"recu": 2, "score": 33.3})
+
+        with mock.patch("moodle_sync.urllib.request.urlopen",
+                        side_effect=urlopen_concurrent):
+            moodle_sync.signaler_porte("perso_P1", fichier=self.fichier, attendre=True)
+
+        d = json.loads(self.fichier.read_text(encoding="utf-8"))
+        # perso_P0 et perso_P1 ont ete envoyes et acquittes : retires.
+        # perso_P2, arrive pendant l'envoi, n'a jamais ete envoye : il reste, une seule fois.
+        self.assertEqual(len(d["file"]), 1)
+        self.assertEqual(d["file"][0]["etape"], "perso_P2")
+
+    def test_fichier_corrompu_ne_leve_pas(self):
+        self.fichier.write_text("{ceci n'est pas du JSON valide", encoding="utf-8")
+        self.assertFalse(moodle_sync.actif(self.fichier))
+        with mock.patch("moodle_sync.urllib.request.urlopen") as u:
+            moodle_sync.signaler_porte("perso_P1", fichier=self.fichier, attendre=True)
+            u.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()
