@@ -1,6 +1,7 @@
 """Routes du compagnon : lancement LTI, appairage, événements, page d'aide.
 Spec section 6.1. La logique vit dans base.py et lti.py, ici on câble."""
 import os
+import time
 from pathlib import Path
 
 from flask import Flask, jsonify, request
@@ -34,6 +35,41 @@ PAGE_AIDE = """<!doctype html><meta charset="utf-8"><title>Compagnon TP C</title
 <li>URL du jeu de clés publiques : <code>{racine}.well-known/jwks.json</code></li>
 </ul>
 <p>Services à activer : notes AGS avec envoi au carnet, partage du nom.</p></body>"""
+
+
+def _pousser_sans_bloquer(app, sub):
+    """Tente la poussée tout de suite ; si Moodle ne répond pas, la note reste
+    marquée à pousser et le rejeu s'en chargera, spec section 8."""
+    for s, valeur, ags in base.notes_en_attente(app.cx):
+        if s != sub:
+            continue
+        try:
+            lti.pousser_score(s, valeur, ags)
+            base.marquer_poussee(app.cx, s)
+        except Exception:
+            pass
+
+
+def repousser_notes(app) -> None:
+    """Un tour de rejeu : repousse toutes les notes en attente."""
+    for sub, valeur, ags in base.notes_en_attente(app.cx):
+        try:
+            lti.pousser_score(sub, valeur, ags)
+            base.marquer_poussee(app.cx, sub)
+        except Exception:
+            pass
+
+
+def demarrer_rejeu(app, periode: int = 300) -> None:
+    """Boucle de rejeu périodique dans un fil discret, spec section 8."""
+    import threading
+
+    def boucle():
+        while True:
+            time.sleep(periode)
+            repousser_notes(app)
+
+    threading.Thread(target=boucle, daemon=True).start()
 
 
 def traiter_lancement(cx, donnees: dict) -> tuple[str, str]:
@@ -84,6 +120,27 @@ def creer_app(chemin_base=None) -> Flask:
         nom, code = traiter_lancement(app.cx, lancement.get_launch_data())
         return PAGE_CODE.format(nom=nom, code=f"{code[:3]}-{code[3:]}")
 
+    @app.post("/api/appairage")
+    def appairage():
+        jeton = base.echanger_code(app.cx, (request.get_json() or {}).get("code", ""))
+        if jeton is None:
+            return jsonify({"erreur": "code inconnu ou expiré"}), 404
+        return jsonify({"jeton": jeton})
+
+    @app.post("/api/evenements")
+    def evenements():
+        entete = request.headers.get("Authorization", "")
+        sub = base.sub_du_jeton(app.cx, entete.removeprefix("Bearer ").strip())
+        if sub is None:
+            return jsonify({"erreur": "jeton inconnu"}), 401
+        evts = (request.get_json() or {}).get("evenements", [])
+        n = base.ajouter_evenements(app.cx, sub, evts)
+        valeur = base.score(len(base.etapes_validees(app.cx, sub)),
+                            int(os.environ["TOTAL_ETAPES"]))
+        base.marquer_a_pousser(app.cx, sub, valeur)
+        _pousser_sans_bloquer(app, sub)
+        return jsonify({"recu": n, "score": valeur})
+
     return app
 
 
@@ -91,3 +148,4 @@ def creer_app(chemin_base=None) -> Flask:
 # les variables d'environnement de déploiement (spec section 11)
 if os.environ.get("MOODLE_ISS"):
     application = creer_app()
+    demarrer_rejeu(application)

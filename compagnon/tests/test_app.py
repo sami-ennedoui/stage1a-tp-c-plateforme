@@ -56,5 +56,73 @@ class TestApp(unittest.TestCase):
         self.assertIsNotNone(base.echanger_code(self.app.cx, code))
 
 
+class TestApi(unittest.TestCase):
+    def setUp(self):
+        _env_test()
+        from compagnon import app as module_app
+        self.module_app = module_app
+        self.app = module_app.creer_app(":memory:")
+        self.client = self.app.test_client()
+        self.pousses = []
+        # on ne pousse jamais vers un vrai Moodle en test
+        module_app.lti.pousser_score = lambda sub, v, ags: self.pousses.append((sub, v))
+
+    def _appairer(self):
+        from compagnon import base
+        code = base.enregistrer_lancement(
+            self.app.cx, "u12", "Sami", "c4665",
+            {"lineitem": "https://moodle.example/ligne/1", "scope": []})
+        r = self.client.post("/api/appairage", json={"code": code})
+        self.assertEqual(r.status_code, 200)
+        return r.get_json()["jeton"]
+
+    def test_appairage_code_valide_puis_rejoue(self):
+        jeton = self._appairer()
+        self.assertTrue(jeton)
+        r = self.client.post("/api/appairage", json={"code": "XXXXXX"})
+        self.assertEqual(r.status_code, 404)
+
+    def test_evenements_score_et_poussee(self):
+        jeton = self._appairer()
+        r = self.client.post("/api/evenements",
+                             headers={"Authorization": f"Bearer {jeton}"},
+                             json={"evenements": [
+                                 {"etape": "perso_P1", "reussite": True,
+                                  "horodatage": "2026-07-07T10:00:00"},
+                                 {"etape": "jalon1_parametrage", "reussite": True,
+                                  "horodatage": "2026-07-07T10:05:00"}]})
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(r.get_json(), {"recu": 2, "score": 33.3})  # 2 sur TOTAL_ETAPES=6
+        self.assertEqual(self.pousses, [("u12", 33.3)])
+
+    def test_evenements_sans_jeton_refuses(self):
+        r = self.client.post("/api/evenements", json={"evenements": []})
+        self.assertEqual(r.status_code, 401)
+        r = self.client.post("/api/evenements",
+                             headers={"Authorization": "Bearer faux"},
+                             json={"evenements": []})
+        self.assertEqual(r.status_code, 401)
+
+    def test_moodle_en_panne_la_note_reste_en_attente(self):
+        from compagnon import base
+        jeton = self._appairer()
+        def echoue(sub, v, ags):
+            raise OSError("moodle injoignable")
+        self.module_app.lti.pousser_score = echoue
+        r = self.client.post("/api/evenements",
+                             headers={"Authorization": f"Bearer {jeton}"},
+                             json={"evenements": [
+                                 {"etape": "perso_P1", "reussite": True,
+                                  "horodatage": "2026-07-07T10:00:00"}]})
+        self.assertEqual(r.status_code, 200)  # l'app n'attend pas Moodle
+        attente = base.notes_en_attente(self.app.cx)
+        self.assertEqual(len(attente), 1)
+        # le rejeu la pousse quand Moodle revit
+        self.module_app.lti.pousser_score = lambda sub, v, ags: self.pousses.append((sub, v))
+        self.module_app.repousser_notes(self.app)
+        self.assertEqual(self.pousses, [("u12", 16.7)])
+        self.assertEqual(base.notes_en_attente(self.app.cx), [])
+
+
 if __name__ == "__main__":
     unittest.main()
