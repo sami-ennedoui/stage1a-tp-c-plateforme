@@ -1,4 +1,5 @@
 """Chemins et drapeaux de compilation. Aucune logique métier ici."""
+import os
 from pathlib import Path
 import subprocess
 
@@ -6,6 +7,10 @@ RACINE = Path(__file__).resolve().parent
 # CONTENU pointe sur le parcours hybride ; tout le code existant continue de fonctionner.
 CONTENU = RACINE / "contenu" / "hybride"
 PROGRESSION_FICHIER = RACINE / "progression.json"
+# appairage et file d'attente Moodle, à côté de la progression, spec compagnon LTI
+MOODLE_SYNC_FICHIER = RACINE / "moodle_sync.json"
+COMPAGNON_URL = os.environ.get("ATELIER_COMPAGNON_URL",
+                               "https://compagnon-tp-c.onrender.com")
 
 PROJET_CORRIGE = RACINE / "projet-corrige"
 PROJET_SNAKE = RACINE / "projet-corrige" / "SNAKE"
