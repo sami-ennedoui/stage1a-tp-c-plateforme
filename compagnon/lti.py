@@ -54,6 +54,8 @@ def pousser_score(sub: str, valeur: float, ags_claim: dict) -> None:
             .set_score_maximum(100)
             .set_activity_progress("Completed")
             .set_grading_progress("FullyGraded")
-            .set_timestamp(datetime.now(timezone.utc).isoformat())
+            # sans fraction de seconde : le validateur ISO 8601 de Moodle rejette
+            # les microsecondes de Python par un 400 sans message
+            .set_timestamp(datetime.now(timezone.utc).isoformat(timespec="seconds"))
             .set_user_id(sub))
     service.put_grade(note)
