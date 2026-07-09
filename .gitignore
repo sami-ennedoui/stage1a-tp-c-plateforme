@@ -24,3 +24,6 @@ journaux/
 /w64devkit/
 /.build/
 /_bundle/
+
+# appairage et file Moodle, propre a chaque poste
+moodle_sync.json
