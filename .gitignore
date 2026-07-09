@@ -19,3 +19,8 @@ resultats.txt
 
 # traces de session ecrites par journal_session.py (donnees de demo, hors depot)
 journaux/
+
+# compagnon LTI : environnement virtuel, base locale et jetons de sync, hors depot
+compagnon/.venv/
+compagnon/*.sqlite3
+moodle_sync.json

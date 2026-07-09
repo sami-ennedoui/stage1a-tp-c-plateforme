@@ -1,0 +1,4 @@
+Flask>=3.0
+flask-caching>=2.0
+PyLTI1p3>=2.0.0
+gunicorn>=21.0
