@@ -44,8 +44,10 @@ Moodle                          Compagnon                        App bureau
   |<- 6. note écrite au carnet ----|                                |
 ```
 
-Le compagnon est un service web Python, FastAPI, base SQLite, bibliothèque pylti1p3
-pour le protocole LTI 1.3. Ordre de grandeur visé : trois à cinq cents lignes.
+Le compagnon est un service web Python, Flask, base SQLite, bibliothèque pylti1p3
+pour le protocole LTI 1.3. Flask plutôt que FastAPI parce que pylti1p3 fournit un
+adaptateur Flask prêt à l'emploi et rien pour FastAPI. Ordre de grandeur visé :
+trois à cinq cents lignes.
 
 L'app bureau ne parle jamais à Moodle. Moodle ne parle jamais à l'app. Le compagnon
 fait le pont et porte seul la complexité LTI.
@@ -60,7 +62,9 @@ fait le pont et porte seul la complexité LTI.
    dix minutes.
 4. Dans l'app, un champ « Connecter à Moodle ». L'étudiant colle le code. L'app appelle
    le compagnon, échange le code contre un jeton permanent, et range ce jeton dans
-   l'espace de session.
+   le fichier `moodle_sync.json`, à côté de `progression.json`. Pas dans
+   `espace_session`, qui est la copie de travail du parcours projet et peut être
+   réinitialisée.
 5. C'est fini. L'étudiant ne refait jamais cette manipulation, sauf s'il change de
    machine, et dans ce cas il reclique simplement l'activité pour obtenir un nouveau
    code. Un nouvel appairage remplace l'ancien pour le même étudiant.
@@ -131,7 +135,7 @@ Un module nouveau, `moodle_sync.py`, aucun changement de comportement ailleurs.
 
 - Aucune UI dans le module, comme `executeur.py`.
 - Deux fonctions publiques : `appairer(code)` et `signaler_porte(id_etape)`.
-- Une file locale, fichier JSON dans l'espace de session, où chaque événement est
+- Une file locale dans le même fichier `moodle_sync.json`, où chaque événement est
   ajouté avant toute tentative d'envoi. La file se rejoue au lancement de l'app et à
   chaque nouvel événement. Un événement n'est retiré de la file qu'après accusé de
   réception du compagnon.
@@ -176,9 +180,12 @@ Matlab Grader comme argument.
 
 ## 11. Hébergement
 
-Prototype sur Render, offre gratuite : HTTPS fourni, déploiement par push Git. Défaut
-connu et accepté en phase bac à sable : la machine s'endort après un quart d'heure
-sans trafic et se réveille en une trentaine de secondes.
+Prototype sur Render, offre gratuite : HTTPS fourni, déploiement par push Git. Deux
+défauts connus et acceptés en phase bac à sable : la machine s'endort après un quart
+d'heure sans trafic et se réveille en une trentaine de secondes, et le disque est
+effacé à chaque redéploiement, donc les appairages de test sont à refaire après un
+déploiement. Les clés RSA de l'outil vivent en variables d'environnement, jamais sur
+le disque, pour que l'identité LTI du compagnon survive aux redéploiements.
 
 Le compagnon est empaqueté en conteneur, toute la configuration en variables
 d'environnement, secrets LTI compris. La migration vers une machine de l'école doit
