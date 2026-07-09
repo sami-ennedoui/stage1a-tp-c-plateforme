@@ -14,6 +14,7 @@ import chemins
 import coloration
 import executeur
 import lsp_clangd
+import moodle_sync
 import progression
 import tuteur_ia
 import theme
@@ -147,6 +148,10 @@ class Fenetre(QMainWindow):
         gauche.setSpacing(6)
         gauche.addWidget(_titre("PARCOURS"))
         gauche.addWidget(self.liste)
+        self.b_moodle = QPushButton("Connecté à Moodle" if moodle_sync.actif()
+                                    else "Connecter à Moodle")
+        self.b_moodle.clicked.connect(self._connecter_moodle)
+        gauche.addWidget(self.b_moodle)
 
         centre = QVBoxLayout()
         centre.setSpacing(6)
@@ -181,6 +186,7 @@ class Fenetre(QMainWindow):
 
         self._remplir_liste()
         self.liste.setCurrentRow(0)
+        moodle_sync.rejouer()
 
     def _remplir_liste(self):
         self.liste.clear()
@@ -255,6 +261,18 @@ class Fenetre(QMainWindow):
         dispo = self._cran_dispo()
         self.label_cran.setText(f"Tuteur, cran courant N{self.niveau} sur N{dispo} débloqué")
 
+    def _connecter_moodle(self):
+        code, ok = QInputDialog.getText(
+            self, "Connecter à Moodle",
+            "Colle le code affiché par l'activité Moodle du TP :")
+        if not ok or not code.strip():
+            return
+        reussi, message = moodle_sync.appairer(code.strip())
+        self.console.setPlainText(message)
+        if reussi:
+            self.b_moodle.setText("Connecté à Moodle")
+            moodle_sync.rejouer()
+
     def _compiler(self):
         self.console.setPlainText("Compilation et exécution en cours…")
         self._tester()
@@ -311,6 +329,8 @@ class Fenetre(QMainWindow):
             f'{html.escape(sortie)}</pre>')
         if ok and valider:
             self.prog = progression.valider(self.etape, self.prog)
+            if not self.demo:
+                moodle_sync.signaler_porte(self.etape.id)
             if not self.demo and self.mode != "projet":   # projet : l'état vit dans la copie
                 progression.sauver(self.prog)
             if self.mode != "projet":
