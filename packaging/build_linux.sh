@@ -98,6 +98,11 @@ else
     exit 1
 fi
 
+# La vérification a fait tourner l'app, qui dépose des fichiers d'exécution à côté
+# du binaire. On les retire pour que le distribuable parte vierge.
+rm -rf "$bundle/journaux" "$bundle/espace_session" \
+       "$bundle/progression.json" "$bundle/moodle_sync.json"
+
 # 5. Archive
 if [ "$archive" -eq 1 ]; then
     arch="$repo/_bundle/TP-C-perso-linux.tar.gz"
