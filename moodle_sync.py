@@ -16,6 +16,9 @@ DELAI = 8  # secondes ; le réveil du serveur gratuit se fait absorber par la fi
 # d'envoi (rejouer) : lecture-modification-écriture toujours sous ce verrou.
 _VERROU = threading.Lock()
 
+# Un seul envoi en vol à la fois ; seuls les fils d'envoi s'y disputent, jamais l'UI.
+_VERROU_ENVOI = threading.Lock()
+
 
 def _charger(fichier: Path) -> dict:
     if not Path(fichier).exists():
@@ -77,25 +80,27 @@ def rejouer(fichier: Path = chemins.MOODLE_SYNC_FICHIER, attendre: bool = False)
     """Vide la file locale vers le compagnon dans un fil discret.
     attendre=True rend l'envoi synchrone, pour les tests et la fin de session."""
     def envoi():
-        with _VERROU:
-            d = _charger(fichier)
-            if not d.get("jeton") or not d["file"]:
-                return
-            url, jeton, envoyes = d["url"], d["jeton"], list(d["file"])
-        # Pas de verrou pendant la requête réseau (jusqu'à DELAI secondes) : un
-        # signaler_porte concurrent doit pouvoir ajouter un événement pendant ce temps.
-        try:
-            _poster(url + "/api/evenements", {"evenements": envoyes},
-                    {"Authorization": "Bearer " + jeton})
-        except OSError:
-            return  # la file reste, on rejouera
-        with _VERROU:
-            d = _charger(fichier)
-            # Les ajouts se font toujours en fin de liste (signaler_porte), donc le
-            # préfixe envoyé n'a pas pu changer : on ne retire que ce préfixe, pas
-            # les événements arrivés pendant l'envoi.
-            d["file"] = d["file"][len(envoyes):]
-            _sauver(d, fichier)
+        with _VERROU_ENVOI:
+            with _VERROU:
+                d = _charger(fichier)
+                if not d.get("jeton") or not d["file"]:
+                    return
+                url, jeton, envoyes = d["url"], d["jeton"], list(d["file"])
+            # Pas de verrou pendant la requête réseau (jusqu'à DELAI secondes) : un
+            # signaler_porte concurrent doit pouvoir ajouter un événement pendant ce temps.
+            try:
+                _poster(url + "/api/evenements", {"evenements": envoyes},
+                        {"Authorization": "Bearer " + jeton})
+            except OSError:
+                return  # la file reste, on rejouera
+            with _VERROU:
+                d = _charger(fichier)
+                # Les ajouts se font toujours en fin de liste (signaler_porte), et un
+                # seul envoi est en vol : la tranche envoyée est donc un préfixe de la
+                # file au moment de la mise à jour. On ne retire que ce préfixe, pas les
+                # événements arrivés pendant l'envoi.
+                d["file"] = d["file"][len(envoyes):]
+                _sauver(d, fichier)
 
     if attendre:
         envoi()
