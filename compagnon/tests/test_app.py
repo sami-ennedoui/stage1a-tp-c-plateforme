@@ -93,6 +93,7 @@ class TestApi(unittest.TestCase):
                                   "horodatage": "2026-07-07T10:05:00"}]})
         self.assertEqual(r.status_code, 200)
         self.assertEqual(r.get_json(), {"recu": 2, "score": 33.3})  # 2 sur TOTAL_ETAPES=6
+        self.app.fil_poussee.join(timeout=5)
         self.assertEqual(self.pousses, [("u12", 33.3)])
 
     def test_evenements_sans_jeton_refuses(self):
@@ -115,6 +116,7 @@ class TestApi(unittest.TestCase):
                                  {"etape": "perso_P1", "reussite": True,
                                   "horodatage": "2026-07-07T10:00:00"}]})
         self.assertEqual(r.status_code, 200)  # l'app n'attend pas Moodle
+        self.app.fil_poussee.join(timeout=5)
         attente = base.notes_en_attente(self.app.cx)
         self.assertEqual(len(attente), 1)
         # le rejeu la pousse quand Moodle revit

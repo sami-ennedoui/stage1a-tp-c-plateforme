@@ -1,6 +1,7 @@
 """Routes du compagnon : lancement LTI, appairage, événements, page d'aide.
 Spec section 6.1. La logique vit dans base.py et lti.py, ici on câble."""
 import os
+import threading
 import time
 from pathlib import Path
 
@@ -50,6 +51,15 @@ def _pousser_sans_bloquer(app, sub):
             pass
 
 
+def pousser_en_arriere_plan(app, sub):
+    """Lance la poussée dans un fil démon : la réponse à l'app ne doit jamais
+    attendre Moodle, spec section 8."""
+    fil = threading.Thread(target=_pousser_sans_bloquer, args=(app, sub), daemon=True)
+    fil.start()
+    app.fil_poussee = fil
+    return fil
+
+
 def repousser_notes(app) -> None:
     """Un tour de rejeu : repousse toutes les notes en attente."""
     for sub, valeur, ags in base.notes_en_attente(app.cx):
@@ -62,7 +72,6 @@ def repousser_notes(app) -> None:
 
 def demarrer_rejeu(app, periode: int = 300) -> None:
     """Boucle de rejeu périodique dans un fil discret, spec section 8."""
-    import threading
 
     def boucle():
         while True:
@@ -138,7 +147,7 @@ def creer_app(chemin_base=None) -> Flask:
         valeur = base.score(len(base.etapes_validees(app.cx, sub)),
                             int(os.environ["TOTAL_ETAPES"]))
         base.marquer_a_pousser(app.cx, sub, valeur)
-        _pousser_sans_bloquer(app, sub)
+        pousser_en_arriere_plan(app, sub)
         return jsonify({"recu": n, "score": valeur})
 
     return app

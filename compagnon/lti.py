@@ -3,7 +3,19 @@ Toute la configuration vient des variables d'environnement, spec section 11."""
 import os
 from datetime import datetime, timezone
 
+import requests
 from pylti1p3.tool_config import ToolConfDict
+
+DELAI_REQUETE_MOODLE = 15  # secondes
+
+
+class _SessionBornee(requests.Session):
+    """Session requests dont chaque appel porte un délai maximal : sans borne,
+    un Moodle lent suspend la poussée indéfiniment, spec section 8."""
+
+    def request(self, *args, **kwargs):
+        kwargs.setdefault("timeout", DELAI_REQUETE_MOODLE)
+        return super().request(*args, **kwargs)
 
 
 def conf_outil() -> ToolConfDict:
@@ -35,7 +47,8 @@ def pousser_score(sub: str, valeur: float, ags_claim: dict) -> None:
 
     conf = conf_outil()
     registration = conf.find_registration_by_issuer(os.environ["MOODLE_ISS"])
-    service = AssignmentsGradesService(ServiceConnector(registration), ags_claim)
+    connecteur = ServiceConnector(registration, requests_session=_SessionBornee())
+    service = AssignmentsGradesService(connecteur, ags_claim)
     note = (Grade()
             .set_score_given(valeur)
             .set_score_maximum(100)
