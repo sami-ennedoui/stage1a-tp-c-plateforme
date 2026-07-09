@@ -1,6 +1,7 @@
 """Routes du compagnon : lancement LTI, appairage, événements, page d'aide.
 Spec section 6.1. La logique vit dans base.py et lti.py, ici on câble."""
 import os
+from pathlib import Path
 
 from flask import Flask, jsonify, request
 from flask_caching import Cache
@@ -8,6 +9,9 @@ from pylti1p3.contrib.flask import (FlaskCacheDataStorage, FlaskMessageLaunch,
                                     FlaskOIDCLogin, FlaskRequest)
 
 from compagnon import base, lti
+
+# La base par défaut reste dans compagnon/, couverte par le .gitignore.
+BASE_DEFAUT = Path(__file__).resolve().parent / "compagnon.sqlite3"
 
 PAGE_CODE = """<!doctype html><meta charset="utf-8"><title>TP C</title>
 <body style="font-family:sans-serif;max-width:36em;margin:4em auto">
@@ -48,7 +52,7 @@ def creer_app(chemin_base=None) -> Flask:
     app.config["SESSION_COOKIE_SAMESITE"] = "None"   # lancement depuis l'iframe Moodle
     app.config["SESSION_COOKIE_SECURE"] = True
     cache = Cache(app, config={"CACHE_TYPE": "SimpleCache"})
-    app.cx = base.ouvrir(chemin_base or os.environ.get("COMPAGNON_BASE", "compagnon.sqlite3"))
+    app.cx = base.ouvrir(chemin_base or os.environ.get("COMPAGNON_BASE", str(BASE_DEFAUT)))
     # la table config_lti reflète le déploiement courant, spec section 6.2
     app.cx.execute("INSERT OR REPLACE INTO config_lti VALUES (?, ?, ?, ?, ?, ?)",
                    (os.environ["MOODLE_ISS"], os.environ["MOODLE_CLIENT_ID"],
