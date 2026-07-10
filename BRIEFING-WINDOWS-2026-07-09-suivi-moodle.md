@@ -54,3 +54,23 @@ L'écriture de la note dans le carnet ne fonctionne que pour un compte étudiant
 qui a une ligne dans le carnet. Un compte enseignant reçoit un refus 400 de Moodle, c'est
 normal, sa règle interne interdit de noter un enseignant. Pour les vrais étudiants tout se
 passe bien. Ne cherche donc pas à corriger ce 400 si tu testes avec un compte enseignant.
+
+## Mise à jour du 2026-07-10
+
+Depuis ce briefing, l'intégration a été testée et documentée côté Linux. Rien de tout ça
+ne change ton travail de build, mais voici l'état à jour pour que tu partes du bon pied.
+
+- La chaîne a été prouvée de bout en bout, appairage, remontée d'événement, poussée de la
+  note vers Moodle. Le détail est dans `SUIVI-MOODLE-TEST-LINUX-2026-07-09.md`.
+- Un défaut serveur a été corrigé, sans rapport avec le build. Le dénominateur du score
+  valait six au lieu de quatorze, il est passé à quatorze. C'est réglé côté serveur, tu
+  n'as rien à faire.
+- La documentation côté Moodle est écrite : `GUIDE-MOODLE-integration-enseignant.md` et
+  `DEMARRAGE-MOODLE.md`. Une activité de démonstration a été créée dans le cours bac à
+  sable et validée.
+- Le build Linux est publié en pré-release GitHub sous le tag `v0.2-demo-linux`, séparé
+  de Windows. La release Windows en ligne reste l'ancienne `v0.1-demo`, sans Moodle.
+
+Ton travail reste exactement celui de la section « À faire pour livrer » ci-dessus :
+fusionner la PR numéro 2, reconstruire l'exécutable avec la commande donnée, publier une
+release Windows à jour. Un état des lieux complet est dans `ETAT-ET-SUITE-2026-07-10.md`.
