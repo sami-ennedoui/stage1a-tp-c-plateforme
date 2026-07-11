@@ -55,6 +55,17 @@ class TestApp(unittest.TestCase):
         self.assertEqual(nom, "Sami Ennedoui")
         self.assertIsNotNone(base.echanger_code(self.app.cx, code))
 
+    def test_login_sans_parametres_montre_une_page_de_relance(self):
+        # Réveil à froid de Render : la page d'attente recharge le POST de
+        # lancement en GET sans ses paramètres, donc target_link_uri manque.
+        # Au lieu d'un 500 illisible, on affiche une consigne de relance.
+        # Régression du bug observé le 2026-07-11.
+        r = self.client.get("/lti/login?lti1p3_new_window=1")
+        self.assertEqual(r.status_code, 200)
+        corps = r.get_data(as_text=True)
+        self.assertIn("F5", corps)
+        self.assertIn("relance", corps.lower())
+
 
 class TestApi(unittest.TestCase):
     def setUp(self):

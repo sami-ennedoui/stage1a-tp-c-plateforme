@@ -27,6 +27,15 @@ PAGE_CODE = """<!doctype html><meta charset="utf-8"><title>TP C</title>
 <p>Il est valable dix minutes et ne sert qu'une fois. Pour en obtenir un
 autre, reviens simplement ici depuis le cours.</p></body>"""
 
+PAGE_REVEIL = """<!doctype html><meta charset="utf-8"><title>Atelier TP C</title>
+<body style="font-family:sans-serif;max-width:36em;margin:4em auto">
+<h1>L'atelier était en train de démarrer</h1>
+<p>Le service se réveillait au moment où tu as ouvert l'activité. Il est prêt
+maintenant.</p>
+<p><strong>Rafraîchis la page avec la touche F5, ou reviens au cours et
+relance l'activité « Atelier TP C ».</strong> Cette fois le code s'affichera
+du premier coup.</p></body>"""
+
 PAGE_AIDE = """<!doctype html><meta charset="utf-8"><title>Compagnon TP C</title>
 <body style="font-family:sans-serif;max-width:36em;margin:4em auto">
 <h1>Compagnon Moodle du TP C</h1>
@@ -124,8 +133,15 @@ def creer_app(chemin_base=None) -> Flask:
     @app.route("/lti/login", methods=["GET", "POST"])
     def login():
         requete = FlaskRequest()
+        cible = requete.get_param("target_link_uri")
+        # Réveil à froid de Render : la page d'attente recharge le POST de
+        # lancement en GET sans son corps, donc les paramètres LTI disparaissent
+        # et pylti1p3 lèverait « No launch URL configured ». Le service est chaud
+        # à présent, on invite simplement à relancer plutôt que d'afficher un 500.
+        if not cible:
+            return PAGE_REVEIL, 200
         oidc = FlaskOIDCLogin(requete, lti.conf_outil(), launch_data_storage=stockage())
-        return oidc.enable_check_cookies().redirect(requete.get_param("target_link_uri"))
+        return oidc.enable_check_cookies().redirect(cible)
 
     @app.post("/lti/launch")
     def launch():
