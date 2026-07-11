@@ -19,6 +19,10 @@ _VERROU = threading.Lock()
 # Un seul envoi en vol à la fois ; seuls les fils d'envoi s'y disputent, jamais l'UI.
 _VERROU_ENVOI = threading.Lock()
 
+# Dernier score renvoyé par le compagnon (pourcentage sur 100), ou None si aucun
+# envoi n'a encore été acquitté. L'UI le lit pour afficher la progression Moodle.
+dernier_score = None
+
 
 def _charger(fichier: Path) -> dict:
     if not Path(fichier).exists():
@@ -76,6 +80,25 @@ def signaler_porte(id_etape: str, fichier: Path = chemins.MOODLE_SYNC_FICHIER,
     rejouer(fichier=fichier, attendre=attendre)
 
 
+def signaler_deja_faits(ids, fichier: Path = chemins.MOODLE_SYNC_FICHIER,
+                        attendre: bool = False) -> None:
+    """Met en file toutes les étapes déjà validées, puis envoie. À appeler juste
+    après l'appairage : sinon la progression faite avant la connexion est perdue,
+    car signaler_porte jette les événements tant qu'il n'y a pas de jeton."""
+    with _VERROU:
+        d = _charger(fichier)
+        if not d.get("jeton"):
+            return
+        horodatage = datetime.now(timezone.utc).isoformat()
+        deja_en_file = {e["etape"] for e in d["file"]}
+        for id_etape in ids:
+            if id_etape not in deja_en_file:
+                d["file"].append({"etape": id_etape, "reussite": True,
+                                  "horodatage": horodatage})
+        _sauver(d, fichier)
+    rejouer(fichier=fichier, attendre=attendre)
+
+
 def rejouer(fichier: Path = chemins.MOODLE_SYNC_FICHIER, attendre: bool = False) -> None:
     """Vide la file locale vers le compagnon dans un fil discret.
     attendre=True rend l'envoi synchrone, pour les tests et la fin de session."""
@@ -89,10 +112,13 @@ def rejouer(fichier: Path = chemins.MOODLE_SYNC_FICHIER, attendre: bool = False)
             # Pas de verrou pendant la requête réseau (jusqu'à DELAI secondes) : un
             # signaler_porte concurrent doit pouvoir ajouter un événement pendant ce temps.
             try:
-                _poster(url + "/api/evenements", {"evenements": envoyes},
-                        {"Authorization": "Bearer " + jeton})
+                reponse = _poster(url + "/api/evenements", {"evenements": envoyes},
+                                  {"Authorization": "Bearer " + jeton})
             except OSError:
                 return  # la file reste, on rejouera
+            if isinstance(reponse, dict) and "score" in reponse:
+                global dernier_score
+                dernier_score = reponse["score"]
             with _VERROU:
                 d = _charger(fichier)
                 # Les ajouts se font toujours en fin de liste (signaler_porte), et un

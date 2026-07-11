@@ -187,6 +187,12 @@ class Fenetre(QMainWindow):
         self._remplir_liste()
         self.liste.setCurrentRow(0)
         moodle_sync.rejouer()
+        # Rafraîchit périodiquement le libellé du bouton avec le score Moodle,
+        # que le compagnon renvoie de façon asynchrone après chaque envoi.
+        self._timer_moodle = QTimer(self)
+        self._timer_moodle.setInterval(1500)
+        self._timer_moodle.timeout.connect(self._maj_moodle)
+        self._timer_moodle.start()
 
     def _remplir_liste(self):
         self.liste.clear()
@@ -270,8 +276,19 @@ class Fenetre(QMainWindow):
         reussi, message = moodle_sync.appairer(code.strip())
         self.console.setPlainText(message)
         if reussi:
-            self.b_moodle.setText("Connecté à Moodle")
-            moodle_sync.rejouer()
+            # Renvoie tout ce qui a déjà été validé avant la connexion, sinon
+            # cette progression serait perdue (signaler_porte l'avait jetée).
+            moodle_sync.signaler_deja_faits(self.prog.etapes_faites)
+            self._maj_moodle()
+
+    def _maj_moodle(self):
+        """Reflète la connexion et le dernier score Moodle sur le bouton."""
+        if not moodle_sync.actif():
+            self.b_moodle.setText("Connecter à Moodle")
+            return
+        s = moodle_sync.dernier_score
+        self.b_moodle.setText("Connecté à Moodle" if s is None
+                              else f"Connecté à Moodle : {s} %")
 
     def _compiler(self):
         self.console.setPlainText("Compilation et exécution en cours…")

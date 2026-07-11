@@ -102,6 +102,42 @@ class TestMoodleSync(unittest.TestCase):
         self.assertEqual(len(d["file"]), 1)
         self.assertEqual(d["file"][0]["etape"], "perso_P2")
 
+    def test_signaler_deja_faits_envoie_les_etapes(self):
+        # L'étudiant s'est connecté après avoir déjà validé des exos : au moment
+        # de l'appairage on renvoie tout ce qui est déjà fait, sinon c'est perdu.
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123", "file": []}),
+            encoding="utf-8")
+        capte = {}
+
+        def capture(requete, timeout=None):
+            capte["corps"] = json.loads(requete.data.decode())
+            return reponse_http({"recu": 2, "score": 14.3})
+
+        with mock.patch("moodle_sync.urllib.request.urlopen", side_effect=capture):
+            moodle_sync.signaler_deja_faits(["ex01_types", "ex02_operateurs"],
+                                            fichier=self.fichier, attendre=True)
+        etapes = [e["etape"] for e in capte["corps"]["evenements"]]
+        self.assertEqual(etapes, ["ex01_types", "ex02_operateurs"])
+        d = json.loads(self.fichier.read_text(encoding="utf-8"))
+        self.assertEqual(d["file"], [])
+
+    def test_signaler_deja_faits_sans_jeton_ne_fait_rien(self):
+        with mock.patch("moodle_sync.urllib.request.urlopen") as u:
+            moodle_sync.signaler_deja_faits(["ex01_types"], fichier=self.fichier)
+            u.assert_not_called()
+
+    def test_score_du_serveur_est_memorise(self):
+        # Le compagnon renvoie le score à chaque envoi ; on le retient pour que
+        # l'atelier puisse l'afficher (« Moodle : X% »).
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123", "file": []}),
+            encoding="utf-8")
+        with mock.patch("moodle_sync.urllib.request.urlopen",
+                        return_value=reponse_http({"recu": 1, "score": 21.4})):
+            moodle_sync.signaler_porte("ex03_menu", fichier=self.fichier, attendre=True)
+        self.assertEqual(moodle_sync.dernier_score, 21.4)
+
     def test_fichier_corrompu_ne_leve_pas(self):
         self.fichier.write_text("{ceci n'est pas du JSON valide", encoding="utf-8")
         self.assertFalse(moodle_sync.actif(self.fichier))
