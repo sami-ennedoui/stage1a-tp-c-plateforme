@@ -1,4 +1,5 @@
 """Chemins et drapeaux de compilation. Aucune logique métier ici."""
+from functools import lru_cache
 import os
 from pathlib import Path
 import subprocess
@@ -34,6 +35,48 @@ SDL_INCLUDES = [
     SNAKE_ROOT / "SDL3_ttf" / "include",
     SNAKE_ROOT / "SDL3_image" / "include",
 ]
+
+
+@lru_cache(maxsize=1)
+def flags_toolchain_clangd() -> tuple[str, ...]:
+    """Drapeaux à donner à clangd pour qu'il voie la même toolchain que gcc.
+
+    Sous Windows, clangd vise x86_64-pc-windows-msvc par défaut et cherche les en-têtes de
+    Visual Studio, absent d'une machine étudiante : tout fichier qui inclut <stdio.h> se
+    couvrirait de fausses erreurs. On aligne donc clangd sur le gcc embarqué (MinGW, fourni
+    par w64devkit) en lui donnant son triplet et ses chemins d'en-têtes système.
+
+    Les chemins sont demandés à gcc, jamais écrits en dur : ils contiennent son numéro de
+    version, qui changera à la prochaine mise à jour de w64devkit.
+
+    Sous Linux, clangd trouve seul les en-têtes système : on ne renvoie rien.
+    """
+    if os.name != "nt":
+        return ()
+    try:
+        triplet = subprocess.run(["gcc", "-dumpmachine"], capture_output=True, text=True,
+                                 encoding="utf-8", errors="replace").stdout.strip()
+        sonde = subprocess.run(["gcc", "-E", "-v", "-x", "c", os.devnull],
+                               capture_output=True, text=True,
+                               encoding="utf-8", errors="replace")
+    except OSError:
+        return ()          # gcc introuvable : clangd se taira, l'atelier marche quand même
+    if not triplet:
+        return ()
+
+    flags = [f"--target={triplet}"]
+    dedans = False
+    for ligne in sonde.stderr.splitlines():
+        if "#include <...> search starts here" in ligne:
+            dedans = True
+            continue
+        if "End of search list" in ligne:
+            break
+        if dedans:
+            chemin = Path(ligne.strip())
+            if chemin.is_dir():
+                flags.append(f"-isystem{chemin.resolve()}")
+    return tuple(flags)
 
 
 def _module_existe(nom: str) -> bool:
