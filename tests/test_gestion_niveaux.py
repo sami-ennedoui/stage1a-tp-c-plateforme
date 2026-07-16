@@ -131,5 +131,68 @@ class TestAuteur(unittest.TestCase):
             auteur.definir("")
 
 
+class TestSynchroniserNotation(unittest.TestCase):
+    """La GUI doit tenir compagnon/etapes_notees.json à jour quand elle touche le
+    parcours noté, sinon retirer un niveau plafonne la note de toute la promo."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        racine = Path(self._tmp.name)          # racine de contenu factice
+        self.dossier = racine / "be_c"         # parcours noté factice
+        self.dossier.mkdir()
+        _parcours_neuf(self.dossier)
+        for i in "abc":
+            gestion_niveaux.ajouter_niveau(self.dossier, f"ex_{i}", i.upper())
+        self.notation = racine / "etapes_notees.json"
+        from compagnon import notation
+        notation.ecrire("be_c", ["ex_a", "ex_b", "ex_c"], self.notation)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_retrait_realigne_la_liste_et_previent(self):
+        from compagnon import notation
+        gestion_niveaux.retirer_niveau(self.dossier, "ex_b")
+        message = gestion_niveaux.synchroniser_notation(self.dossier, self.notation)
+        self.assertIsNotNone(message)
+        self.assertIn("redéployé", message)
+        self.assertEqual(notation.charger(self.notation), ["ex_a", "ex_c"])
+
+    def test_ajout_ajoute_a_la_liste_notee(self):
+        from compagnon import notation
+        gestion_niveaux.ajouter_niveau(self.dossier, "ex_d", "D")
+        gestion_niveaux.synchroniser_notation(self.dossier, self.notation)
+        self.assertEqual(notation.charger(self.notation),
+                         ["ex_a", "ex_b", "ex_c", "ex_d"])
+
+    def test_deja_aligne_ne_dit_rien(self):
+        self.assertIsNone(
+            gestion_niveaux.synchroniser_notation(self.dossier, self.notation))
+
+    def test_autre_parcours_note_reste_intact(self):
+        from compagnon import notation
+        notation.ecrire("un_autre", ["x"], self.notation)
+        gestion_niveaux.retirer_niveau(self.dossier, "ex_b")
+        message = gestion_niveaux.synchroniser_notation(self.dossier, self.notation)
+        self.assertIsNone(message)
+        self.assertEqual(notation.charger(self.notation), ["x"])
+
+    def test_pas_de_compagnon_pas_d_erreur(self):
+        absent = Path(self._tmp.name) / "pas_la" / "etapes_notees.json"
+        self.assertIsNone(
+            gestion_niveaux.synchroniser_notation(self.dossier, absent))
+
+    def test_refuse_d_ecrire_la_vraie_notation_depuis_une_racine_de_test(self):
+        # Le piège vécu côté ligne de commande : un parcours temporaire nommé comme le
+        # parcours noté ne doit jamais écraser la vraie notation du dépôt.
+        import atelier_contenu
+        reel = atelier_contenu.FICHIER_NOTATION
+        avant = reel.read_bytes() if reel.exists() else None
+        message = gestion_niveaux.synchroniser_notation(self.dossier, reel)
+        self.assertIsNone(message)
+        apres = reel.read_bytes() if reel.exists() else None
+        self.assertEqual(avant, apres)
+
+
 if __name__ == "__main__":
     unittest.main()

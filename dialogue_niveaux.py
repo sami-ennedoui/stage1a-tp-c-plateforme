@@ -193,6 +193,24 @@ class DialogueNiveaux(QDialog):
         self.liste.clear()
         self.liste.addItems(gestion_niveaux.lister_niveaux(self.dossier))
 
+    def _suivre_notation(self):
+        """Après un changement d'ordre, réaligne la liste notée du compagnon et
+        prévient l'enseignant qu'il faudra redéployer, si ce parcours est le noté.
+
+        Sans ce câblage, retirer un niveau de be_c plafonnerait la note de toute la
+        promo sans un mot : le compagnon note une liste qu'il ne peut pas voir."""
+        try:
+            message = gestion_niveaux.synchroniser_notation(self.dossier)
+        except (OSError, ValueError) as e:
+            QMessageBox.warning(
+                self, "Notation non mise à jour",
+                "Le contenu a changé mais la liste notée du compagnon n'a pas pu "
+                f"être réalignée :\n{e}")
+            return
+        if message:
+            QMessageBox.information(
+                self, "Parcours noté : penser au redéploiement", message)
+
     def _selection(self) -> str | None:
         item = self.liste.currentItem()
         return item.text() if item is not None else None
@@ -212,6 +230,7 @@ class DialogueNiveaux(QDialog):
             QMessageBox.warning(self, "Ajout impossible", str(e))
             return
         self._rafraichir()
+        self._suivre_notation()
         ident = v["ident"].strip()
         editer = QMessageBox.question(
             self, "Niveau créé",
@@ -244,6 +263,7 @@ class DialogueNiveaux(QDialog):
             QMessageBox.warning(self, "Réattachement impossible", str(e))
             return
         self._rafraichir()
+        self._suivre_notation()
 
     def _retirer(self):
         ident = self._selection()
@@ -261,6 +281,7 @@ class DialogueNiveaux(QDialog):
             QMessageBox.warning(self, "Retrait impossible", str(e))
             return
         self._rafraichir()
+        self._suivre_notation()
 
     def _deplacer(self, delta: int):
         ident = self._selection()
@@ -272,6 +293,7 @@ class DialogueNiveaux(QDialog):
             QMessageBox.warning(self, "Déplacement impossible", str(e))
             return
         self._rafraichir()
+        self._suivre_notation()
         # garde la sélection sur le niveau déplacé
         for i in range(self.liste.count()):
             if self.liste.item(i).text() == ident:

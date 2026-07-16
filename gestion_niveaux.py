@@ -220,3 +220,43 @@ def deplacer_niveau(dossier_parcours: Path, ident: str, delta: int) -> None:
         return
     ordre.insert(j, ordre.pop(i))
     _ecrire_json(dossier_parcours, donnees)
+
+
+def synchroniser_notation(dossier_parcours: Path,
+                          fichier_notation: Path | None = None) -> str | None:
+    """Réaligne la liste des étapes notées du compagnon sur `ordre`, si ce parcours
+    est celui qu'il note. Renvoie un rappel à montrer à l'enseignant (il faut
+    redéployer le compagnon) quand la liste a bougé, sinon None.
+
+    Le compagnon note un parcours dont son image Docker ne voit jamais le contenu :
+    sa liste vit dans compagnon/etapes_notees.json et doit suivre `ordre` à la main.
+    Sans ce câblage, retirer un niveau de be_c plafonnerait la note de toute la promo,
+    en silence. Même rôle que atelier_contenu._suivre_notation côté ligne de commande,
+    mais rend le message au lieu de l'imprimer pour que la GUI l'affiche.
+    """
+    import atelier_contenu  # tardif : évite de tirer executeur au chargement du module
+    if fichier_notation is None:
+        fichier_notation = atelier_contenu.FICHIER_NOTATION
+    racine = dossier_parcours.parent
+    nom = dossier_parcours.name
+    # Ne jamais écrire la vraie notation depuis une racine de test : un parcours
+    # temporaire peut porter le nom du parcours noté (piège vécu côté ligne de commande).
+    if (fichier_notation == atelier_contenu.FICHIER_NOTATION
+            and racine != atelier_contenu.RACINE_CONTENU):
+        return None
+    if not fichier_notation.exists():
+        return None                    # pas de compagnon ici : bundle étudiant, clone partiel
+    from compagnon import notation     # tardif : le bundle étudiant n'a pas compagnon/
+    if notation.parcours_note(fichier_notation) != nom:
+        return None                    # le compagnon note un autre parcours
+    try:
+        actuelles = notation.charger(fichier_notation)
+    except ValueError:
+        actuelles = None               # fichier déjà incohérent : on le réécrit d'aplomb
+    ordre = lister_niveaux(dossier_parcours)
+    if actuelles == ordre:
+        return None                    # déjà d'aplomb, rien à signaler
+    notation.ecrire(nom, ordre, fichier_notation)
+    return (f"« {nom} » est le parcours noté par le compagnon.\n"
+            f"Sa liste d'étapes notées a été réalignée sur {len(ordre)} étape(s).\n\n"
+            "Le compagnon doit être redéployé pour que les notes en tiennent compte.")
