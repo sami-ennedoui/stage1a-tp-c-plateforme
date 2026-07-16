@@ -8,6 +8,8 @@ import sys
 from pathlib import Path
 
 import chemins
+import executeur
+from modele_etape import charger_etape
 
 RACINE_CONTENU = chemins.RACINE / "contenu"
 
@@ -148,6 +150,92 @@ def commande_retirer_etape(nom_parcours: str, id_etape: str, effacer: bool = Fal
     return 0
 
 
+def _parcours_isoles(racine: Path) -> list[str]:
+    """Noms des dossiers de contenu/ dont le parcours.json est en mode isole."""
+    noms = []
+    for dossier in sorted(p for p in racine.iterdir() if p.is_dir()):
+        fichier = dossier / "parcours.json"
+        if not fichier.exists():
+            continue
+        try:
+            donnees = _lire_json(fichier)
+        except json.JSONDecodeError:
+            continue
+        if donnees.get("mode", "isole") == "isole":
+            noms.append(dossier.name)
+    return noms
+
+
+def _verifier_porte(dossier_etape: Path, fichiers_requis: tuple, porte) -> tuple[bool, str]:
+    manquants = [f for f in fichiers_requis if not (dossier_etape / f).exists()]
+    if manquants:
+        return False, "fichier manquant : " + ", ".join(manquants)
+    etape = charger_etape(dossier_etape)
+    corrige = (dossier_etape / "corrige.c").read_text(encoding="utf-8")
+    starter = (dossier_etape / "starter.c").read_text(encoding="utf-8")
+    r_corrige = porte(etape, corrige)
+    if not r_corrige.ok:
+        return False, "le corrigé ne passe pas la porte :\n" + r_corrige.sortie
+    r_starter = porte(etape, starter)
+    if r_starter.ok:
+        return False, "le starter passe la porte alors qu'il ne devrait pas"
+    return True, "ok"
+
+
+def _verifier_etape(dossier_parcours: Path, id_etape: str) -> tuple[bool, str]:
+    dossier_etape = dossier_parcours / id_etape
+    if not dossier_etape.is_dir():
+        return False, "dossier introuvable"
+    fichier_meta = dossier_etape / "meta.json"
+    if not fichier_meta.exists():
+        return False, "meta.json introuvable"
+    try:
+        meta = _lire_json(fichier_meta)
+    except json.JSONDecodeError as e:
+        return False, f"meta.json invalide : {e}"
+    try:
+        id_meta = meta["id"]
+        meta["titre"]
+        meta["type"]
+        meta["fichier_edite"]
+    except KeyError as e:
+        return False, f"meta.json incomplet, clé manquante : {e}"
+    if id_meta != id_etape:
+        return False, f"id du meta ({id_meta}) différent du nom de dossier ({id_etape})"
+
+    mode = meta.get("mode", "")
+    if mode == "programme":
+        return _verifier_porte(dossier_etape, ("corrige.c", "starter.c"), executeur.porte_programme)
+    if mode == "test_fourni":
+        return _verifier_porte(dossier_etape, ("corrige.c", "starter.c", "tests.c"),
+                               executeur.porte_perso)
+    return True, f"non vérifié automatiquement (mode {mode or 'aucun'})"
+
+
+def commande_verifier(nom_parcours: str = None, racine: Path = RACINE_CONTENU) -> int:
+    """Vérifie un parcours donné, ou tous les parcours isole si aucun n'est précisé.
+    Compile du C pour chaque étape programme ou test_fourni : c'est lent, la
+    progression s'affiche donc au fur et à mesure."""
+    if nom_parcours is not None:
+        if not (racine / nom_parcours).exists():
+            _erreur(f"parcours introuvable : {nom_parcours}")
+            return 1
+        noms = [nom_parcours]
+    else:
+        noms = _parcours_isoles(racine)
+
+    tout_ok = True
+    for nom in noms:
+        dossier_parcours = racine / nom
+        donnees = _lire_json(dossier_parcours / "parcours.json")
+        for id_etape in donnees.get("ordre", []):
+            print(f"{nom}/{id_etape} ... ", end="", flush=True)
+            ok, message = _verifier_etape(dossier_parcours, id_etape)
+            print(message)
+            tout_ok = tout_ok and ok
+    return 0 if tout_ok else 1
+
+
 def main(argv=None) -> int:
     analyseur = argparse.ArgumentParser(
         description="Édite le contenu pédagogique : parcours et étapes.")
@@ -168,6 +256,10 @@ def main(argv=None) -> int:
     p_retirer_etape.add_argument("id")
     p_retirer_etape.add_argument("--effacer", action="store_true")
 
+    p_verifier = sous.add_parser(
+        "verifier", help="Vérifie qu'un parcours, ou tous les parcours isole, fonctionnent.")
+    p_verifier.add_argument("parcours", nargs="?", default=None)
+
     args = analyseur.parse_args(argv)
     if args.commande == "nouveau-parcours":
         return commande_nouveau_parcours(args.nom)
@@ -176,6 +268,8 @@ def main(argv=None) -> int:
                                        args.apres, args.cran)
     if args.commande == "retirer-etape":
         return commande_retirer_etape(args.parcours, args.id, args.effacer)
+    if args.commande == "verifier":
+        return commande_verifier(args.parcours)
     return 1
 
 
