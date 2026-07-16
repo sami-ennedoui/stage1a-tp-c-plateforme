@@ -1,5 +1,8 @@
 """Tests du pont vers le compagnon : file locale, appairage, inertie sans appairage."""
 import json
+import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -144,6 +147,72 @@ class TestMoodleSync(unittest.TestCase):
         with mock.patch("moodle_sync.urllib.request.urlopen") as u:
             moodle_sync.signaler_porte("perso_P1", fichier=self.fichier, attendre=True)
             u.assert_not_called()
+
+    def test_mode_local_signaler_porte_ne_fait_rien(self):
+        # Un jeton valide traîne sur le disque, mais le mode local est un
+        # interrupteur franc : aucune requête ne doit partir malgré tout.
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123", "file": []}),
+            encoding="utf-8")
+        with mock.patch("chemins.ATELIER_SUIVI", "local"), \
+             mock.patch("moodle_sync.urllib.request.urlopen") as u:
+            moodle_sync.signaler_porte("perso_P1", fichier=self.fichier, attendre=True)
+            u.assert_not_called()
+
+    def test_mode_local_signaler_deja_faits_ne_fait_rien(self):
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123", "file": []}),
+            encoding="utf-8")
+        with mock.patch("chemins.ATELIER_SUIVI", "local"), \
+             mock.patch("moodle_sync.urllib.request.urlopen") as u:
+            moodle_sync.signaler_deja_faits(["ex01_types"], fichier=self.fichier, attendre=True)
+            u.assert_not_called()
+
+    def test_mode_local_rejouer_ne_fait_rien(self):
+        # rejouer() est aussi appelé seul au démarrage de la fenêtre : une file
+        # laissée par un ancien mode moodle ne doit pas partir non plus.
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123",
+             "file": [{"etape": "perso_P0", "reussite": True, "horodatage": "t0"}]}),
+            encoding="utf-8")
+        with mock.patch("chemins.ATELIER_SUIVI", "local"), \
+             mock.patch("moodle_sync.urllib.request.urlopen") as u:
+            moodle_sync.rejouer(fichier=self.fichier, attendre=True)
+            u.assert_not_called()
+
+    def test_desaccord_url_renvoie_ancienne_si_differente(self):
+        self.fichier.write_text(json.dumps(
+            {"url": "https://ancien.example", "jeton": "J123", "file": []}), encoding="utf-8")
+        with mock.patch.dict(os.environ, {"ATELIER_COMPAGNON_URL": "https://nouveau.example"}):
+            self.assertEqual(moodle_sync.desaccord_url(self.fichier), "https://ancien.example")
+
+    def test_desaccord_url_none_si_identique(self):
+        self.fichier.write_text(json.dumps(
+            {"url": "https://ancien.example", "jeton": "J123", "file": []}), encoding="utf-8")
+        with mock.patch.dict(os.environ, {"ATELIER_COMPAGNON_URL": "https://ancien.example"}):
+            self.assertIsNone(moodle_sync.desaccord_url(self.fichier))
+
+    def test_desaccord_url_none_si_variable_absente(self):
+        self.fichier.write_text(json.dumps(
+            {"url": "https://ancien.example", "jeton": "J123", "file": []}), encoding="utf-8")
+        with mock.patch.dict(os.environ):
+            os.environ.pop("ATELIER_COMPAGNON_URL", None)
+            self.assertIsNone(moodle_sync.desaccord_url(self.fichier))
+
+    def test_desaccord_url_none_si_pas_d_appairage(self):
+        with mock.patch.dict(os.environ, {"ATELIER_COMPAGNON_URL": "https://nouveau.example"}):
+            self.assertIsNone(moodle_sync.desaccord_url(self.fichier))
+
+    def test_atelier_suivi_invalide_refuse_au_demarrage(self):
+        # La validation vit dans chemins.py, importé au tout début : on la teste
+        # dans un sous-processus pour ne pas corrompre le chemins déjà importé
+        # par le reste de la suite.
+        racine = Path(__file__).resolve().parent.parent
+        r = subprocess.run([sys.executable, "-c", "import chemins"], cwd=str(racine),
+                           env={**os.environ, "ATELIER_SUIVI": "bogus"},
+                           capture_output=True, text=True)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("ATELIER_SUIVI", r.stderr)
 
 
 if __name__ == "__main__":

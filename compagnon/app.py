@@ -13,7 +13,7 @@ from flask_caching import Cache
 from pylti1p3.contrib.flask import (FlaskCacheDataStorage, FlaskMessageLaunch,
                                     FlaskOIDCLogin, FlaskRequest)
 
-from compagnon import base, lti
+from compagnon import base, lti, notation
 
 # La base par défaut reste dans compagnon/, couverte par le .gitignore.
 BASE_DEFAUT = Path(__file__).resolve().parent / "compagnon.sqlite3"
@@ -103,10 +103,17 @@ def traiter_lancement(cx, donnees: dict) -> tuple[str, str]:
     return nom, code
 
 
-def creer_app(chemin_base=None) -> Flask:
+def creer_app(chemin_base=None, notees=None) -> Flask:
     # les échecs de poussée doivent se voir dans les logs du serveur
     logging.basicConfig(level=logging.INFO)
     app = Flask(__name__)
+    # Le parcours noté, seule chose que le compagnon sache du contenu. Voir notation.py.
+    app.etapes_notees = list(notees) if notees is not None else notation.charger()
+    if "TOTAL_ETAPES" in os.environ:
+        JOURNAL.warning(
+            "TOTAL_ETAPES=%s est ignorée : le dénominateur vient maintenant de "
+            "etapes_notees.json, qui liste %d étapes. La variable peut être retirée "
+            "du déploiement.", os.environ["TOTAL_ETAPES"], len(app.etapes_notees))
     app.config["SECRET_KEY"] = os.environ.get("FLASK_SECRET", "dev")
     app.config["SESSION_COOKIE_SAMESITE"] = "None"   # lancement depuis l'iframe Moodle
     app.config["SESSION_COOKIE_SECURE"] = True
@@ -165,8 +172,10 @@ def creer_app(chemin_base=None) -> Flask:
             return jsonify({"erreur": "jeton inconnu"}), 401
         evts = (request.get_json() or {}).get("evenements", [])
         n = base.ajouter_evenements(app.cx, sub, evts)
-        valeur = base.score(len(base.etapes_validees(app.cx, sub)),
-                            int(os.environ["TOTAL_ETAPES"]))
+        # On ne retient que les étapes notées : l'atelier signale les portes de tous les
+        # parcours sans dire lequel, et sans ce filtre l'entraînement gonflerait la note.
+        retenues = base.etapes_validees(app.cx, sub) & set(app.etapes_notees)
+        valeur = base.score(len(retenues), len(app.etapes_notees))
         base.marquer_a_pousser(app.cx, sub, valeur)
         pousser_en_arriere_plan(app, sub)
         return jsonify({"recu": n, "score": valeur})

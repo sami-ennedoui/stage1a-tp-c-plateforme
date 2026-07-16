@@ -32,8 +32,11 @@ du site pour un usage comparable.
   aux redéploiements.
 - `FLASK_SECRET` : une chaîne aléatoire propre au déploiement, qui signe les
   sessions Flask. Elle doit toujours être définie en production ; sans elle l'application retombe sur une valeur de développement prévisible, ce qui est dangereux.
-- `TOTAL_ETAPES` : le nombre d'étapes du TP, utilisé pour calculer le
-  pourcentage de progression affiché dans le carnet.
+- `TOTAL_ETAPES` : **obsolète depuis le 16 juillet 2026, et ignorée.** Le
+  dénominateur du score vient maintenant de `etapes_notees.json`, qui liste les
+  étapes notées au lieu de les compter à la main. Voir `notation.py`. Si la
+  variable traîne encore sur un déploiement, le compagnon le signale au
+  démarrage et elle peut être retirée.
 - `COMPAGNON_BASE` : optionnelle, le chemin du fichier SQLite. Par défaut,
   le compagnon utilise `compagnon/compagnon.sqlite3`.
 

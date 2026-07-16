@@ -16,6 +16,13 @@ REGLAGES_FICHIER = RACINE / "reglages.json"
 COMPAGNON_URL = os.environ.get("ATELIER_COMPAGNON_URL",
                                "https://compagnon-tp-c.onrender.com")
 
+# "moodle" (défaut) : comportement actuel, la progression remonte au compagnon.
+# "local" : aucun réseau, jamais ; la progression ne vit que sur ce poste.
+ATELIER_SUIVI = os.environ.get("ATELIER_SUIVI", "moodle")
+if ATELIER_SUIVI not in ("moodle", "local"):
+    raise SystemExit(
+        f"ATELIER_SUIVI={ATELIER_SUIVI!r} invalide, valeurs acceptées : moodle, local.")
+
 PROJET_CORRIGE = RACINE / "projet-corrige"
 PROJET_SNAKE = RACINE / "projet-corrige" / "SNAKE"
 # squelette à trous, point de départ de l'étudiant en parcours projet

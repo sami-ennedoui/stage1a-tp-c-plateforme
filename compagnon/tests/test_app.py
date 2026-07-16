@@ -21,15 +21,20 @@ def _env_test():
         "MOODLE_KEY_SET_URL": "https://moodle.example/mod/lti/certs.php",
         "TOOL_PRIVATE_KEY": privee,
         "TOOL_PUBLIC_KEY": publique,
-        "TOTAL_ETAPES": "6",
     })
+    os.environ.pop("TOTAL_ETAPES", None)  # remplacée par etapes_notees.json
+
+
+# Les six étapes que ce compagnon de test note. Tout id absent d'ici vient d'un
+# parcours d'entraînement et ne doit peser sur aucune note.
+NOTEES_TEST = ["perso_P1", "jalon1_parametrage", "n1", "n2", "n3", "n4"]
 
 
 class TestApp(unittest.TestCase):
     def setUp(self):
         _env_test()
         from compagnon import app as module_app
-        self.app = module_app.creer_app(":memory:")
+        self.app = module_app.creer_app(":memory:", notees=NOTEES_TEST)
         self.client = self.app.test_client()
 
     def test_page_d_aide_a_la_racine(self):
@@ -72,7 +77,7 @@ class TestApi(unittest.TestCase):
         _env_test()
         from compagnon import app as module_app
         self.module_app = module_app
-        self.app = module_app.creer_app(":memory:")
+        self.app = module_app.creer_app(":memory:", notees=NOTEES_TEST)
         self.client = self.app.test_client()
         self.pousses = []
         # on ne pousse jamais vers un vrai Moodle en test
@@ -103,9 +108,53 @@ class TestApi(unittest.TestCase):
                                  {"etape": "jalon1_parametrage", "reussite": True,
                                   "horodatage": "2026-07-07T10:05:00"}]})
         self.assertEqual(r.status_code, 200)
-        self.assertEqual(r.get_json(), {"recu": 2, "score": 33.3})  # 2 sur TOTAL_ETAPES=6
+        self.assertEqual(r.get_json(), {"recu": 2, "score": 33.3})  # 2 des 6 étapes notées
         self.app.fil_poussee.join(timeout=5)
         self.assertEqual(self.pousses, [("u12", 33.3)])
+
+    def test_un_parcours_non_note_ne_gonfle_pas_la_note(self):
+        """L'atelier signale une porte franchie sans jamais dire de quel parcours elle
+        vient, et les ids d'étapes sont uniques d'un parcours à l'autre. Le compagnon
+        ne doit donc retenir que les étapes qu'il note, sinon un étudiant gagne des
+        points en s'entraînant sur un parcours qui n'est pas noté."""
+        jeton = self._appairer()
+        entete = {"Authorization": f"Bearer {jeton}"}
+
+        def valider(*etapes):
+            r = self.client.post("/api/evenements", headers=entete, json={"evenements": [
+                {"etape": e, "reussite": True, "horodatage": "2026-07-16T10:00:00"}
+                for e in etapes]})
+            return r.get_json()["score"]
+
+        # 3 des 6 étapes notées : la moitié du parcours.
+        self.assertEqual(valider("n1", "n2", "n3"), 50.0)
+        # Il s'entraîne sur un parcours qui n'est pas noté. Sa note ne doit pas bouger.
+        self.assertEqual(valider("entrainement_a", "entrainement_b", "entrainement_c"), 50.0)
+
+    def test_une_variable_total_etapes_perimee_ne_fausse_plus_rien(self):
+        """TOTAL_ETAPES vivait dans le tableau de bord Render, aucun test ne pouvait la
+        lire et rien ne l'obligeait à suivre le contenu. Elle est restée sur le
+        déploiement : il faut qu'elle soit inerte, même en mentant grossièrement."""
+        os.environ["TOTAL_ETAPES"] = "2"          # le parcours de test en compte six
+        try:
+            app = self.module_app.creer_app(":memory:", notees=NOTEES_TEST)
+            client = app.test_client()
+            from compagnon import base
+            code = base.enregistrer_lancement(app.cx, "u99", "Sami", "c4665",
+                                              {"lineitem": "https://moodle.example/l/1",
+                                               "scope": []})
+            jeton = client.post("/api/appairage", json={"code": code}).get_json()["jeton"]
+            r = client.post("/api/evenements",
+                            headers={"Authorization": f"Bearer {jeton}"},
+                            json={"evenements": [
+                                {"etape": "n1", "reussite": True,
+                                 "horodatage": "2026-07-16T10:00:00"},
+                                {"etape": "n2", "reussite": True,
+                                 "horodatage": "2026-07-16T10:01:00"}]})
+            # Avec l'ancien code : 2 sur 2, soit 100. Avec la liste : 2 sur 6.
+            self.assertEqual(r.get_json()["score"], 33.3)
+        finally:
+            os.environ.pop("TOTAL_ETAPES", None)
 
     def test_evenements_sans_jeton_refuses(self):
         r = self.client.post("/api/evenements", json={"evenements": []})

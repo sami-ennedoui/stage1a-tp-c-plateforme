@@ -3,6 +3,7 @@
   python3 atelier_snake.py                    lance la fenêtre, parcours hybride
   python3 atelier_snake.py --parcours projet  lance le parcours projet
   python3 atelier_snake.py --selftest         vérifie les portes sans écran
+  python3 atelier_snake.py --releve           écrit releve.txt et l'affiche, sans écran
   python3 atelier_snake.py --smoketest        construit la fenêtre sans l'afficher
   python3 atelier_snake.py --demo             mode démo, tout débloqué, bouton Charger le corrigé
 Le mode démo et --parcours se combinent : --demo --parcours projet charge le corrigé du projet.
@@ -48,6 +49,14 @@ def selftest() -> int:
     return echecs
 
 
+def releve_cli() -> int:
+    import releve
+    contenu = releve.texte(_parcours_choisi())
+    releve.ecrire(contenu)
+    print(contenu)
+    return 0
+
+
 def smoketest() -> int:
     from PyQt6.QtWidgets import QApplication
     import fenetre
@@ -62,6 +71,8 @@ def smoketest() -> int:
 def main():
     if "--selftest" in sys.argv:
         sys.exit(1 if selftest() else 0)
+    if "--releve" in sys.argv:
+        sys.exit(releve_cli())
     if "--smoketest" in sys.argv:
         sys.exit(smoketest())
     from PyQt6.QtWidgets import QApplication

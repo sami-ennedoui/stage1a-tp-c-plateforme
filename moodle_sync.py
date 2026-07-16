@@ -2,6 +2,7 @@
 Sans appairage, tout est inerte. Chaque porte passée est d'abord écrite dans la file
 locale, puis envoyée ; un envoi raté attend le prochain rejeu. Spec compagnon LTI."""
 import json
+import os
 import threading
 import urllib.error
 import urllib.request
@@ -65,11 +66,27 @@ def appairer(code: str, fichier: Path = chemins.MOODLE_SYNC_FICHIER,
     return True, "Connecté à Moodle. Ta progression remontera automatiquement."
 
 
+def desaccord_url(fichier: Path = chemins.MOODLE_SYNC_FICHIER) -> str | None:
+    """Renvoie l'ancienne URL si l'appairage vise un autre compagnon que celui visé
+    par ATELIER_COMPAGNON_URL, sinon None. Ne se déclenche que si la variable est
+    définie explicitement : sinon toute installation normale semblerait avoir
+    changé de serveur."""
+    voulue = os.environ.get("ATELIER_COMPAGNON_URL")
+    if not voulue:
+        return None
+    ancienne = _charger(fichier).get("url")
+    if not ancienne or ancienne.rstrip("/") == voulue.rstrip("/"):
+        return None
+    return ancienne
+
+
 def signaler_porte(id_etape: str, fichier: Path = chemins.MOODLE_SYNC_FICHIER,
                    attendre: bool = False) -> None:
     """Ajoute l'événement à la file puis tente l'envoi en arrière-plan.
     Sans appairage, ne fait rien. Ne lève jamais, ne bloque jamais l'UI.
     attendre=True rend l'envoi synchrone, pour les tests."""
+    if chemins.ATELIER_SUIVI == "local":
+        return  # interrupteur franc : même un jeton présent sur le disque reste inerte
     with _VERROU:
         d = _charger(fichier)
         if not d.get("jeton"):
@@ -85,6 +102,8 @@ def signaler_deja_faits(ids, fichier: Path = chemins.MOODLE_SYNC_FICHIER,
     """Met en file toutes les étapes déjà validées, puis envoie. À appeler juste
     après l'appairage : sinon la progression faite avant la connexion est perdue,
     car signaler_porte jette les événements tant qu'il n'y a pas de jeton."""
+    if chemins.ATELIER_SUIVI == "local":
+        return
     with _VERROU:
         d = _charger(fichier)
         if not d.get("jeton"):
@@ -102,6 +121,10 @@ def signaler_deja_faits(ids, fichier: Path = chemins.MOODLE_SYNC_FICHIER,
 def rejouer(fichier: Path = chemins.MOODLE_SYNC_FICHIER, attendre: bool = False) -> None:
     """Vide la file locale vers le compagnon dans un fil discret.
     attendre=True rend l'envoi synchrone, pour les tests et la fin de session."""
+    if chemins.ATELIER_SUIVI == "local":
+        # appelé aussi seul au démarrage de la fenêtre : une file laissée par un
+        # ancien mode moodle ne doit pas partir non plus
+        return
     def envoi():
         with _VERROU_ENVOI:
             with _VERROU:
