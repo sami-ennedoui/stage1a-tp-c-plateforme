@@ -110,5 +110,43 @@ class TestNouvelleEtape(unittest.TestCase):
         self.assertFalse((self.racine / "be_c" / "ex03").exists())
 
 
+class TestRetirerEtape(unittest.TestCase):
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.racine = Path(self._tmp.name)
+        ac.commande_nouveau_parcours("be_c", racine=self.racine)
+        for id_etape in ("ex01", "ex02"):
+            ac.commande_nouvelle_etape("be_c", id_etape, titre=f"Titre {id_etape}",
+                                       racine=self.racine)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_retire_de_l_ordre(self):
+        code = ac.commande_retirer_etape("be_c", "ex01", racine=self.racine)
+        self.assertEqual(code, 0)
+        donnees = _lire_parcours(self.racine / "be_c")
+        self.assertEqual(donnees["ordre"], ["ex02"])
+
+    def test_sans_effacer_le_dossier_reste(self):
+        ac.commande_retirer_etape("be_c", "ex01", racine=self.racine)
+        self.assertTrue((self.racine / "be_c" / "ex01").exists())
+
+    def test_avec_effacer_le_dossier_disparait(self):
+        ac.commande_retirer_etape("be_c", "ex01", effacer=True, racine=self.racine)
+        self.assertFalse((self.racine / "be_c" / "ex01").exists())
+
+    def test_refuse_etape_absente(self):
+        avant = _lire_parcours(self.racine / "be_c")
+        code = ac.commande_retirer_etape("be_c", "ex_fantome", racine=self.racine)
+        self.assertNotEqual(code, 0)
+        self.assertEqual(_lire_parcours(self.racine / "be_c"), avant)
+
+    def test_refuse_parcours_inexistant(self):
+        code = ac.commande_retirer_etape("inconnu", "ex01", racine=self.racine)
+        self.assertNotEqual(code, 0)
+
+
 if __name__ == "__main__":
     unittest.main()

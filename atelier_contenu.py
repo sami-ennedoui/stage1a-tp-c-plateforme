@@ -3,6 +3,7 @@ des parcours et des étapes. Bibliothèque standard uniquement."""
 import argparse
 import json
 import re
+import shutil
 import sys
 from pathlib import Path
 
@@ -126,6 +127,27 @@ def commande_nouvelle_etape(nom_parcours: str, id_etape: str, titre: str,
     return 0
 
 
+def commande_retirer_etape(nom_parcours: str, id_etape: str, effacer: bool = False,
+                           racine: Path = RACINE_CONTENU) -> int:
+    """Retire l'id de parcours.json. Avec effacer, supprime aussi le dossier."""
+    dossier_parcours = racine / nom_parcours
+    if not dossier_parcours.exists():
+        _erreur(f"parcours introuvable : {nom_parcours}")
+        return 1
+    donnees = _lire_json(dossier_parcours / "parcours.json")
+    ordre = donnees.get("ordre", [])
+    if id_etape not in ordre:
+        _erreur(f"étape absente de {nom_parcours} : {id_etape}")
+        return 1
+    ordre.remove(id_etape)
+    donnees["ordre"] = ordre
+    _ecrire_json(dossier_parcours / "parcours.json", donnees)
+    if effacer:
+        shutil.rmtree(dossier_parcours / id_etape, ignore_errors=True)
+    print(f"Étape {id_etape} retirée de {nom_parcours}.")
+    return 0
+
+
 def main(argv=None) -> int:
     analyseur = argparse.ArgumentParser(
         description="Édite le contenu pédagogique : parcours et étapes.")
@@ -141,12 +163,19 @@ def main(argv=None) -> int:
     p_nouvelle_etape.add_argument("--apres", default=None)
     p_nouvelle_etape.add_argument("--cran", type=int, default=1)
 
+    p_retirer_etape = sous.add_parser("retirer-etape", help="Retire une étape d'un parcours.")
+    p_retirer_etape.add_argument("parcours")
+    p_retirer_etape.add_argument("id")
+    p_retirer_etape.add_argument("--effacer", action="store_true")
+
     args = analyseur.parse_args(argv)
     if args.commande == "nouveau-parcours":
         return commande_nouveau_parcours(args.nom)
     if args.commande == "nouvelle-etape":
         return commande_nouvelle_etape(args.parcours, args.id, args.titre,
                                        args.apres, args.cran)
+    if args.commande == "retirer-etape":
+        return commande_retirer_etape(args.parcours, args.id, args.effacer)
     return 1
 
 
