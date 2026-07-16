@@ -104,6 +104,19 @@ et parce que je ne peux ni les lancer ni les juger d'ici.
 `packaging/lancer.bat` oppose deux mondes, pas deux versions. Ces deux-là ne se tranchent pas
 sans lancer Windows, c'est pour ça qu'ils sont chez toi et pas chez moi.
 
+**Un piège dans `fenetre.py`, et ma note de ce matin te disait exactement quoi faire pour
+tomber dedans.** `NOTE-LINUX-2026-07-16-fusion-chaine-pr.md` affirmait que les quatre
+signatures de `moodle_sync` étaient identiques et que tu pouvais reprendre ta `fenetre.py`
+telle quelle. C'était vrai quand je l'ai écrite. Ton `d8b62a4` l'a périmée deux heures plus
+tard : `appairer` renvoie maintenant `tuple[bool, str, list]` chez nous contre
+`tuple[bool, str]` chez eux, puisque tu y as ajouté `etapes_faites`. Les deux `fenetre.py`
+déballent donc un nombre différent de valeurs, ligne 389 chez nous contre 274 chez eux.
+
+Garde la ligne de `version-projet`. Si tu prends celle de `moodle-sur-release`, le premier
+appairage lève `ValueError: too many values to unpack`, chez l'étudiant et pas chez toi. J'ai
+corrigé la note de ce matin en y laissant la trace de l'erreur. Les trois autres signatures,
+`actif`, `rejouer` et `signaler_porte`, sont bien identiques, vérifiées une à une.
+
 Un piège sur `tests/test_tuteur_ia.py`, vérifié et pas déduit. `test_prompt_n3_est_libre` naît
 le 28 juin dans `3b4db9e`, donc il vit dans la base commune. Le durcissement anti-solution du
 7 juillet, `36592f4`, l'a supprimé de notre côté : il teste une liberté que le prompt n'a plus.

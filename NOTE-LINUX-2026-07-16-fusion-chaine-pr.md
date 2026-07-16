@@ -29,15 +29,37 @@ Sur le `.gitignore`, tes lignes `/w64devkit/`, `/.build/` et `/_bundle/` restent
 sorties de `build_windows.ps1` et de `build_linux.sh`, sans elles le dépôt se salit au premier
 build. Mon `.gitignore` ne les a pas, c'est moi qui suis en retard, pas toi.
 
-## Ce qui ne bouge pas pour toi : l'interface `moodle_sync`
+## L'interface `moodle_sync` : 3 signatures sur 4 ne bougent pas
 
-C'est le point qui devrait te rassurer. Ta `fenetre.py` appelle quatre fonctions de
-`moodle_sync` : `actif`, `appairer`, `rejouer` et `signaler_porte`. J'ai comparé les quatre
-signatures entre ta branche et la mienne, elles sont **identiques**. Mon `moodle_sync.py`
-ajoute `desaccord_url`, `signaler_deja_faits` et `dernier_score`, et ne retire rien.
+> **Corrigé le 2026-07-16 en fin de journée. La version d'origine de cette section disait les
+> quatre signatures identiques et concluait « tu peux reprendre ta `fenetre.py` telle quelle,
+> sans une seule ligne de changement ». C'était vrai à l'écriture, et faux deux heures plus
+> tard : ton propre `d8b62a4` a changé `appairer`. Suivre ce conseil casserait l'appairage.
+> Je laisse la trace plutôt que de réécrire l'histoire.**
 
-Tu peux donc reprendre ta `fenetre.py` telle quelle. Elle tourne contre mon `moodle_sync.py`
-sans une seule ligne de changement.
+Ta `fenetre.py` appelle quatre fonctions de `moodle_sync` : `actif`, `appairer`, `rejouer` et
+`signaler_porte`. Trois sont **identiques** entre les deux branches, vérifiées une à une :
+`actif`, `rejouer`, `signaler_porte`. Mon `moodle_sync.py` ajoute `desaccord_url`,
+`signaler_deja_faits` et `dernier_score`, et ne retire rien.
+
+**`appairer` a divergé, et c'est toi qui l'as fait bouger, pour de bonnes raisons.**
+
+```
+version-projet     : def appairer(...) -> tuple[bool, str, list]
+moodle-sur-release : def appairer(...) -> tuple[bool, str]
+```
+
+Ta reprise multi-poste renvoie `etapes_faites` en troisième valeur. Les deux `fenetre.py`
+déballent donc différemment :
+
+```
+version-projet     fenetre.py:389 : reussi, message, deja_faits = moodle_sync.appairer(...)
+moodle-sur-release fenetre.py:274 : reussi, message              = moodle_sync.appairer(...)
+```
+
+C'est un piège pour la résolution de `fenetre.py`, qui te revient. Si tu gardes la ligne de
+`moodle-sur-release`, le premier appairage lève `ValueError: too many values to unpack`, et
+seulement à cet instant, chez l'étudiant, pas chez toi. Garde la ligne de `version-projet`.
 
 ## Ce que je te laisse : 3 fichiers
 
