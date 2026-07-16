@@ -126,8 +126,41 @@ Le risque n'est donc pas de l'oublier, c'est que **la fusion le ressuscite**, et
 ressuscité qui échoue ressemble à une régression alors que c'est l'inverse. Tu n'as jamais vu
 ce test tomber, ce n'est pas un désaccord entre nous. La bonne fin est qu'il reste supprimé.
 
-Je prends les deux qui restent, `moodle_sync.py` et `tests/test_moodle_sync.py`, 13 conflits et
-258 lignes. Ce sont des `add/add`, la base est vide des deux côtés, chacun a écrit son fichier
-dans son coin. Ne t'en occupe pas, même s'ils apparaissent dans ta sortie de `merge-tree`.
+## Mes deux : ils ne se désamorcent pas, et ils ne se décident pas non plus
 
-Quand tes cinq sont à zéro, dis-le dans un commit. Le merge sera un non-événement.
+`moodle_sync.py` et `tests/test_moodle_sync.py` sont à moi, 13 conflits, 258 lignes. Ne t'en
+occupe pas, même s'ils apparaissent dans ta sortie de `merge-tree`. Mais tu dois savoir ce
+qu'ils sont, parce que le décompte des conflits ne tombera pas à zéro et que ce n'est pas un
+oubli de ma part.
+
+Ce sont des `add/add` : la base commune `15ee2fa` ne contient pas ces fichiers, chaque branche
+les a créés après la divergence du 3 juillet. Git n'a donc aucun arbitre, il compare nos deux
+fichiers ligne à ligne et déclare conflit sur tout ce qui diffère. **Aucun réordonnancement ne
+peut effacer ça.** C'est la limite de la méthode, et elle ne touche que ces deux fichiers.
+
+En revanche, il n'y a rien à trancher, et c'est prouvé par identité de blob, pas par jugement :
+
+```
+moodle-sur-release:moodle_sync.py            = d0433eb = version-projet:moodle_sync.py @ b420b75
+moodle-sur-release:tests/test_moodle_sync.py = 84f6512 = version-projet:... @ 80953ce
+```
+
+Ton `a684c0e` du 9 juillet, « moodle_sync porté sur la version distribuée », a copié mes deux
+fichiers tels qu'ils étaient ce matin-là à 10h45 et 10h51. C'est un portage, pas une écriture
+parallèle, et ta branche n'y a plus jamais touché : un seul commit sur ces fichiers, celui du
+portage, en pure addition. Les miens ont continué avec quatre commits de plus, dont ton propre
+`d8b62a4`. Leur contenu est donc **un ancêtre exact du mien**, `git merge-base --is-ancestor` le
+confirme. Il n'y a rien chez toi que je n'aie déjà, et aucun de tes 7 tests ne manque à mes 19.
+
+La résolution est donc mécanique, sans une seule décision à prendre :
+
+```
+git checkout --ours moodle_sync.py tests/test_moodle_sync.py
+```
+
+## Pour finir
+
+Quand tes cinq sont à zéro, dis-le dans un commit. Le merge ne sera pas silencieux, il
+signalera encore ces deux `add/add`, mais il ne **décidera** plus rien : les cinq tiens seront
+auto-fusionnés, et les deux miens se résolvent par la commande ci-dessus. C'est tout l'objectif,
+que personne n'arbitre 500 lignes à la main un soir de release.
