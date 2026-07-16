@@ -3,16 +3,15 @@
 Ce guide explique comment faire vivre la plateforme sans lire le code. Il s'adresse à
 l'enseignant qui écrit les exercices et à la personne qui installe le service.
 
-Il décrit l'état réel du 16 juillet 2026. Tout ce qui est affirmé ici a été vérifié sur la
-machine et sur le Moodle de l'école, pas déduit de la documentation d'origine. Les
-spécifications du dépôt sont plus anciennes et par endroits fausses, ce guide les corrige.
+Il décrit l'état réel du 16 juillet 2026, vérifié sur la machine et sur le Moodle de l'école.
+Les spécifications du dépôt sont plus anciennes et par endroits fausses, ce guide les corrige.
 
 ---
 
 # 1. Les trois morceaux
 
 La plateforme est faite de trois choses distinctes. Les confondre est la première source de
-confusion, donc commençons par là.
+confusion.
 
 ![Les trois morceaux et ce qui circule entre eux](captures/schema-trois-morceaux.svg)
 
@@ -60,8 +59,8 @@ python3 atelier_snake.py --parcours be_c
 ```
 
 `be_c` est le parcours réel du BE, celui qu'il faut donner aux étudiants. **Sans l'option
-`--parcours`, l'atelier démarre sur `hybride`, qui n'est qu'une maquette de deux exercices.**
-C'est un piège, l'option n'est pas facultative en pratique.
+`--parcours`, l'atelier démarre sur `hybride`, une maquette de deux exercices.** Mettez
+toujours l'option.
 
 Les autres options utiles :
 
@@ -217,16 +216,16 @@ et se termine normalement. C'est utile pour un exercice d'exploration sans bonne
 Éditez `contenu/<parcours>/<etape>/enonce.md`. C'est du Markdown, il n'y a rien d'autre à
 faire.
 
-Attention à une chose : si vous changez ce que l'exercice demande, changez aussi
-`sortie_attendue` dans `meta.json` et le `corrige.c`, sinon l'énoncé et l'épreuve ne diront
-plus la même chose. Lancez `verifier` derrière, il vous le dira.
+Si vous changez ce que l'exercice demande, changez aussi `sortie_attendue` dans `meta.json` et
+le `corrige.c`. Sinon l'énoncé et l'épreuve ne diront plus la même chose. Lancez `verifier`
+derrière, il vous le dira.
 
 ## Ajouter un niveau
 
-> **Avant d'ajouter ou de retirer une étape d'un parcours noté dans Moodle, lisez
-> l'encadré « Le nombre d'étapes doit suivre » à la fin de ce chapitre.** Changer le nombre
-> d'étapes de `be_c` fausse la note de tous les étudiants tant qu'une variable du compagnon
-> n'est pas mise à jour à la main. Rien ne vous préviendra.
+> **Après avoir ajouté ou retiré une étape de `be_c`, redéployez le compagnon.** L'outil met
+> la liste des étapes notées à jour tout seul et vous le dit. Le service en ligne, lui, garde
+> l'ancienne liste jusqu'au redéploiement, et note dessus. Voir « Le nombre d'étapes doit
+> suivre » à la fin de ce chapitre.
 
 ```
 python3 atelier_contenu.py nouvelle-etape be_c ex15_matrices \
@@ -243,8 +242,7 @@ python3 atelier_contenu.py nouvelle-etape be_c ex06b_boucles \
 
 **Ce que la commande produit est déjà un exercice valide et vérifié.** Il est trivial, il
 demande d'afficher une ligne, mais il fonctionne. C'est voulu : `verifier` est vert dès la
-création. Si vous le passez au rouge ensuite, c'est votre modification qui est en cause, pas
-le squelette. Cela vous donne un point de départ sûr.
+création, donc s'il passe au rouge ensuite, c'est votre modification qui l'a fait.
 
 Ensuite, éditez dans cet ordre :
 
@@ -299,7 +297,7 @@ contient un `parcours.json` valide est un parcours utilisable.
 
 ## Quatre pièges du modèle
 
-Ces points sont contre-intuitifs et le code ne les signale pas. Ils sont vérifiés.
+Ces points sont contre-intuitifs et le code ne les signale pas.
 
 **Le champ `type` ment.** Un commentaire dans le code annonce que `type` vaut `perso`, `jalon`
 ou `projet`. C'est faux. Tout `be_c` utilise `type: "programme"`, qui n'est pas dans cette
@@ -336,8 +334,8 @@ Le compagnon doit être redéployé pour que les notes en tiennent compte.
 ```
 
 Ensuite, un test refuse que les deux divergent. `tests/test_etapes_notees.py` est le seul
-endroit du dépôt d'où l'on voit à la fois le contenu et la liste du compagnon. S'il casse, ce
-n'est pas lui qu'il faut réparer.
+endroit du dépôt d'où l'on voit à la fois le contenu et la liste du compagnon. S'il casse,
+réparez la liste, avec la commande `notation`.
 
 Enfin, le nombre d'étapes se déduit de la liste. Il n'est plus tapé nulle part, donc il ne
 peut plus être faux tout seul.
@@ -377,8 +375,8 @@ le jeu entier et le lance. Réussir cette dernière étape, c'est avoir un Snake
 
 C'est bien plus lourd à écrire qu'un parcours ordinaire. Créer un nouveau parcours projet
 demande un arbre de projet corrigé, un arbre squelette, un script de compilation et des
-harnais en C. **`atelier_contenu.py` ne sait pas fabriquer ça** et ne prétend pas le faire.
-Pour un nouveau parcours projet, il faut copier l'existant et l'adapter à la main.
+harnais en C. **`atelier_contenu.py` ne sait pas fabriquer ça.** Pour un nouveau parcours
+projet, il faut copier l'existant et l'adapter à la main.
 
 ---
 
@@ -453,21 +451,19 @@ Parcours : be_c
 Empreinte : 6e32cdc7
 ```
 
-L'étudiant dépose ce fichier dans un devoir Moodle ordinaire. Le pourcentage est calculé avec
-la même formule que le compagnon, donc les deux modes donnent le même chiffre pour la même
-progression.
+L'étudiant dépose ce fichier dans un devoir Moodle ordinaire. Le pourcentage suit la même
+formule que celui du compagnon.
 
-Une nuance, à une seule condition près. Le relevé compte les étapes du parcours qu'il a sous
-les yeux, il est donc toujours juste. Le compagnon ne voit pas le contenu et s'appuie sur la
-liste décrite au chapitre 3. Les deux chiffres coïncident tant que le compagnon en ligne a été
-redéployé depuis le dernier changement de contenu.
+Le relevé compte les étapes du parcours qu'il a sous les yeux, il est donc toujours juste. Le
+compagnon, lui, ne voit pas le contenu et s'appuie sur la liste décrite au chapitre 3. Les
+deux chiffres coïncident tant que le compagnon a été redéployé depuis le dernier changement
+de contenu.
 
-> **Le relevé n'est pas infalsifiable et ne prétend pas l'être.** L'empreinte détecte une
-> modification accidentelle du fichier. Elle ne protège en rien contre une falsification
-> volontaire, puisque l'algorithme se trouve dans le code que l'étudiant possède. Un étudiant
-> déterminé peut de toute façon éditer `progression.json` directement. Ce relevé a la même
-> valeur qu'un devoir rendu : celle de la confiance. Si vous avez besoin d'une preuve
-> opposable, il faut un mode avec serveur.
+> **L'empreinte détecte une modification accidentelle du fichier, rien de plus.** Elle ne
+> protège pas contre une falsification volontaire : l'algorithme est dans le code que
+> l'étudiant possède, et il peut de toute façon éditer `progression.json` directement. Ce
+> relevé vaut ce que vaut un devoir rendu, la confiance. Pour une preuve opposable, il faut
+> un mode avec serveur.
 
 ### Ce que le mode local coûte
 
@@ -493,7 +489,7 @@ python3 atelier_snake.py --parcours be_c
 
 ## L'état de l'hébergement Render, mesuré
 
-Il faut être franc sur ce point, car il gouverne l'expérience de tous les étudiants.
+Ce point gouverne l'expérience de tous les étudiants.
 
 Le plan gratuit de Render endort le service après quinze minutes sans visite. Le réveil prend
 une trentaine de secondes, mesuré à 32,8 secondes le 16 juillet 2026. Pendant ce temps,
@@ -516,10 +512,10 @@ Deuxième problème du plan gratuit : **le disque est effacé à chaque déploie
 appairages sont perdus et chaque étudiant doit se réappairer. Ne redéployez jamais pendant
 une séance.
 
-## Que faire, honnêtement
+## Que faire
 
-Il n'existe pas de réglage qui règle le sommeil de Render. Ce n'est pas une option oubliée,
-c'est le modèle économique du plan gratuit. Trois sorties possibles :
+Aucun réglage ne supprime le sommeil de Render. C'est le modèle économique du plan gratuit.
+Trois sorties possibles :
 
 1. **Un plan payant chez Render**, autour de 7 dollars par mois. Le service ne dort plus, rien
    d'autre ne change, et c'est un basculement d'une minute.
@@ -697,12 +693,11 @@ Points à savoir, vérifiés :
 
 ## D'abord, qui a le droit de faire quoi
 
-C'est le point qui bloque le plus souvent, autant le dire tout de suite.
+C'est le point qui bloque le plus souvent.
 
-**Enregistrer un outil LTI demande un administrateur du site Moodle.** Ce n'est pas quelque
-chose qu'un enseignant peut faire, même avec le mode d'édition activé. Vérifié le 16 juillet
-2026 : le compte enseignant du cours 4665 reçoit « Accès refusé » sur les pages
-d'administration et sur la configuration d'outils au niveau du cours.
+**Enregistrer un outil LTI demande un administrateur du site Moodle.** Le mode d'édition n'y
+change rien. Vérifié le 16 juillet 2026 : le compte enseignant du cours 4665 reçoit « Accès
+refusé » sur les pages d'administration et sur la configuration d'outils au niveau du cours.
 
 L'outil utilisé aujourd'hui est un outil présélectionné, enregistré au niveau du site par un
 administrateur. L'enseignant ne peut que s'en servir.
@@ -772,15 +767,14 @@ seuil à atteindre. Sans cela, l'étudiant voit une leçon verrouillée sans com
 
 ## Le mur du compte enseignant
 
-Un point désagréable, à connaître avant de perdre une heure à chercher.
+À connaître avant de perdre une heure à chercher.
 
 **Un compte enseignant ne reçoit pas de note du compagnon et contourne les restrictions
-d'accès.** Cela veut dire que vous ne pouvez pas vérifier vous-même qu'une leçon se
-déverrouille. Vous verrez toujours tout, quoi que vous fassiez. Seul un vrai étudiant peut
-constater le déverrouillage.
+d'accès.** Vous ne pouvez donc pas vérifier vous-même qu'une leçon se déverrouille. Vous
+verrez toujours tout, quoi que vous fassiez. Seul un vrai étudiant peut constater le
+déverrouillage.
 
-Ce n'est pas un défaut de la plateforme, c'est ainsi que Moodle fonctionne : les enseignants
-ne sont pas notables dans leur propre cours.
+Moodle fonctionne ainsi : les enseignants ne sont pas notables dans leur propre cours.
 
 Le carnet du cours 4665 est vide, aucun étudiant n'y est inscrit à ce jour. La chaîne
 complète a été prouvée de bout en bout par ailleurs, mais le déverrouillage lui-même ne sera
@@ -796,8 +790,8 @@ observé qu'au premier étudiant réel.
 
 ## L'étudiant voit une page qui dit d'appuyer sur F5
 
-C'est le comportement normal aujourd'hui, pas une panne. Le service dort et met une trentaine
-de secondes à se réveiller. Pendant ce temps, la page d'attente de Render recharge la demande
+C'est normal. Le service dort et met une trentaine de secondes à se réveiller. Pendant ce
+temps, la page d'attente de Render recharge la demande
 de lancement en perdant ses paramètres. Le compagnon détecte le cas et affiche une page qui
 dit d'appuyer sur F5. Après le rafraîchissement, le code s'affiche.
 
@@ -822,8 +816,7 @@ Vérifiez dans l'ordre :
 4. Regardez-vous le carnet avec un compte enseignant ? Voir le mur du compte enseignant au
    chapitre 7.
 
-Les envois ratés ne sont pas perdus. Ils restent dans une file locale et repartent au
-prochain essai.
+Les envois ratés restent dans une file locale et repartent au prochain essai.
 
 ## Une leçon ne se déverrouille pas
 
