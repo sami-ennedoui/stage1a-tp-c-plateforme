@@ -185,6 +185,45 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
         return Resultat(True, run.stdout if run.stdout.strip() else "Le programme compile et s'exécute.")
 
 
+def compiler_et_executer(etape: Etape, code_eleve: str) -> Resultat:
+    """Compile le code de l'étudiant et, en mode programme, l'exécute. Rend la sortie
+    console brute, sans juger de porte ni valider l'étape. Sert au bouton Compiler.
+
+    En mode programme, on lance le binaire et on renvoie sa sortie (plus les
+    avertissements du compilateur). Dans les autres modes, où le code seul n'a pas
+    forcément de main, on se contente de vérifier qu'il compile (compilation sans édition
+    de liens)."""
+    with tempfile.TemporaryDirectory() as d:
+        src = Path(d) / "source.c"
+        src.write_text(code_eleve, encoding="utf-8")
+        base = ["gcc", "-Wall", "-Wno-unused-parameter", "-Wno-unused-variable",
+                f"-I{etape.dossier}"]
+
+        if etape.mode != "programme":
+            comp = subprocess.run(base + ["-c", str(src), "-o", str(Path(d) / "o.o")],
+                                  capture_output=True, text=True)
+            if comp.returncode != 0:
+                return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
+            avert = comp.stderr.strip()
+            return Resultat(True, (avert + "\n\n" if avert else "") + "Compilation reussie.")
+
+        binaire = Path(d) / _nom_binaire("prog")
+        comp = subprocess.run(base + [str(src), "-lm", "-o", str(binaire)],
+                              capture_output=True, text=True)
+        if comp.returncode != 0:
+            return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
+        try:
+            run = subprocess.run([str(binaire)], capture_output=True, text=True,
+                                 timeout=15, input=etape.entree or "")
+        except subprocess.TimeoutExpired:
+            return Resultat(False, "Le programme a depasse le delai. Attend-il une saisie au clavier ?")
+        avert = comp.stderr.strip()
+        entete = "Avertissements du compilateur :\n" + avert + "\n\n" if avert else ""
+        corps = run.stdout + run.stderr
+        return Resultat(run.returncode == 0,
+                        entete + (corps if corps.strip() else "(aucune sortie)"))
+
+
 def porte_logique(espace, fichier_edite: str, code_etudiant: str,
                   harnais: Path, sources: list[str]) -> Resultat:
     """Écrit le code de l'étudiant dans l'espace, compile le harnais logique avec les sources du
