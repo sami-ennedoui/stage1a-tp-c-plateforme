@@ -2,6 +2,7 @@
 Sans appairage, tout est inerte. Chaque porte passée est d'abord écrite dans la file
 locale, puis envoyée ; un envoi raté attend le prochain rejeu. Spec compagnon LTI."""
 import json
+import os
 import threading
 import urllib.error
 import urllib.request
@@ -63,6 +64,20 @@ def appairer(code: str, fichier: Path = chemins.MOODLE_SYNC_FICHIER,
     d.update(url=url, jeton=reponse["jeton"])
     _sauver(d, fichier)
     return True, "Connecté à Moodle. Ta progression remontera automatiquement."
+
+
+def desaccord_url(fichier: Path = chemins.MOODLE_SYNC_FICHIER) -> str | None:
+    """Renvoie l'ancienne URL si l'appairage vise un autre compagnon que celui visé
+    par ATELIER_COMPAGNON_URL, sinon None. Ne se déclenche que si la variable est
+    définie explicitement : sinon toute installation normale semblerait avoir
+    changé de serveur."""
+    voulue = os.environ.get("ATELIER_COMPAGNON_URL")
+    if not voulue:
+        return None
+    ancienne = _charger(fichier).get("url")
+    if not ancienne or ancienne.rstrip("/") == voulue.rstrip("/"):
+        return None
+    return ancienne
 
 
 def signaler_porte(id_etape: str, fichier: Path = chemins.MOODLE_SYNC_FICHIER,

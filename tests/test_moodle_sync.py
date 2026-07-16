@@ -180,6 +180,29 @@ class TestMoodleSync(unittest.TestCase):
             moodle_sync.rejouer(fichier=self.fichier, attendre=True)
             u.assert_not_called()
 
+    def test_desaccord_url_renvoie_ancienne_si_differente(self):
+        self.fichier.write_text(json.dumps(
+            {"url": "https://ancien.example", "jeton": "J123", "file": []}), encoding="utf-8")
+        with mock.patch.dict(os.environ, {"ATELIER_COMPAGNON_URL": "https://nouveau.example"}):
+            self.assertEqual(moodle_sync.desaccord_url(self.fichier), "https://ancien.example")
+
+    def test_desaccord_url_none_si_identique(self):
+        self.fichier.write_text(json.dumps(
+            {"url": "https://ancien.example", "jeton": "J123", "file": []}), encoding="utf-8")
+        with mock.patch.dict(os.environ, {"ATELIER_COMPAGNON_URL": "https://ancien.example"}):
+            self.assertIsNone(moodle_sync.desaccord_url(self.fichier))
+
+    def test_desaccord_url_none_si_variable_absente(self):
+        self.fichier.write_text(json.dumps(
+            {"url": "https://ancien.example", "jeton": "J123", "file": []}), encoding="utf-8")
+        with mock.patch.dict(os.environ):
+            os.environ.pop("ATELIER_COMPAGNON_URL", None)
+            self.assertIsNone(moodle_sync.desaccord_url(self.fichier))
+
+    def test_desaccord_url_none_si_pas_d_appairage(self):
+        with mock.patch.dict(os.environ, {"ATELIER_COMPAGNON_URL": "https://nouveau.example"}):
+            self.assertIsNone(moodle_sync.desaccord_url(self.fichier))
+
     def test_atelier_suivi_invalide_refuse_au_demarrage(self):
         # La validation vit dans chemins.py, importé au tout début : on la teste
         # dans un sous-processus pour ne pas corrompre le chemins déjà importé
