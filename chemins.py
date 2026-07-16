@@ -1,7 +1,7 @@
 """Chemins et drapeaux de compilation. Aucune logique métier ici."""
 from functools import lru_cache
-import os
 from pathlib import Path
+import os
 import subprocess
 
 RACINE = Path(__file__).resolve().parent
@@ -10,19 +10,8 @@ CONTENU = RACINE / "contenu" / "hybride"
 PROGRESSION_FICHIER = RACINE / "progression.json"
 # appairage et file d'attente Moodle, à côté de la progression, spec compagnon LTI
 MOODLE_SYNC_FICHIER = RACINE / "moodle_sync.json"
-# hache du mot de passe du mode auteur, local et git-ignore, voir auteur.py
-AUTEUR_FICHIER = RACINE / "auteur.json"
-# reglages locaux memorises d'un lancement a l'autre (dernier parcours), git-ignore
-REGLAGES_FICHIER = RACINE / "reglages.json"
 COMPAGNON_URL = os.environ.get("ATELIER_COMPAGNON_URL",
                                "https://compagnon-tp-c.onrender.com")
-
-# "moodle" (défaut) : comportement actuel, la progression remonte au compagnon.
-# "local" : aucun réseau, jamais ; la progression ne vit que sur ce poste.
-ATELIER_SUIVI = os.environ.get("ATELIER_SUIVI", "moodle")
-if ATELIER_SUIVI not in ("moodle", "local"):
-    raise SystemExit(
-        f"ATELIER_SUIVI={ATELIER_SUIVI!r} invalide, valeurs acceptées : moodle, local.")
 
 PROJET_CORRIGE = RACINE / "projet-corrige"
 PROJET_SNAKE = RACINE / "projet-corrige" / "SNAKE"
@@ -31,6 +20,18 @@ PROJET_SQUELETTE = RACINE / "projet-squelette"
 PROJET_SQUELETTE_SNAKE = RACINE / "projet-squelette" / "SNAKE"
 # copie de travail vivante du parcours projet : l'étudiant la remplit étape par étape
 ESPACE_SESSION = RACINE / "espace_session"
+
+# hache du mot de passe du mode auteur, local et git-ignore, voir auteur.py
+AUTEUR_FICHIER = RACINE / "auteur.json"
+# reglages locaux memorises d'un lancement a l'autre (dernier parcours), git-ignore
+REGLAGES_FICHIER = RACINE / "reglages.json"
+
+# "moodle" (défaut) : comportement actuel, la progression remonte au compagnon.
+# "local" : aucun réseau, jamais ; la progression ne vit que sur ce poste.
+ATELIER_SUIVI = os.environ.get("ATELIER_SUIVI", "moodle")
+if ATELIER_SUIVI not in ("moodle", "local"):
+    raise SystemExit(
+        f"ATELIER_SUIVI={ATELIER_SUIVI!r} invalide, valeurs acceptées : moodle, local.")
 
 
 def contenu_racine(nom: str) -> Path:
