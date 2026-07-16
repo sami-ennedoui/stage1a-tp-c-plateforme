@@ -169,6 +169,30 @@ class TestRetirerEtape(unittest.TestCase):
         self.assertNotEqual(code, 0)
 
 
+class TestLister(unittest.TestCase):
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.racine = Path(self._tmp.name)
+        ac.commande_nouveau_parcours("be_c", racine=self.racine)
+        ac.commande_nouvelle_etape("be_c", "ex01", titre="Exercice 1", racine=self.racine)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_lister_les_parcours(self):
+        parcours = ac.lister_parcours(racine=self.racine)
+        self.assertEqual(parcours, [("be_c", 1, "isole")])
+
+    def test_lister_les_etapes_d_un_parcours(self):
+        etapes = ac.lister_etapes("be_c", racine=self.racine)
+        self.assertEqual(etapes, [("ex01", "programme")])
+
+    def test_lister_etapes_parcours_inexistant(self):
+        with self.assertRaises(FileNotFoundError):
+            ac.lister_etapes("inconnu", racine=self.racine)
+
+
 class TestVerifierStructurel(unittest.TestCase):
     """Vérifications sans compilation : meta.json, cohérence des ids, modes non
     automatisables. Rapide, aucune de ces étapes n'appelle gcc."""

@@ -150,6 +150,48 @@ def commande_retirer_etape(nom_parcours: str, id_etape: str, effacer: bool = Fal
     return 0
 
 
+def lister_parcours(racine: Path = RACINE_CONTENU) -> list[tuple[str, int, str]]:
+    """Nom, nombre d'étapes et mode de chaque parcours de contenu/."""
+    resultat = []
+    for dossier in sorted(p for p in racine.iterdir() if p.is_dir()):
+        fichier = dossier / "parcours.json"
+        if not fichier.exists():
+            continue
+        donnees = _lire_json(fichier)
+        resultat.append((dossier.name, len(donnees.get("ordre", [])),
+                         donnees.get("mode", "isole")))
+    return resultat
+
+
+def lister_etapes(nom_parcours: str, racine: Path = RACINE_CONTENU) -> list[tuple[str, str]]:
+    """Id et mode de chaque étape du parcours, dans l'ordre de déverrouillage."""
+    dossier_parcours = racine / nom_parcours
+    if not dossier_parcours.exists():
+        raise FileNotFoundError(f"parcours introuvable : {nom_parcours}")
+    donnees = _lire_json(dossier_parcours / "parcours.json")
+    resultat = []
+    for id_etape in donnees.get("ordre", []):
+        fichier_meta = dossier_parcours / id_etape / "meta.json"
+        mode = _lire_json(fichier_meta).get("mode", "") if fichier_meta.exists() else "?"
+        resultat.append((id_etape, mode))
+    return resultat
+
+
+def commande_lister(nom_parcours: str = None, racine: Path = RACINE_CONTENU) -> int:
+    if nom_parcours is None:
+        for nom, nb_etapes, mode in lister_parcours(racine):
+            print(f"{nom} : {nb_etapes} étape(s), mode {mode}")
+        return 0
+    try:
+        etapes = lister_etapes(nom_parcours, racine)
+    except FileNotFoundError as e:
+        _erreur(str(e))
+        return 1
+    for id_etape, mode in etapes:
+        print(f"{id_etape} : mode {mode}")
+    return 0
+
+
 def _parcours_isoles(racine: Path) -> list[str]:
     """Noms des dossiers de contenu/ dont le parcours.json est en mode isole."""
     noms = []
@@ -241,6 +283,9 @@ def main(argv=None) -> int:
         description="Édite le contenu pédagogique : parcours et étapes.")
     sous = analyseur.add_subparsers(dest="commande", required=True)
 
+    p_lister = sous.add_parser("lister", help="Liste les parcours, ou les étapes d'un parcours.")
+    p_lister.add_argument("parcours", nargs="?", default=None)
+
     p_nouveau_parcours = sous.add_parser("nouveau-parcours", help="Crée un parcours vide.")
     p_nouveau_parcours.add_argument("nom")
 
@@ -261,6 +306,8 @@ def main(argv=None) -> int:
     p_verifier.add_argument("parcours", nargs="?", default=None)
 
     args = analyseur.parse_args(argv)
+    if args.commande == "lister":
+        return commande_lister(args.parcours)
     if args.commande == "nouveau-parcours":
         return commande_nouveau_parcours(args.nom)
     if args.commande == "nouvelle-etape":
