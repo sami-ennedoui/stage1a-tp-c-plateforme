@@ -129,3 +129,23 @@ Point pour toi : `TOTAL_ETAPES` côté compagnon doit valoir le nombre d'étapes
 distribué. Aujourd'hui 14 pour `be_c`. Si le contenu gagne un exercice sans que cette variable
 suive, tous les scores deviennent faux en silence. C'est le lien le plus fragile entre les
 deux morceaux, et il n'est vérifié par rien.
+
+## Ce que le test du guide a trouvé
+
+Trois agents indépendants ont refait le guide seuls, sur des copies jetables du dépôt, sans
+accès au code ni à mes notes. Ils ont trouvé trois vrais défauts, tous corrigés depuis.
+
+Deux te concernent directement.
+
+**Le chemin `cd snake-sdl/plateforme` était faux et les trois agents sont tombés dessus.** La
+racine du dépôt **est** `plateforme`. `snake-sdl` n'est qu'un dossier parent sur le disque de
+Sami, il n'est pas dans le dépôt. Donc ce chemin ne marche que chez lui. Si tu as la même
+formule quelque part dans la doc Windows ou le packaging, elle est fausse aussi.
+
+**La fabrication des clés LTI ne marchait pas telle qu'écrite** et pouvait produire deux clés
+dépareillées sans le moindre signe. Voir le commit `1db8fde` : `compagnon.cles --env` sort
+maintenant du shell relisable, et un test source vraiment la sortie pour vérifier que la paire
+va ensemble. Ça ne touche pas le bundle, le compagnon ne part pas chez l'étudiant, mais c'est
+bon à savoir si tu montes un compagnon d'essai.
+
+Le troisième défaut était une troncature à l'impression du PDF, sans effet sur le code.
