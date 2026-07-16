@@ -1,5 +1,8 @@
 """Tests du pont vers le compagnon : file locale, appairage, inertie sans appairage."""
 import json
+import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -144,6 +147,17 @@ class TestMoodleSync(unittest.TestCase):
         with mock.patch("moodle_sync.urllib.request.urlopen") as u:
             moodle_sync.signaler_porte("perso_P1", fichier=self.fichier, attendre=True)
             u.assert_not_called()
+
+    def test_atelier_suivi_invalide_refuse_au_demarrage(self):
+        # La validation vit dans chemins.py, importé au tout début : on la teste
+        # dans un sous-processus pour ne pas corrompre le chemins déjà importé
+        # par le reste de la suite.
+        racine = Path(__file__).resolve().parent.parent
+        r = subprocess.run([sys.executable, "-c", "import chemins"], cwd=str(racine),
+                           env={**os.environ, "ATELIER_SUIVI": "bogus"},
+                           capture_output=True, text=True)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("ATELIER_SUIVI", r.stderr)
 
 
 if __name__ == "__main__":
