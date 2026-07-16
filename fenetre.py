@@ -148,9 +148,15 @@ class Fenetre(QMainWindow):
         gauche.setSpacing(6)
         gauche.addWidget(_titre("PARCOURS"))
         gauche.addWidget(self.liste)
-        self.b_moodle = QPushButton("Connecté à Moodle" if moodle_sync.actif()
-                                    else "Connecter à Moodle")
-        self.b_moodle.clicked.connect(self._connecter_moodle)
+        self.b_moodle = QPushButton()
+        if chemins.ATELIER_SUIVI == "local":
+            # mode local : indicateur non cliquable, pas de proposition de connexion
+            self.b_moodle.setEnabled(False)
+            self._maj_indicateur_local()
+        else:
+            self.b_moodle.setText("Connecté à Moodle" if moodle_sync.actif()
+                                  else "Connecter à Moodle")
+            self.b_moodle.clicked.connect(self._connecter_moodle)
         gauche.addWidget(self.b_moodle)
 
         centre = QVBoxLayout()
@@ -186,13 +192,21 @@ class Fenetre(QMainWindow):
 
         self._remplir_liste()
         self.liste.setCurrentRow(0)
-        moodle_sync.rejouer()
-        # Rafraîchit périodiquement le libellé du bouton avec le score Moodle,
-        # que le compagnon renvoie de façon asynchrone après chaque envoi.
-        self._timer_moodle = QTimer(self)
-        self._timer_moodle.setInterval(1500)
-        self._timer_moodle.timeout.connect(self._maj_moodle)
-        self._timer_moodle.start()
+        if chemins.ATELIER_SUIVI == "moodle":
+            ancienne = moodle_sync.desaccord_url()
+            if ancienne:
+                print(
+                    f"Attention : l'appairage Moodle enregistré vise {ancienne}, "
+                    f"l'atelier pointe maintenant vers {chemins.COMPAGNON_URL}. "
+                    "Reclique l'activité dans Moodle pour te réappairer."
+                )
+            moodle_sync.rejouer()
+            # Rafraîchit périodiquement le libellé du bouton avec le score Moodle,
+            # que le compagnon renvoie de façon asynchrone après chaque envoi.
+            self._timer_moodle = QTimer(self)
+            self._timer_moodle.setInterval(1500)
+            self._timer_moodle.timeout.connect(self._maj_moodle)
+            self._timer_moodle.start()
 
     def _remplir_liste(self):
         self.liste.clear()
@@ -268,6 +282,8 @@ class Fenetre(QMainWindow):
         self.label_cran.setText(f"Tuteur, cran courant N{self.niveau} sur N{dispo} débloqué")
 
     def _connecter_moodle(self):
+        if chemins.ATELIER_SUIVI == "local":
+            return    # bouton désactivé en mode local, non atteignable normalement
         code, ok = QInputDialog.getText(
             self, "Connecter à Moodle",
             "Colle le code affiché par l'activité Moodle du TP :")
@@ -289,6 +305,12 @@ class Fenetre(QMainWindow):
         s = moodle_sync.dernier_score
         self.b_moodle.setText("Connecté à Moodle" if s is None
                               else f"Connecté à Moodle : {s} %")
+
+    def _maj_indicateur_local(self):
+        """Mode local : le bouton, désactivé, affiche juste la progression locale."""
+        total = len(self.parcours)
+        faites = sum(1 for e in self.parcours if e.id in self.prog.etapes_faites)
+        self.b_moodle.setText(f"Progression locale : {faites} / {total} étapes")
 
     def _compiler(self):
         self.console.setPlainText("Compilation et exécution en cours…")
@@ -354,6 +376,8 @@ class Fenetre(QMainWindow):
                 self.niveau = progression.cran_disponible(self.prog)
                 self._maj_cran()
             self._remplir_liste()
+            if chemins.ATELIER_SUIVI == "local":
+                self._maj_indicateur_local()
 
     def _lancer_jeu(self):
         if self.mode == "projet":
