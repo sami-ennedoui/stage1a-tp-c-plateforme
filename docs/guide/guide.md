@@ -118,7 +118,12 @@ python3 atelier_contenu.py nouveau-parcours <nom>
 python3 atelier_contenu.py nouvelle-etape <parcours> <id> --titre "..."
 python3 atelier_contenu.py retirer-etape <parcours> <id>
 python3 atelier_contenu.py verifier [<parcours>]
+python3 atelier_contenu.py notation
 ```
+
+`notation` sert rarement. Elle réaligne sur le contenu la liste des étapes que le compagnon
+note, quand un `parcours.json` a été modifié en dehors de cet outil. Voyez « Le nombre
+d'étapes doit suivre », plus bas dans ce chapitre.
 
 Trois options complètent ces commandes :
 
@@ -276,9 +281,9 @@ Une étape retirée d'un parcours n'est plus jamais chargée. Si des étudiants 
 validée, leur `progression.json` garde son nom sans que cela pose problème, la ligne est
 simplement ignorée.
 
-**En revanche, la note, elle, pose problème.** Retirer une étape d'un parcours noté rend
-`TOTAL_ETAPES` faux sur le compagnon, exactement comme en ajouter une. Voyez « Le nombre
-d'étapes doit suivre », à la fin de ce chapitre.
+**En revanche, la note, elle, demande une attention.** Retirer une étape d'un parcours noté
+change la liste des étapes notées, exactement comme en ajouter une, et le compagnon devra être
+redéployé. Voyez « Le nombre d'étapes doit suivre », à la fin de ce chapitre.
 
 ## Créer un parcours
 
@@ -313,37 +318,42 @@ convention, mais ne cherchez pas à changer le nom par ce biais.
 
 ## Le nombre d'étapes doit suivre
 
-C'est le piège le plus coûteux de tout le guide, parce qu'il est silencieux et qu'il touche
-les notes.
+Le compagnon ne connaît pas votre contenu. Il ne sait pas ce qu'est un exercice et il ne lit
+jamais le dossier `contenu/`, car son image ne l'embarque pas. Tout ce qu'il sait du parcours
+qu'il note tient dans un fichier, `compagnon/etapes_notees.json`, qui en liste les étapes.
 
-Le compagnon ne connaît pas votre contenu. Il ne sait pas ce qu'est un exercice, il ne lit
-jamais le dossier `contenu/`. Il compte les étapes validées et les divise par un nombre que
-vous lui avez tapé à la main, la variable d'environnement `TOTAL_ETAPES`. Aujourd'hui elle
-vaut 14, parce que `be_c` a 14 étapes.
+Ce fichier redit ce que `parcours.json` dit déjà. Deux copies d'un même fait finissent
+toujours par diverger, alors trois choses les tiennent ensemble.
 
-**Le jour où vous ajoutez ou retirez une étape d'un parcours noté, ce nombre devient faux, et
-personne ne vous le dira.** Ni l'outil, ni le compagnon, ni Moodle. Il n'y a aucune
-vérification nulle part. Les notes continuent de remonter dans le carnet, simplement elles
-sont fausses.
-
-- Si `TOTAL_ETAPES` est trop bas, les notes sont gonflées et un étudiant atteint 100 % avant
-  d'avoir tout fini.
-- Si `TOTAL_ETAPES` est trop haut, un étudiant qui termine tout n'atteint jamais 100 %.
-
-Dans les deux cas, si vous vous servez du déverrouillage de leçons décrit au chapitre 7, les
-seuils sautent au mauvais moment ou ne sautent jamais.
-
-**La règle est donc simple. Après tout `nouvelle-etape` ou `retirer-etape` sur un parcours
-noté, mettez `TOTAL_ETAPES` en face du nouveau compte, sur le compagnon.** Ce compte, vous
-n'avez pas à le faire vous-même, `lister` l'affiche :
+D'abord, `atelier_contenu.py` met la liste à jour tout seul. Dès que vous touchez au parcours
+noté, il réécrit le fichier et vous le dit :
 
 ```
-$ python3 atelier_contenu.py lister
-be_c : 14 étape(s), mode isole
+$ python3 atelier_contenu.py nouvelle-etape be_c ex15_matrices --titre "Matrices"
+Étape ex15_matrices créée dans be_c.
+be_c est le parcours noté : la liste du compagnon suit, 15 étape(s).
+Le compagnon doit être redéployé pour que les notes en tiennent compte.
 ```
 
-Le chapitre 6 explique où se règle cette variable. Si vous êtes en mode local, sans compagnon,
-ce piège ne vous concerne pas : le relevé compte les étapes du parcours qu'il a sous les yeux.
+Ensuite, un test refuse que les deux divergent. `tests/test_etapes_notees.py` est le seul
+endroit du dépôt d'où l'on voit à la fois le contenu et la liste du compagnon. S'il casse, ce
+n'est pas lui qu'il faut réparer.
+
+Enfin, le nombre d'étapes se déduit de la liste. Il n'est plus tapé nulle part, donc il ne
+peut plus être faux tout seul.
+
+**Le seul geste qui reste à votre charge est le redéploiement du compagnon.** Tant que vous ne
+l'avez pas fait, le service en ligne note sur l'ancienne liste. Le chapitre 6 explique
+comment.
+
+Si vous travaillez en mode local, sans compagnon, rien de ceci ne vous concerne. Le relevé
+compte les étapes du parcours qu'il a sous les yeux.
+
+> Jusqu'au 16 juillet 2026, ce rôle était tenu par une variable d'environnement nommée
+> `TOTAL_ETAPES`, que l'on tapait à la main dans le tableau de bord de l'hébergeur. Aucun test
+> ne pouvait la lire et rien ne l'obligeait à suivre le contenu. Elle est désormais ignorée.
+> Si elle traîne encore sur votre déploiement, le compagnon le signale dans ses journaux et
+> vous pouvez la retirer.
 
 ---
 
@@ -447,10 +457,10 @@ L'étudiant dépose ce fichier dans un devoir Moodle ordinaire. Le pourcentage e
 la même formule que le compagnon, donc les deux modes donnent le même chiffre pour la même
 progression.
 
-Une nuance, à une seule condition près. Le relevé divise par le nombre d'étapes qu'il compte
-lui-même dans le parcours, il est donc toujours juste. Le compagnon, lui, divise par
-`TOTAL_ETAPES`, un nombre tapé à la main. Les deux chiffres coïncident tant que cette variable
-est à jour. Voyez « Le nombre d'étapes doit suivre » au chapitre 3.
+Une nuance, à une seule condition près. Le relevé compte les étapes du parcours qu'il a sous
+les yeux, il est donc toujours juste. Le compagnon ne voit pas le contenu et s'appuie sur la
+liste décrite au chapitre 3. Les deux chiffres coïncident tant que le compagnon en ligne a été
+redéployé depuis le dernier changement de contenu.
 
 > **Le relevé n'est pas infalsifiable et ne prétend pas l'être.** L'empreinte détecte une
 > modification accidentelle du fichier. Elle ne protège en rien contre une falsification
@@ -550,18 +560,20 @@ Le déroulé complet, quand un étudiant clique sur l'activité :
 
 ## Le score
 
-Le compagnon ne connaît pas les exercices. Il compte les étapes distinctes validées et
-applique une règle de trois :
+Le compagnon ne connaît pas les exercices. Il sait seulement quelles étapes il note, par la
+liste décrite au chapitre 3, et il applique une règle de trois :
 
 ```
-score = min(100, arrondi(100 * étapes validées / TOTAL_ETAPES, 1))
+score = 100 * (étapes validées qui sont dans la liste) / (taille de la liste)
 ```
 
-`TOTAL_ETAPES` est une variable d'environnement du compagnon. **Elle doit valoir le nombre
-d'étapes du parcours distribué.** Pour `be_c` c'est 14, donc un exercice vaut 7,14 points.
-Si vous ajoutez un exercice au parcours sans changer cette variable, tous les scores seront
-faux, silencieusement. C'est le lien le plus fragile entre les deux morceaux, pensez-y en
-même temps que le chapitre 3.
+Pour `be_c` la liste compte 14 étapes, donc un exercice vaut 7,14 points.
+
+**L'atelier signale chaque porte franchie sans jamais dire de quel parcours elle vient**, et
+les identifiants d'étapes ne se répètent pas d'un parcours à l'autre. C'est pourquoi le
+compagnon ne retient que les étapes de sa liste. Sans ce filtre, un étudiant qui s'entraîne
+sur un parcours non noté ferait monter sa note du parcours noté. Le cas était réel : quatre
+exercices de `perso` faisaient passer une progression de 71,4 % à 100 %.
 
 Les événements sont conservés tels quels et le score est toujours recalculé depuis eux. Un
 envoi rejoué deux fois ne compte donc pas double.
@@ -580,7 +592,6 @@ Le compagnon ne se configure que par l'environnement. Rien n'est écrit en dur d
 | `MOODLE_KEY_SET_URL` | l'URL des clés publiques de Moodle |
 | `TOOL_PRIVATE_KEY` | la clé privée du compagnon |
 | `TOOL_PUBLIC_KEY` | la clé publique du compagnon |
-| `TOTAL_ETAPES` | le nombre d'étapes du parcours, voir plus haut |
 | `FLASK_SECRET` | le secret de session. Vaut `dev` par défaut, **à changer en production** |
 | `COMPAGNON_BASE` | le chemin de la base SQLite. Facultatif |
 
@@ -642,7 +653,6 @@ export MOODLE_DEPLOYMENT_ID="1"
 export MOODLE_AUTH_LOGIN_URL="https://moodle.inp-toulouse.fr/mod/lti/auth.php"
 export MOODLE_AUTH_TOKEN_URL="https://moodle.inp-toulouse.fr/mod/lti/token.php"
 export MOODLE_KEY_SET_URL="https://moodle.inp-toulouse.fr/mod/lti/certs.php"
-export TOTAL_ETAPES="14"
 export COMPAGNON_BASE="/tmp/compagnon-essai.sqlite3"
 compagnon/.venv/bin/gunicorn -b 127.0.0.1:8000 compagnon.app:application
 ```
@@ -821,7 +831,8 @@ Si vous regardez avec un compte enseignant, vous ne verrez jamais de leçon verr
 jamais de déverrouillage non plus. Voir le mur du compte enseignant.
 
 Sinon, vérifiez que le seuil de la restriction correspond bien au nombre d'exercices attendu,
-en gardant à l'esprit qu'un exercice vaut 100 divisé par `TOTAL_ETAPES`.
+en gardant à l'esprit qu'un exercice vaut 100 divisé par le nombre d'étapes notées, soit 7,14
+points pour `be_c`.
 
 ## Un exercice refuse le corrigé
 

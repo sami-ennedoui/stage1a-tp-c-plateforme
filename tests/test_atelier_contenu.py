@@ -304,5 +304,92 @@ class TestVerifierPortes(unittest.TestCase):
         self.assertEqual(code, 0)
 
 
+class TestSuitLaNotation(unittest.TestCase):
+    """Le compagnon note un parcours dont il ne voit pas le contenu, il s'appuie sur
+    compagnon/etapes_notees.json. Si l'outil de contenu ne tient pas cette liste à jour,
+    l'auteur d'un exercice fausse les notes de tous les étudiants sans le savoir."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.racine = Path(self._tmp.name) / "contenu"
+        self.racine.mkdir()
+        self.notation = Path(self._tmp.name) / "etapes_notees.json"
+        ac.commande_nouveau_parcours("be_c", racine=self.racine)
+        # Le fichier préexiste dans le dépôt et déclare le parcours que le compagnon
+        # note. C'est lui qui désigne be_c, l'outil de contenu ne le devine pas.
+        self.notation.write_text(
+            json.dumps({"parcours": "be_c", "etapes": []}, indent=2) + "\n",
+            encoding="utf-8")
+        ac.commande_nouvelle_etape("be_c", "ex01", "Un", racine=self.racine,
+                                   fichier_notation=self.notation)
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _liste_notee(self) -> list:
+        return json.loads(self.notation.read_text(encoding="utf-8"))["etapes"]
+
+    def test_ajouter_une_etape_au_parcours_note_met_la_liste_a_jour(self):
+        ac.commande_nouvelle_etape("be_c", "ex02", "Deux", racine=self.racine,
+                                   fichier_notation=self.notation)
+        self.assertEqual(self._liste_notee(), ["ex01", "ex02"])
+
+    def test_retirer_une_etape_du_parcours_note_met_la_liste_a_jour(self):
+        ac.commande_nouvelle_etape("be_c", "ex02", "Deux", racine=self.racine,
+                                   fichier_notation=self.notation)
+        ac.commande_retirer_etape("be_c", "ex01", racine=self.racine,
+                                  fichier_notation=self.notation)
+        self.assertEqual(self._liste_notee(), ["ex02"])
+
+    def test_l_ordre_est_respecte(self):
+        """La liste sert de dénominateur, mais elle doit rester lisible et comparable
+        au parcours : --apres place l'étape au milieu, la liste doit suivre."""
+        ac.commande_nouvelle_etape("be_c", "ex03", "Trois", racine=self.racine,
+                                   fichier_notation=self.notation)
+        ac.commande_nouvelle_etape("be_c", "ex02", "Deux", apres="ex01",
+                                   racine=self.racine, fichier_notation=self.notation)
+        self.assertEqual(self._liste_notee(), ["ex01", "ex02", "ex03"])
+
+    def test_un_parcours_non_note_ne_touche_pas_a_la_liste(self):
+        ac.commande_nouveau_parcours("entrainement", racine=self.racine)
+        ac.commande_nouvelle_etape("entrainement", "s1", "S1", racine=self.racine,
+                                   fichier_notation=self.notation)
+        self.assertEqual(self._liste_notee(), ["ex01"])
+
+    def test_un_contenu_de_test_ne_reecrit_jamais_la_notation_du_depot(self):
+        """C'est arrivé pour de vrai : TestNouvelleEtape crée un parcours nommé be_c dans
+        un dossier temporaire, et la notation du dépôt pointait par défaut sur le vrai
+        fichier. La suite de tests a écrasé compagnon/etapes_notees.json avec deux étapes
+        bidon. Un fichier de notation faux, ce sont les notes de tout le monde fausses."""
+        avant = ac.FICHIER_NOTATION.read_text(encoding="utf-8")
+        # Exactement l'appel des autres tests : contenu temporaire, notation par défaut.
+        ac.commande_nouvelle_etape("be_c", "ex_bidon", "Bidon", racine=self.racine)
+        self.assertEqual(ac.FICHIER_NOTATION.read_text(encoding="utf-8"), avant)
+
+    def test_la_commande_notation_rattrape_une_edition_a_la_main(self):
+        """parcours.json peut être édité hors de cet outil, à la main ou par une fusion.
+        La liste notée dérive alors sans que rien ne l'ait vu passer."""
+        _inserer_dans_ordre(self.racine / "be_c", "ex_ajoute_a_la_main")
+        self.assertEqual(self._liste_notee(), ["ex01"])          # la dérive est là
+        code = ac.commande_notation(racine=self.racine, fichier_notation=self.notation)
+        self.assertEqual(code, 0)
+        self.assertEqual(self._liste_notee(), ["ex01", "ex_ajoute_a_la_main"])
+
+    def test_la_commande_notation_ne_touche_a_rien_si_tout_va_bien(self):
+        avant = self.notation.read_text(encoding="utf-8")
+        code = ac.commande_notation(racine=self.racine, fichier_notation=self.notation)
+        self.assertEqual(code, 0)
+        self.assertEqual(self.notation.read_text(encoding="utf-8"), avant)
+
+    def test_sans_compagnon_l_outil_marche_quand_meme(self):
+        """atelier_contenu.py part dans le bundle de l'étudiant, qui n'embarque pas le
+        compagnon. L'absence du fichier est normale et ne doit rien casser."""
+        absent = Path(self._tmp.name) / "pas_de_compagnon" / "etapes_notees.json"
+        code = ac.commande_nouvelle_etape("be_c", "ex09", "Neuf", racine=self.racine,
+                                          fichier_notation=absent)
+        self.assertEqual(code, 0)
+        self.assertFalse(absent.exists())
+
+
 if __name__ == "__main__":
     unittest.main()

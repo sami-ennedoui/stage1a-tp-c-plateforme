@@ -13,6 +13,13 @@ from modele_etape import charger_etape
 
 RACINE_CONTENU = chemins.RACINE / "contenu"
 
+# Le compagnon note un parcours dont il ne voit jamais le contenu : son image Docker ne
+# copie que compagnon/. Cette liste est tout ce qu'il en sait, et elle redit ce que
+# parcours.json dit déjà. On la tient à jour ici, au moment exact où le parcours change,
+# plutôt que d'espérer que l'auteur d'un exercice y pense. Absente chez l'étudiant, dont
+# le bundle n'embarque pas le compagnon : c'est un cas normal, pas une erreur.
+FICHIER_NOTATION = chemins.RACINE / "compagnon" / "etapes_notees.json"
+
 # Nom de dossier valide sous contenu/ : lettres minuscules, chiffres, underscore.
 _ID_VALIDE = re.compile(r"^[a-z0-9_]+$")
 
@@ -96,7 +103,8 @@ def _ecrire_squelette_etape(dossier_etape: Path, id_etape: str, titre: str, cran
 
 def commande_nouvelle_etape(nom_parcours: str, id_etape: str, titre: str,
                             apres: str = None, cran: int = 1,
-                            racine: Path = RACINE_CONTENU) -> int:
+                            racine: Path = RACINE_CONTENU,
+                            fichier_notation: Path = FICHIER_NOTATION) -> int:
     """Crée une étape squelette, immédiatement valide, et l'insère dans parcours.json."""
     if not _ID_VALIDE.match(id_etape):
         _erreur(f"id d'étape invalide : {id_etape!r} (autorisé : lettres minuscules, "
@@ -126,11 +134,67 @@ def commande_nouvelle_etape(nom_parcours: str, id_etape: str, titre: str,
     donnees["ordre"] = ordre
     _ecrire_json(dossier_parcours / "parcours.json", donnees)
     print(f"Étape {id_etape} créée dans {nom_parcours}.")
+    _suivre_notation(nom_parcours, racine, fichier_notation)
+    return 0
+
+
+def _suivre_notation(nom_parcours: str, racine: Path, fichier_notation: Path) -> None:
+    """Réaligne la liste des étapes notées si c'est le parcours noté qui vient de changer.
+
+    Ne dit rien et ne fait rien si le compagnon n'est pas là, ou s'il note un autre
+    parcours. Le seul geste qui reste manuel est le redéploiement, et on le rappelle.
+    """
+    if fichier_notation == FICHIER_NOTATION and racine != RACINE_CONTENU:
+        # Un parcours de test peut porter le nom du parcours noté : la suite de tests a
+        # réellement écrasé la notation du dépôt avec le contenu d'un dossier temporaire.
+        # La notation ne décrit que le vrai contenu, seul le vrai contenu la réécrit.
+        return
+    if not fichier_notation.exists():
+        return                      # pas de compagnon ici : bundle étudiant, ou clone partiel
+    from compagnon import notation  # import tardif : le bundle étudiant n'a pas compagnon/
+    if notation.parcours_note(fichier_notation) != nom_parcours:
+        return
+    ordre = _lire_json(racine / nom_parcours / "parcours.json").get("ordre", [])
+    notation.ecrire(nom_parcours, ordre, fichier_notation)
+    print(f"{nom_parcours} est le parcours noté : la liste du compagnon suit, "
+          f"{len(ordre)} étape(s).")
+    print("Le compagnon doit être redéployé pour que les notes en tiennent compte.")
+
+
+def commande_notation(racine: Path = RACINE_CONTENU,
+                      fichier_notation: Path = FICHIER_NOTATION) -> int:
+    """Réaligne la liste des étapes notées sur le contenu, et dit ce qui a changé.
+
+    Le filet de rattrapage quand parcours.json a été édité à la main, hors de cet outil :
+    tests/test_etapes_notees.py signale alors la divergence, et ceci la répare.
+    """
+    if not fichier_notation.exists():
+        _erreur(f"pas de compagnon ici : {fichier_notation} est absent")
+        return 1
+    from compagnon import notation
+    nom = notation.parcours_note(fichier_notation)
+    fichier_parcours = racine / nom / "parcours.json"
+    if not fichier_parcours.exists():
+        _erreur(f"le compagnon note {nom}, qui n'est pas dans {racine}")
+        return 1
+    avant = notation.charger(fichier_notation)
+    apres = _lire_json(fichier_parcours).get("ordre", [])
+    if avant == apres:
+        print(f"{nom} : la liste notée est déjà d'aplomb, {len(apres)} étape(s).")
+        return 0
+    notation.ecrire(nom, apres, fichier_notation)
+    for id_etape in [e for e in apres if e not in avant]:
+        print(f"  + {id_etape}")
+    for id_etape in [e for e in avant if e not in apres]:
+        print(f"  - {id_etape}")
+    print(f"{nom} : liste notée réalignée, {len(avant)} étape(s) puis {len(apres)}.")
+    print("Le compagnon doit être redéployé pour que les notes en tiennent compte.")
     return 0
 
 
 def commande_retirer_etape(nom_parcours: str, id_etape: str, effacer: bool = False,
-                           racine: Path = RACINE_CONTENU) -> int:
+                           racine: Path = RACINE_CONTENU,
+                           fichier_notation: Path = FICHIER_NOTATION) -> int:
     """Retire l'id de parcours.json. Avec effacer, supprime aussi le dossier."""
     dossier_parcours = racine / nom_parcours
     if not dossier_parcours.exists():
@@ -147,6 +211,7 @@ def commande_retirer_etape(nom_parcours: str, id_etape: str, effacer: bool = Fal
     if effacer:
         shutil.rmtree(dossier_parcours / id_etape, ignore_errors=True)
     print(f"Étape {id_etape} retirée de {nom_parcours}.")
+    _suivre_notation(nom_parcours, racine, fichier_notation)
     return 0
 
 
@@ -305,6 +370,9 @@ def main(argv=None) -> int:
         "verifier", help="Vérifie qu'un parcours, ou tous les parcours isole, fonctionnent.")
     p_verifier.add_argument("parcours", nargs="?", default=None)
 
+    sous.add_parser(
+        "notation", help="Réaligne la liste des étapes notées du compagnon sur le contenu.")
+
     args = analyseur.parse_args(argv)
     if args.commande == "lister":
         return commande_lister(args.parcours)
@@ -317,6 +385,8 @@ def main(argv=None) -> int:
         return commande_retirer_etape(args.parcours, args.id, args.effacer)
     if args.commande == "verifier":
         return commande_verifier(args.parcours)
+    if args.commande == "notation":
+        return commande_notation()
     return 1
 
 
