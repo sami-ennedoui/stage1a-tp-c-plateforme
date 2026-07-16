@@ -77,6 +77,39 @@ def dossiers_detaches(dossier_parcours: Path) -> list[str]:
     return detaches
 
 
+def _id_pris_ailleurs(dossier_parcours: Path, ident: str) -> str | None:
+    """Le nom d'un autre parcours de contenu/ qui utilise déjà cet id, ou None.
+
+    Un id doit être unique dans tout contenu/, pas seulement dans son parcours :
+    moodle_sync.signaler_porte n'envoie que l'id d'une étape, jamais le parcours d'où
+    elle vient. Deux homonymes sont le même exercice pour le compagnon, qui noterait
+    l'un pour l'autre — le bug de notation du 16 juillet par une autre porte. Voir
+    compagnon/notation.py et atelier_contenu._parcours_de_l_id, dont c'est le miroir.
+
+    Un dossier détaché compte aussi (id absent de `ordre` mais présent sur le disque) :
+    réattaché plus tard, il armerait la collision quand plus personne n'y penserait.
+
+    Gardé ici en pur pathlib pour ne pas coupler l'outil d'auteur à executeur
+    (autonomie du module voulue pour le bundle, cf. l'import tardif de
+    synchroniser_notation).
+    """
+    racine = dossier_parcours.parent
+    nom = dossier_parcours.name
+    for voisin in sorted(racine.iterdir()):
+        if not voisin.is_dir() or voisin.name == nom:
+            continue
+        fichier = voisin / "parcours.json"
+        if not fichier.exists():
+            continue
+        try:
+            ordre = json.loads(fichier.read_text(encoding="utf-8")).get("ordre", [])
+        except (OSError, ValueError):
+            continue                       # parcours.json illisible : on ne bloque pas dessus
+        if ident in ordre or (voisin / ident).exists():
+            return voisin.name
+    return None
+
+
 def ajouter_niveau(
     dossier_parcours: Path,
     ident: str,
@@ -93,8 +126,9 @@ def ajouter_niveau(
     """Crée le dossier du niveau, ses gabarits, et l'insère dans `ordre`.
 
     `position` est l'indice d'insertion (None = à la fin). Lève ValueError si l'id est
-    invalide, déjà présent dans `ordre`, ou si un dossier du même nom existe déjà.
-    Renvoie le chemin du dossier créé.
+    invalide, déjà présent dans `ordre`, si un dossier du même nom existe déjà, ou si
+    l'id est déjà pris par un autre parcours de contenu/ (unicité globale des ids, voir
+    _id_pris_ailleurs). Renvoie le chemin du dossier créé.
     """
     ident = ident.strip()
     titre = titre.strip()
@@ -117,6 +151,14 @@ def ajouter_niveau(
     if dossier.exists():
         raise ValueError(
             f"Un dossier « {ident} » existe déjà (peut-être un niveau détaché). "
+            "Choisis un autre identifiant."
+        )
+    ailleurs = _id_pris_ailleurs(dossier_parcours, ident)
+    if ailleurs is not None:
+        raise ValueError(
+            f"L'identifiant « {ident} » est déjà utilisé par le parcours « {ailleurs} ». "
+            "Un id doit être unique dans tout contenu/ : le compagnon ne reçoit que "
+            "l'id d'une étape, jamais son parcours, et noterait l'une pour l'autre. "
             "Choisis un autre identifiant."
         )
 
@@ -167,6 +209,13 @@ def reattacher_niveau(dossier_parcours: Path, ident: str, position: int | None =
     ordre = donnees.setdefault("ordre", [])
     if ident in ordre:
         raise ValueError(f"Le niveau « {ident} » est déjà dans le parcours.")
+    ailleurs = _id_pris_ailleurs(dossier_parcours, ident)
+    if ailleurs is not None:
+        raise ValueError(
+            f"L'identifiant « {ident} » est déjà utilisé par le parcours « {ailleurs} ». "
+            "Le réattacher ici créerait deux étapes homonymes actives, que le compagnon "
+            "confondrait à la notation. Renomme d'abord l'une des deux."
+        )
     if position is None or position >= len(ordre):
         ordre.append(ident)
     else:

@@ -17,7 +17,11 @@ def _parcours_neuf(dossier: Path):
 class TestGestionNiveaux(unittest.TestCase):
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
-        self.dossier = Path(self._tmp.name)
+        # Le parcours est niché sous une racine de contenu à lui, sans quoi
+        # _id_pris_ailleurs verrait les autres tmpXXXX du dossier temp système
+        # comme des parcours voisins (l'unicité d'id se lit sur tout contenu/).
+        self.dossier = Path(self._tmp.name) / "parcours"
+        self.dossier.mkdir()
         _parcours_neuf(self.dossier)
 
     def tearDown(self):
@@ -129,6 +133,60 @@ class TestAuteur(unittest.TestCase):
         import auteur
         with self.assertRaises(ValueError):
             auteur.definir("")
+
+
+class TestUniciteIdEntreParcours(unittest.TestCase):
+    """Un id doit être unique dans tout contenu/, pas dans son seul parcours : le
+    compagnon ne reçoit que l'id d'une étape et noterait deux homonymes l'un pour
+    l'autre. La GUI (ajouter/réattacher) ne doit donc pas créer d'homonyme. Miroir de
+    la garde de atelier_contenu.commande_nouvelle_etape."""
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.racine = Path(self._tmp.name)         # racine de contenu factice
+        self.be_c = self.racine / "be_c"
+        self.perso = self.racine / "perso"
+        for d in (self.be_c, self.perso):
+            d.mkdir()
+            _parcours_neuf(d)
+        gestion_niveaux.ajouter_niveau(self.be_c, "ex05_rectangle", "Rectangle")
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def test_ajout_refuse_un_id_actif_dans_un_autre_parcours(self):
+        with self.assertRaises(ValueError) as ctx:
+            gestion_niveaux.ajouter_niveau(self.perso, "ex05_rectangle", "Homonyme")
+        self.assertIn("be_c", str(ctx.exception))
+        # rien ne doit avoir été créé dans perso
+        self.assertFalse((self.perso / "ex05_rectangle").exists())
+        self.assertEqual(gestion_niveaux.lister_niveaux(self.perso), [])
+
+    def test_ajout_refuse_un_id_detache_dans_un_autre_parcours(self):
+        # détaché dans be_c : le dossier reste, la collision serait juste différée
+        gestion_niveaux.retirer_niveau(self.be_c, "ex05_rectangle")
+        with self.assertRaises(ValueError):
+            gestion_niveaux.ajouter_niveau(self.perso, "ex05_rectangle", "Homonyme")
+
+    def test_ajout_autorise_un_id_libre_ailleurs(self):
+        chemin = gestion_niveaux.ajouter_niveau(self.perso, "ex06_cercle", "Cercle")
+        self.assertTrue(chemin.exists())
+        self.assertEqual(gestion_niveaux.lister_niveaux(self.perso), ["ex06_cercle"])
+
+    def test_reattacher_refuse_si_homonyme_actif_ailleurs(self):
+        # Deux homonymes sur disque ne peuvent venir que d'ailleurs (CLI, branche,
+        # montage manuel) puisque la GUI les refuse désormais. On plante donc à la
+        # main un ex05 détaché dans perso, be_c gardant le sien actif (setUp).
+        detache = self.perso / "ex05_rectangle"
+        detache.mkdir()
+        (detache / "meta.json").write_text(
+            json.dumps({"id": "ex05_rectangle", "titre": "Intrus"}) + "\n",
+            encoding="utf-8")
+        with self.assertRaises(ValueError) as ctx:
+            gestion_niveaux.reattacher_niveau(self.perso, "ex05_rectangle")
+        self.assertIn("be_c", str(ctx.exception))
+        # perso ne l'a pas repris malgré tout
+        self.assertEqual(gestion_niveaux.lister_niveaux(self.perso), [])
 
 
 class TestSynchroniserNotation(unittest.TestCase):
