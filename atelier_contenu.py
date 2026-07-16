@@ -82,6 +82,29 @@ def commande_nouveau_parcours(nom: str, racine: Path = RACINE_CONTENU) -> int:
     return 0
 
 
+def _parcours_de_l_id(id_etape: str, racine: Path, sauf: str) -> str | None:
+    """Le parcours, autre que `sauf`, qui utilise déjà cet id, ou None.
+
+    Un id doit être unique dans tout contenu/, pas seulement dans son parcours.
+    `moodle_sync.signaler_porte` n'envoie que l'id d'une étape, jamais le parcours d'où
+    elle vient : deux homonymes sont indiscernables pour le compagnon, qui noterait
+    l'un pour l'autre. Voir compagnon/notation.py.
+
+    Un dossier présent mais hors de `ordre` compte aussi : l'étape est détachée, pas
+    disparue, et la réattacher créerait la collision bien après coup. Même raison que
+    le `dossier_etape.exists()` de la garde locale.
+    """
+    for dossier in sorted(racine.iterdir()):
+        if not dossier.is_dir() or dossier.name == sauf:
+            continue
+        fichier = dossier / "parcours.json"
+        if not fichier.exists():
+            continue
+        if id_etape in _lire_json(fichier).get("ordre", []) or (dossier / id_etape).exists():
+            return dossier.name
+    return None
+
+
 def _ecrire_squelette_etape(dossier_etape: Path, id_etape: str, titre: str, cran: int) -> None:
     """Squelette du mode programme : trivial mais déjà vert, corrige.c affiche une
     ligne que starter.c n'affiche pas, exactement ce que sortie_attendue réclame."""
@@ -119,6 +142,12 @@ def commande_nouvelle_etape(nom_parcours: str, id_etape: str, titre: str,
     dossier_etape = dossier_parcours / id_etape
     if id_etape in ordre or dossier_etape.exists():
         _erreur(f"l'id {id_etape} existe déjà dans {nom_parcours}")
+        return 1
+    ailleurs = _parcours_de_l_id(id_etape, racine, sauf=nom_parcours)
+    if ailleurs is not None:
+        _erreur(f"l'id {id_etape} est déjà pris par le parcours {ailleurs}. Un id doit "
+                "être unique dans tout contenu/ : le compagnon ne reçoit que l'id d'une "
+                "étape, jamais son parcours, et noterait l'une pour l'autre.")
         return 1
     if apres is not None:
         if apres not in ordre:

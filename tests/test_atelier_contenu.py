@@ -114,6 +114,36 @@ class TestNouvelleEtape(unittest.TestCase):
         self.assertNotEqual(code, 0)
         self.assertEqual(_lire_parcours(self.racine / "be_c"), avant)
 
+    def test_refuse_id_deja_pris_dans_un_autre_parcours(self):
+        """Un id ne vaut que s'il est unique dans tout contenu/, pas seulement dans son
+        parcours. `moodle_sync.signaler_porte` n'envoie que l'id, jamais le parcours d'où
+        il vient : deux étapes homonymes sont indiscernables pour le compagnon. L'une
+        noterait à la place de l'autre, et `progression.fusionner` débloquerait le cran
+        d'une étape jamais faite. Voir compagnon/notation.py."""
+        ac.commande_nouveau_parcours("perso", racine=self.racine)
+        avant = _lire_parcours(self.racine / "perso")
+        code = ac.commande_nouvelle_etape("perso", "ex01", titre="Homonyme",
+                                          racine=self.racine)
+        self.assertNotEqual(code, 0)
+        self.assertEqual(_lire_parcours(self.racine / "perso"), avant)
+        self.assertFalse((self.racine / "perso" / "ex01").exists(),
+                         "l'étape homonyme ne doit pas non plus rester sur le disque")
+
+    def test_refuse_id_detache_dans_un_autre_parcours(self):
+        """Une étape retirée sans --effacer reste sur le disque, détachée, et la GUI
+        sait la réattacher. Laisser prendre son id ailleurs ne casse rien tout de suite :
+        ça arme la collision pour le jour du réattachement, quand plus personne ne fera
+        le lien."""
+        ac.commande_nouveau_parcours("perso", racine=self.racine)
+        ac.commande_nouvelle_etape("perso", "ex09", titre="Entraînement",
+                                   racine=self.racine)
+        ac.commande_retirer_etape("perso", "ex09", racine=self.racine)
+        self.assertTrue((self.racine / "perso" / "ex09").exists(),
+                        "prérequis du test : retirer détache, il n'efface pas")
+        code = ac.commande_nouvelle_etape("be_c", "ex09", titre="Homonyme",
+                                          racine=self.racine)
+        self.assertNotEqual(code, 0)
+
     def test_refuse_id_invalide(self):
         avant = _lire_parcours(self.racine / "be_c")
         for mauvais_id in ("Ex-03", "ex 03", "ex/03", "ÉTAPE"):
