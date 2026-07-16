@@ -24,3 +24,12 @@ journaux/
 compagnon/.venv/
 compagnon/*.sqlite3
 moodle_sync.json
+
+# mode auteur : empreinte du mot de passe, locale a chaque poste
+auteur.json
+
+# reglages locaux (dernier parcours), locaux a chaque poste
+reglages.json
+
+# compilateur portable embarque a cote de l'appli, telecharge, hors depot
+w64devkit/

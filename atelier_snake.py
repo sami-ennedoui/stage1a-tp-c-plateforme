@@ -15,13 +15,15 @@ from modele_etape import charger_etape
 
 
 def _parcours_choisi() -> str:
-    """Lit --parcours <nom> ou --parcours=<nom> dans les arguments. Défaut : hybride."""
+    """Parcours à ouvrir. Priorité à --parcours <nom> ou --parcours=<nom>, sinon le
+    dernier parcours mémorisé dans reglages.json (défaut be_c au tout premier lancement)."""
     for i, a in enumerate(sys.argv):
         if a.startswith("--parcours="):
             return a.split("=", 1)[1]
         if a == "--parcours" and i + 1 < len(sys.argv):
             return sys.argv[i + 1]
-    return "hybride"
+    import reglages
+    return reglages.dernier_parcours()
 
 
 def selftest() -> int:
