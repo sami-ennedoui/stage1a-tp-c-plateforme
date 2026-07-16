@@ -51,19 +51,25 @@ def _poster(url: str, corps: dict, entetes: dict) -> dict:
 
 
 def appairer(code: str, fichier: Path = chemins.MOODLE_SYNC_FICHIER,
-             url: str = None) -> tuple[bool, str]:
-    """Échange le code court contre le jeton permanent et le range dans le fichier."""
+             url: str = None) -> tuple[bool, str, list]:
+    """Échange le code court contre le jeton permanent et le range dans le fichier.
+
+    Renvoie (réussite, message, etapes_faites). `etapes_faites` est la liste des
+    étapes déjà validées par cet étudiant côté compagnon, pour reprendre au bon
+    niveau sur une nouvelle machine. Vide si l'appairage échoue ou si un ancien
+    compagnon ne la fournit pas encore."""
     url = (url or chemins.COMPAGNON_URL).rstrip("/")
     try:
         reponse = _poster(url + "/api/appairage", {"code": code}, {})
     except urllib.error.HTTPError:
-        return False, "Code refusé : expiré ou déjà utilisé. Reclique l'activité dans Moodle."
+        return False, "Code refusé : expiré ou déjà utilisé. Reclique l'activité dans Moodle.", []
     except OSError:
-        return False, "Serveur injoignable. Réessaie dans une minute."
+        return False, "Serveur injoignable. Réessaie dans une minute.", []
     d = _charger(fichier)
     d.update(url=url, jeton=reponse["jeton"])
     _sauver(d, fichier)
-    return True, "Connecté à Moodle. Ta progression remontera automatiquement."
+    return True, "Connecté à Moodle. Ta progression remontera automatiquement.", \
+        list(reponse.get("etapes_faites", []))
 
 
 def desaccord_url(fichier: Path = chemins.MOODLE_SYNC_FICHIER) -> str | None:

@@ -6,18 +6,23 @@ from pathlib import Path
 
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QListWidget,
                              QPlainTextEdit, QTextEdit, QPushButton, QLabel, QTabWidget,
-                             QListWidgetItem, QInputDialog, QComboBox)
+                             QListWidgetItem, QInputDialog, QComboBox, QLineEdit, QMessageBox)
 from PyQt6.QtCore import Qt, QThread, QTimer, pyqtSignal
 from PyQt6.QtGui import QFont
 
+import auteur
 import chemins
 import coloration
+import diagnostic
 import executeur
 import lsp_clangd
 import moodle_sync
 import progression
+import reglages
 import tuteur_ia
 import theme
+from dialogue_diagnostic import DialogueDiagnostic
+from dialogue_niveaux import DialogueNiveaux
 from espace_projet import EspaceProjet
 from modele_etape import charger_parcours_complet
 
@@ -56,6 +61,7 @@ class Fenetre(QMainWindow):
         if demo:
             titre += " (mode démo)"
         self.setWindowTitle(titre)
+        self._construire_menu()
 
         # parcours projet : une copie de travail vivante, remplie étape par étape.
         # On part du squelette à trous. En démo on repart propre à chaque lancement.
@@ -208,6 +214,93 @@ class Fenetre(QMainWindow):
             self._timer_moodle.timeout.connect(self._maj_moodle)
             self._timer_moodle.start()
 
+    def _construire_menu(self):
+        """Menu Paramètres : navigation, dossiers, diagnostic, et édition protégée."""
+        menu = self.menuBar().addMenu("Paramètres")
+        menu.addAction("Changer de parcours…").triggered.connect(self._changer_parcours)
+        menu.addAction("Ouvrir le dossier du contenu").triggered.connect(
+            self._ouvrir_dossier_contenu)
+        menu.addAction("Emplacements et diagnostic…").triggered.connect(
+            self._ouvrir_diagnostic)
+        menu.addSeparator()
+        menu.addAction("Gérer les niveaux…").triggered.connect(self._ouvrir_gestion_niveaux)
+        menu.addAction("Changer le mot de passe auteur…").triggered.connect(
+            self._changer_mot_de_passe)
+
+    def _changer_parcours(self):
+        noms = diagnostic.parcours_disponibles()
+        if not noms:
+            QMessageBox.warning(self, "Aucun parcours",
+                                "Aucun dossier de contenu avec un parcours.json.")
+            return
+        depart = noms.index(self.parcours_nom) if self.parcours_nom in noms else 0
+        choix, ok = QInputDialog.getItem(
+            self, "Changer de parcours", "Parcours :", noms, depart, editable=False)
+        if not ok or not choix or choix == self.parcours_nom:
+            return
+        reglages.definir_parcours(choix)
+        QMessageBox.information(
+            self, "Parcours enregistré",
+            f"Le parcours « {choix} » s'ouvrira au prochain lancement.\n"
+            "Ferme puis relance l'appli pour basculer dessus.")
+
+    def _ouvrir_dossier_contenu(self):
+        try:
+            diagnostic.ouvrir_dossier(chemins.contenu_racine(self.parcours_nom))
+        except OSError as e:
+            QMessageBox.warning(self, "Ouverture impossible", str(e))
+
+    def _ouvrir_diagnostic(self):
+        DialogueDiagnostic(self.parcours_nom, chemins.RACINE / "Atelier.bat", self).exec()
+
+    def _demander_mot_de_passe(self) -> bool:
+        """Demande le mot de passe auteur. Vrai s'il est correct."""
+        saisi, ok = QInputDialog.getText(
+            self, "Mode auteur", "Mot de passe pour modifier le contenu :",
+            QLineEdit.EchoMode.Password)
+        if not ok:
+            return False
+        if not auteur.verifier(saisi):
+            QMessageBox.warning(self, "Accès refusé", "Mot de passe incorrect.")
+            return False
+        return True
+
+    def _ouvrir_gestion_niveaux(self):
+        if self.mode == "projet":
+            QMessageBox.information(
+                self, "Indisponible",
+                "La gestion des niveaux ne concerne que les parcours isolés, "
+                "pas le parcours projet.")
+            return
+        if not self._demander_mot_de_passe():
+            return
+        dlg = DialogueNiveaux(chemins.contenu_racine(self.parcours_nom), self)
+        dlg.exec()
+        self._recharger_parcours()
+
+    def _changer_mot_de_passe(self):
+        if not self._demander_mot_de_passe():
+            return
+        nouveau, ok = QInputDialog.getText(
+            self, "Changer le mot de passe", "Nouveau mot de passe :",
+            QLineEdit.EchoMode.Password)
+        if not ok or not nouveau:
+            return
+        auteur.definir(nouveau)
+        QMessageBox.information(self, "Mot de passe changé",
+                                "Le nouveau mot de passe auteur est enregistré.")
+
+    def _recharger_parcours(self):
+        """Recharge le parcours depuis le disque après une édition du contenu."""
+        parcours = charger_parcours_complet(chemins.contenu_racine(self.parcours_nom))
+        self.parcours = parcours.etapes
+        if not self.parcours:
+            self.liste.clear()
+            return
+        self._remplir_liste()
+        ligne = min(self.liste.currentRow(), len(self.parcours) - 1)
+        self.liste.setCurrentRow(max(0, ligne))
+
     def _remplir_liste(self):
         self.liste.clear()
         for e in self.parcours:
@@ -289,9 +382,18 @@ class Fenetre(QMainWindow):
             "Colle le code affiché par l'activité Moodle du TP :")
         if not ok or not code.strip():
             return
-        reussi, message = moodle_sync.appairer(code.strip())
+        reussi, message, deja_faits = moodle_sync.appairer(code.strip())
         self.console.setPlainText(message)
         if reussi:
+            # Reprise multi-poste : le compagnon renvoie les étapes déjà validées par
+            # cet étudiant, peut-être sur une autre machine. On les fusionne dans la
+            # progression locale pour déverrouiller les niveaux au bon endroit.
+            if deja_faits:
+                self.prog = progression.fusionner(self.prog, deja_faits, self.parcours)
+                progression.sauver(self.prog)
+                self.niveau = progression.cran_disponible(self.prog)
+                self._remplir_liste()
+                self._maj_cran()
             # Renvoie tout ce qui a déjà été validé avant la connexion, sinon
             # cette progression serait perdue (signaler_porte l'avait jetée).
             moodle_sync.signaler_deja_faits(self.prog.etapes_faites)

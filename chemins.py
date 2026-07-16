@@ -9,6 +9,10 @@ CONTENU = RACINE / "contenu" / "hybride"
 PROGRESSION_FICHIER = RACINE / "progression.json"
 # appairage et file d'attente Moodle, à côté de la progression, spec compagnon LTI
 MOODLE_SYNC_FICHIER = RACINE / "moodle_sync.json"
+# hache du mot de passe du mode auteur, local et git-ignore, voir auteur.py
+AUTEUR_FICHIER = RACINE / "auteur.json"
+# reglages locaux memorises d'un lancement a l'autre (dernier parcours), git-ignore
+REGLAGES_FICHIER = RACINE / "reglages.json"
 COMPAGNON_URL = os.environ.get("ATELIER_COMPAGNON_URL",
                                "https://compagnon-tp-c.onrender.com")
 
