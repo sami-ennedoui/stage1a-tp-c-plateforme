@@ -20,6 +20,11 @@ resultats.txt
 # traces de session ecrites par journal_session.py (donnees de demo, hors depot)
 journaux/
 
+# outillage de build (packaging/build_windows.ps1) : sorties locales, hors depot
+/w64devkit/
+/.build/
+/_bundle/
+
 # compagnon LTI : environnement virtuel, base locale et jetons de sync, hors depot
 compagnon/.venv/
 compagnon/*.sqlite3
