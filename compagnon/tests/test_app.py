@@ -98,6 +98,27 @@ class TestApi(unittest.TestCase):
         r = self.client.post("/api/appairage", json={"code": "XXXXXX"})
         self.assertEqual(r.status_code, 404)
 
+    def test_appairage_renvoie_les_etapes_deja_validees(self):
+        """Reprise multi-poste : un étudiant qui se reconnecte (nouveau code) récupère
+        la liste de ce qu'il a déjà validé, pour reprendre au bon niveau ailleurs."""
+        from compagnon import base
+        jeton = self._appairer()
+        self.client.post("/api/evenements",
+                         headers={"Authorization": f"Bearer {jeton}"},
+                         json={"evenements": [
+                             {"etape": "ex01_types", "reussite": True,
+                              "horodatage": "2026-07-16T10:00:00"},
+                             {"etape": "ex02_operateurs", "reussite": True,
+                              "horodatage": "2026-07-16T10:05:00"}]})
+        # nouvelle machine : nouveau lancement, nouveau code, nouvel appairage
+        code = base.enregistrer_lancement(
+            self.app.cx, "u12", "Sami", "c4665",
+            {"lineitem": "https://moodle.example/ligne/1", "scope": []})
+        r = self.client.post("/api/appairage", json={"code": code})
+        self.assertEqual(r.status_code, 200)
+        self.assertEqual(sorted(r.get_json()["etapes_faites"]),
+                         ["ex01_types", "ex02_operateurs"])
+
     def test_evenements_score_et_poussee(self):
         jeton = self._appairer()
         r = self.client.post("/api/evenements",

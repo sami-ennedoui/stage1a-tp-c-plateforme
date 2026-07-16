@@ -382,9 +382,18 @@ class Fenetre(QMainWindow):
             "Colle le code affiché par l'activité Moodle du TP :")
         if not ok or not code.strip():
             return
-        reussi, message = moodle_sync.appairer(code.strip())
+        reussi, message, deja_faits = moodle_sync.appairer(code.strip())
         self.console.setPlainText(message)
         if reussi:
+            # Reprise multi-poste : le compagnon renvoie les étapes déjà validées par
+            # cet étudiant, peut-être sur une autre machine. On les fusionne dans la
+            # progression locale pour déverrouiller les niveaux au bon endroit.
+            if deja_faits:
+                self.prog = progression.fusionner(self.prog, deja_faits, self.parcours)
+                progression.sauver(self.prog)
+                self.niveau = progression.cran_disponible(self.prog)
+                self._remplir_liste()
+                self._maj_cran()
             # Renvoie tout ce qui a déjà été validé avant la connexion, sinon
             # cette progression serait perdue (signaler_porte l'avait jetée).
             moodle_sync.signaler_deja_faits(self.prog.etapes_faites)

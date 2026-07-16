@@ -162,7 +162,14 @@ def creer_app(chemin_base=None, notees=None) -> Flask:
         jeton = base.echanger_code(app.cx, (request.get_json() or {}).get("code", ""))
         if jeton is None:
             return jsonify({"erreur": "code inconnu ou expiré"}), 404
-        return jsonify({"jeton": jeton})
+        # Reprise multi-poste : on renvoie les étapes déjà validées de cet étudiant.
+        # La note Moodle s'agrège ici, côté serveur, mais le déverrouillage des niveaux
+        # vit dans progression.json, local à chaque poste. Sans ce renvoi, un étudiant
+        # qui se connecte sur une nouvelle machine repart au niveau 1 alors que le
+        # compagnon sait déjà ce qu'il a fait ailleurs.
+        sub = base.sub_du_jeton(app.cx, jeton)
+        faites = sorted(base.etapes_validees(app.cx, sub))
+        return jsonify({"jeton": jeton, "etapes_faites": faites})
 
     @app.post("/api/evenements")
     def evenements():

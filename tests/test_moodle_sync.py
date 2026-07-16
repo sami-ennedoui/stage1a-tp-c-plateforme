@@ -38,21 +38,34 @@ class TestMoodleSync(unittest.TestCase):
     def test_appairer_range_le_jeton(self):
         with mock.patch("moodle_sync.urllib.request.urlopen",
                         return_value=reponse_http({"jeton": "J123"})):
-            ok, message = moodle_sync.appairer("KX7-3PF", fichier=self.fichier,
-                                               url="https://compagnon.example")
+            ok, message, faites = moodle_sync.appairer("KX7-3PF", fichier=self.fichier,
+                                                       url="https://compagnon.example")
         self.assertTrue(ok)
+        self.assertEqual(faites, [])  # réponse sans etapes_faites : liste vide, pas d'erreur
         d = json.loads(self.fichier.read_text(encoding="utf-8"))
         self.assertEqual(d["jeton"], "J123")
         self.assertTrue(moodle_sync.actif(self.fichier))
+
+    def test_appairer_renvoie_les_etapes_deja_faites(self):
+        # Reprise multi-poste : le compagnon renvoie ce que l'étudiant a fait ailleurs.
+        with mock.patch("moodle_sync.urllib.request.urlopen",
+                        return_value=reponse_http(
+                            {"jeton": "J123",
+                             "etapes_faites": ["ex01_types", "ex02_operateurs"]})):
+            ok, message, faites = moodle_sync.appairer("KX7-3PF", fichier=self.fichier,
+                                                       url="https://compagnon.example")
+        self.assertTrue(ok)
+        self.assertEqual(faites, ["ex01_types", "ex02_operateurs"])
 
     def test_appairer_code_refuse(self):
         import urllib.error
         with mock.patch("moodle_sync.urllib.request.urlopen",
                         side_effect=urllib.error.HTTPError("u", 404, "non", {}, None)):
-            ok, message = moodle_sync.appairer("XXXXXX", fichier=self.fichier,
-                                               url="https://compagnon.example")
+            ok, message, faites = moodle_sync.appairer("XXXXXX", fichier=self.fichier,
+                                                       url="https://compagnon.example")
         self.assertFalse(ok)
         self.assertIn("code", message.lower())
+        self.assertEqual(faites, [])
 
     def test_porte_passee_envoyee_et_file_videe(self):
         self.fichier.write_text(json.dumps(
