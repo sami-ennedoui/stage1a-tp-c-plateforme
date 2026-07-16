@@ -40,6 +40,15 @@ niveaux actifs dans l'ordre du parcours.
 - **Détachés** : liste les niveaux détachés (encore sur le disque, hors du parcours) et
   permet d'en réattacher un.
 
+### Si vous modifiez le parcours noté (be_c)
+
+Un seul parcours compte pour la note Moodle, `be_c` par défaut. Quand vous ajoutez,
+retirez ou réordonnez un niveau de ce parcours, l'appli réaligne toute seule la liste que
+le compagnon utilise pour noter, et vous prévient par un message. Il reste **un** geste
+manuel : **redéployer le service compagnon** pour que la note en ligne en tienne compte.
+Tant que ce n'est pas fait, Moodle note encore sur l'ancienne liste. Sur les autres
+parcours (entraînement), il n'y a rien à faire.
+
 ### Bon réflexe après un ajout
 
 Les fichiers créés sont des gabarits vides. Remplis, via **Modifier** :

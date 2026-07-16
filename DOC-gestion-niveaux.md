@@ -61,6 +61,30 @@ Après la fermeture de la fenêtre, la liste du parcours dans l'appli est rechar
 > attendue via **Modifier…** : les gabarits sont volontairement vides. La porte d'un
 > exercice `programme` ne s'ouvre que quand `corrige.c` produit bien la `sortie_attendue`.
 
+## Parcours noté et redéploiement du compagnon
+
+Un seul parcours est **noté** dans Moodle, `be_c` par défaut. Le compagnon en ligne ne
+voit jamais `contenu/` (son image Docker ne copie que `compagnon/`) : il note d'après une
+liste séparée, `compagnon/etapes_notees.json`, qui redit l'ordre du parcours noté. Les
+deux doivent rester d'accord, sinon les notes de toute la promotion deviennent fausses,
+en silence. Exemple : retirer un niveau de `be_c` sans mettre la liste à jour plafonne
+tout le monde à 13/14, pour toujours.
+
+L'outil s'en charge. Dès qu'un **Ajouter**, **Retirer**, **Monter/Descendre** ou
+**Détachés…** touche le parcours noté, la GUI réaligne `etapes_notees.json` sur le nouvel
+ordre et affiche un rappel :
+
+> « be_c » est le parcours noté par le compagnon. Sa liste d'étapes notées a été
+> réalignée. **Le compagnon doit être redéployé** pour que les notes en tiennent compte.
+
+Éditer le contenu ne suffit donc pas : le seul geste qui reste manuel est le
+**redéploiement du service compagnon**. Tant qu'il n'est pas fait, la version en ligne
+note encore sur l'ancienne liste.
+
+Sur un poste étudiant, `compagnon/` est absent du bundle : la GUI ne fait alors rien, sans
+erreur. La ligne de commande fait le même travail via `python atelier_contenu.py notation`,
+et `tests/test_etapes_notees.py` refuse que les deux listes divergent.
+
 ## Le mot de passe auteur
 
 L'édition du contenu est réservée au mode auteur pour qu'un étudiant ne modifie pas le
@@ -113,7 +137,7 @@ racine du dépôt de sorte à obtenir `w64devkit\bin\gcc.exe`.
 
 | Fichier                        | Rôle                                                   |
 |--------------------------------|--------------------------------------------------------|
-| `gestion_niveaux.py`           | Logique pure sur les fichiers (ajout, retrait, ordre)  |
+| `gestion_niveaux.py`           | Logique pure sur les fichiers (ajout, retrait, ordre) et suivi de la notation |
 | `auteur.py`                    | Porte du mot de passe (empreinte, vérification)        |
 | `reglages.py`                  | Dernier parcours retenu (`reglages.json`)              |
 | `diagnostic.py`                | Parcours détectés, chemins clés, présence des outils   |
