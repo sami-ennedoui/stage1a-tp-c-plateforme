@@ -9,10 +9,17 @@
 Le mode démo et --parcours se combinent : --demo --parcours projet charge le corrigé du projet.
 """
 import sys
+from pathlib import Path
+
+# Le paquet portable Windows embarque la distribution « embeddable » de Python, qui tourne
+# en mode isolé à cause de son fichier python3xx._pth : elle n'ajoute pas d'elle-même le
+# dossier du script à sys.path, et elle ignore PYTHONPATH. Sans cette ligne, « import
+# chemins » échoue au lancement. Sans effet sur un Python normal, où le dossier y est déjà.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import chemins
 import executeur
-from modele_etape import charger_etape
+from modele_etape import ParcoursIntrouvable, charger_etape
 
 
 def _parcours_choisi() -> str:
@@ -87,4 +94,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except ParcoursIntrouvable as e:
+        # message lisible plutôt qu'une trace Python : le paquet portable ne livre pas
+        # forcément tous les parcours du dépôt, et lancer.bat garde la fenêtre ouverte.
+        print(f"\n{e}\n", file=sys.stderr)
+        sys.exit(1)

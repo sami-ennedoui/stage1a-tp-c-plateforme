@@ -34,11 +34,13 @@ def _compiler_et_lancer(sources: list[Path], includes: list[Path],
         cmd += [str(s) for s in sources]
         cmd += libs
         cmd += ["-lm", "-o", str(binaire)]
-        comp = subprocess.run(cmd, capture_output=True, text=True)
+        comp = subprocess.run(cmd, capture_output=True, text=True,
+                              encoding="utf-8", errors="replace")
         if comp.returncode != 0:
             return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
         try:
             run = subprocess.run([str(binaire)], capture_output=True, text=True,
+                                 encoding="utf-8", errors="replace",
                                  timeout=timeout)
         except subprocess.TimeoutExpired:
             return Resultat(False, "Le test a dépassé le délai, boucle infinie probable.")
@@ -124,7 +126,8 @@ def construire_apercu(etape: Etape, code_eleve: str) -> tuple[Resultat, Path | N
     cmd += [str(s) for s in sources]
     cmd += chemins.libs_sdl(avec_ttf_image=True)
     cmd += ["-lm", "-o", str(binaire)]
-    comp = subprocess.run(cmd, capture_output=True, text=True)
+    comp = subprocess.run(cmd, capture_output=True, text=True,
+                          encoding="utf-8", errors="replace")
     if comp.returncode != 0:
         shutil.rmtree(persistant, ignore_errors=True)
         return Resultat(False, "Erreur de compilation de l'aperçu :\n" + comp.stderr), None
@@ -165,11 +168,13 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
         binaire = Path(d) / _nom_binaire("prog")
         cmd = ["gcc", "-Wall", "-Wno-unused-parameter", "-Wno-unused-variable",
                f"-I{etape.dossier}", str(src), "-lm", "-o", str(binaire)]
-        comp = subprocess.run(cmd, capture_output=True, text=True)
+        comp = subprocess.run(cmd, capture_output=True, text=True,
+                              encoding="utf-8", errors="replace")
         if comp.returncode != 0:
             return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
         try:
             run = subprocess.run([str(binaire)], capture_output=True, text=True,
+                                 encoding="utf-8", errors="replace",
                                  timeout=15, input=etape.entree or "")
         except subprocess.TimeoutExpired:
             return Resultat(False, "Le programme a dépassé le délai. Attend-il une saisie au clavier ?")

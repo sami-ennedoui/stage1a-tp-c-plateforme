@@ -122,8 +122,12 @@ class Fenetre(QMainWindow):
         self.label_lsp.setVisible(False)
         self.label_lsp.setObjectName("avertissement_lsp")
         if self.mode != "projet" and not lsp_clangd.clangd_disponible():
+            # « clang-tools-extra » est un nom de paquet Fedora : il n'aide personne sous
+            # Windows, où le paquet portable embarque clangd. S'il manque, c'est une
+            # install incomplète, pas quelque chose à installer soi-même.
             self.label_lsp.setText(
-                "clangd absent, diagnostics live indisponibles. Installe clang-tools-extra."
+                "Diagnostics en direct indisponibles (clangd introuvable). "
+                "Compiler et Tester fonctionnent normalement."
             )
             self.label_lsp.setVisible(True)
         self.label_cran = QLabel()
