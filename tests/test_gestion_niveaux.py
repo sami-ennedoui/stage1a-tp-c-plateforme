@@ -85,6 +85,25 @@ class TestGestionNiveaux(unittest.TestCase):
         self.assertEqual(gestion_niveaux.lister_niveaux(self.dossier),
                          ["ex_a", "ex_z", "ex_b", "ex_c"])
 
+    def test_edition_fichiers_et_meta_aller_retour(self):
+        gestion_niveaux.ajouter_niveau(self.dossier, "ex01", "Titre initial")
+        gestion_niveaux.ecrire_fichier_niveau(self.dossier, "ex01", "enonce.md", "# Nouvel énoncé")
+        gestion_niveaux.ecrire_fichier_niveau(self.dossier, "ex01", "corrige.c", "int main(){return 0;}")
+        self.assertEqual(
+            gestion_niveaux.lire_fichier_niveau(self.dossier, "ex01", "enonce.md"),
+            "# Nouvel énoncé")
+        meta = gestion_niveaux.lire_meta(self.dossier, "ex01")
+        meta["titre"] = "Titre modifié"
+        meta["sortie_attendue"] = ["ligne 1", "ligne 2"]
+        gestion_niveaux.ecrire_meta(self.dossier, "ex01", meta)
+        relu = gestion_niveaux.lire_meta(self.dossier, "ex01")
+        self.assertEqual(relu["titre"], "Titre modifié")
+        self.assertEqual(relu["sortie_attendue"], ["ligne 1", "ligne 2"])
+
+    def test_edition_niveau_absent_leve(self):
+        with self.assertRaises(ValueError):
+            gestion_niveaux.lire_meta(self.dossier, "fantome")
+
 
 class TestAuteur(unittest.TestCase):
     def setUp(self):

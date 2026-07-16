@@ -44,16 +44,22 @@ niveau **détaché** (retiré du parcours, mais conservé sur le disque).
 3. La fenêtre liste les niveaux actifs dans l'ordre. Boutons disponibles :
    - **Ajouter…** : ouvre un formulaire (id, titre, mode, fichier édité, cran, nœud de
      cours, sortie attendue). À la validation, le dossier et ses gabarits sont créés et
-     le niveau est ajouté en fin de parcours.
+     le niveau est ajouté en fin de parcours. L'appli propose alors de l'éditer tout de
+     suite.
+   - **Modifier…** : ouvre l'éditeur de contenu du niveau sélectionné. Un onglet par
+     fichier (`enonce.md`, `starter.c`, `corrige.c`), plus le titre et la sortie
+     attendue. Enregistrer écrit dans les fichiers, sans passer par l'Explorateur.
    - **Retirer** : **détache** le niveau (le sort de `ordre`). Le dossier n'est **pas
      effacé**, on peut le remettre plus tard.
    - **Monter / Descendre** : change la place du niveau dans le parcours.
+   - **Détachés…** : liste les niveaux détachés (dossier présent, absent de `ordre`) et
+     en réattache un au parcours.
 
 Après la fermeture de la fenêtre, la liste du parcours dans l'appli est rechargée.
 
-> Après un **Ajouter**, il reste à remplir `enonce.md`, `starter.c` et `corrige.c` dans
-> le dossier créé : les gabarits sont volontairement vides. La porte d'un exercice
-> `programme` ne s'ouvre que quand `corrige.c` produit bien la `sortie_attendue`.
+> Après un **Ajouter**, remplis `enonce.md`, `starter.c`, `corrige.c` et la sortie
+> attendue via **Modifier…** : les gabarits sont volontairement vides. La porte d'un
+> exercice `programme` ne s'ouvre que quand `corrige.c` produit bien la `sortie_attendue`.
 
 ## Le mot de passe auteur
 

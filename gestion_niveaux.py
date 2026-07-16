@@ -174,6 +174,40 @@ def reattacher_niveau(dossier_parcours: Path, ident: str, position: int | None =
     _ecrire_json(dossier_parcours, donnees)
 
 
+# fichiers texte d'un niveau, éditables depuis la GUI
+FICHIERS_TEXTE = ("enonce.md", "starter.c", "corrige.c")
+
+
+def dossier_niveau(dossier_parcours: Path, ident: str) -> Path:
+    """Chemin du dossier d'un niveau existant. Lève ValueError s'il n'existe pas."""
+    d = dossier_parcours / ident
+    if not (d / "meta.json").exists():
+        raise ValueError(f"Aucun niveau « {ident} » ici.")
+    return d
+
+
+def lire_fichier_niveau(dossier_parcours: Path, ident: str, nom: str) -> str:
+    """Contenu d'un fichier texte du niveau, chaîne vide s'il n'existe pas encore."""
+    f = dossier_niveau(dossier_parcours, ident) / nom
+    return f.read_text(encoding="utf-8") if f.exists() else ""
+
+
+def ecrire_fichier_niveau(dossier_parcours: Path, ident: str, nom: str, contenu: str) -> None:
+    """Écrit un fichier texte du niveau (enonce.md, starter.c, corrige.c)."""
+    (dossier_niveau(dossier_parcours, ident) / nom).write_text(contenu, encoding="utf-8")
+
+
+def lire_meta(dossier_parcours: Path, ident: str) -> dict:
+    return json.loads((dossier_niveau(dossier_parcours, ident) / "meta.json")
+                      .read_text(encoding="utf-8"))
+
+
+def ecrire_meta(dossier_parcours: Path, ident: str, meta: dict) -> None:
+    """Réécrit meta.json en conservant sa forme (indent 2, accents, saut final)."""
+    (dossier_niveau(dossier_parcours, ident) / "meta.json").write_text(
+        json.dumps(meta, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def deplacer_niveau(dossier_parcours: Path, ident: str, delta: int) -> None:
     """Décale un niveau dans `ordre` de `delta` places (-1 = monter, +1 = descendre)."""
     donnees = _lire_json(dossier_parcours)

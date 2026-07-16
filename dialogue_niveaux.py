@@ -8,9 +8,19 @@ from pathlib import Path
 
 from PyQt6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QFormLayout, QListWidget,
                              QPushButton, QLabel, QLineEdit, QComboBox, QSpinBox,
-                             QPlainTextEdit, QDialogButtonBox, QMessageBox)
+                             QPlainTextEdit, QDialogButtonBox, QMessageBox, QTabWidget,
+                             QInputDialog)
+from PyQt6.QtGui import QFont
 
 import gestion_niveaux
+
+
+def _police_code() -> QFont:
+    police = QFont()
+    police.setFamilies(["JetBrains Mono", "Fira Code", "DejaVu Sans Mono", "monospace"])
+    police.setStyleHint(QFont.StyleHint.Monospace)
+    police.setPointSize(11)
+    return police
 
 
 class DialogueAjout(QDialog):
@@ -68,6 +78,67 @@ class DialogueAjout(QDialog):
         }
 
 
+class DialogueEdition(QDialog):
+    """Édite le contenu d'un niveau : énoncé, starter, corrigé, titre et sortie attendue.
+
+    Écrit directement dans les fichiers du dossier du niveau, sans passer par
+    l'Explorateur. Le titre et la sortie attendue vivent dans meta.json."""
+
+    def __init__(self, dossier_parcours, ident: str, parent=None):
+        super().__init__(parent)
+        self.dossier = dossier_parcours
+        self.ident = ident
+        self.setWindowTitle(f"Modifier le niveau « {ident} »")
+        self.setModal(True)
+        self.resize(720, 560)
+
+        meta = gestion_niveaux.lire_meta(dossier_parcours, ident)
+        self.champ_titre = QLineEdit(meta.get("titre", ""))
+        self.champ_sortie = QPlainTextEdit(
+            "\n".join(meta.get("sortie_attendue") or []))
+        self.champ_sortie.setFixedHeight(90)
+        self.champ_sortie.setFont(_police_code())
+
+        entete = QFormLayout()
+        entete.addRow("Titre", self.champ_titre)
+        entete.addRow("Sortie attendue", self.champ_sortie)
+
+        # un onglet par fichier texte du niveau
+        self.editeurs = {}
+        onglets = QTabWidget()
+        for nom in gestion_niveaux.FICHIERS_TEXTE:
+            edit = QPlainTextEdit(
+                gestion_niveaux.lire_fichier_niveau(dossier_parcours, ident, nom))
+            edit.setFont(_police_code())
+            self.editeurs[nom] = edit
+            onglets.addTab(edit, nom)
+
+        boutons = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel)
+        boutons.accepted.connect(self._enregistrer)
+        boutons.rejected.connect(self.reject)
+
+        racine = QVBoxLayout(self)
+        racine.addLayout(entete)
+        racine.addWidget(onglets, 1)
+        racine.addWidget(boutons)
+
+    def _enregistrer(self):
+        try:
+            for nom, edit in self.editeurs.items():
+                gestion_niveaux.ecrire_fichier_niveau(
+                    self.dossier, self.ident, nom, edit.toPlainText())
+            meta = gestion_niveaux.lire_meta(self.dossier, self.ident)
+            meta["titre"] = self.champ_titre.text().strip() or meta.get("titre", "")
+            meta["sortie_attendue"] = [
+                l.strip() for l in self.champ_sortie.toPlainText().splitlines() if l.strip()]
+            gestion_niveaux.ecrire_meta(self.dossier, self.ident, meta)
+        except (ValueError, OSError) as e:
+            QMessageBox.warning(self, "Enregistrement impossible", str(e))
+            return
+        self.accept()
+
+
 class DialogueNiveaux(QDialog):
     """Gestionnaire des niveaux d'un parcours : ajouter, retirer, réordonner."""
 
@@ -81,18 +152,23 @@ class DialogueNiveaux(QDialog):
         self.liste = QListWidget()
 
         b_ajouter = QPushButton("Ajouter…")
+        b_modifier = QPushButton("Modifier…")
         b_retirer = QPushButton("Retirer")
         b_monter = QPushButton("Monter")
         b_descendre = QPushButton("Descendre")
+        b_detaches = QPushButton("Détachés…")
         b_ajouter.clicked.connect(self._ajouter)
+        b_modifier.clicked.connect(self._modifier)
         b_retirer.clicked.connect(self._retirer)
         b_monter.clicked.connect(lambda: self._deplacer(-1))
         b_descendre.clicked.connect(lambda: self._deplacer(1))
+        b_detaches.clicked.connect(self._reattacher)
 
         colonne = QVBoxLayout()
-        for b in (b_ajouter, b_retirer, b_monter, b_descendre):
+        for b in (b_ajouter, b_modifier, b_retirer, b_monter, b_descendre):
             colonne.addWidget(b)
         colonne.addStretch(1)
+        colonne.addWidget(b_detaches)
 
         milieu = QHBoxLayout()
         milieu.addWidget(self.liste, 1)
@@ -136,10 +212,38 @@ class DialogueNiveaux(QDialog):
             QMessageBox.warning(self, "Ajout impossible", str(e))
             return
         self._rafraichir()
-        QMessageBox.information(
+        ident = v["ident"].strip()
+        editer = QMessageBox.question(
             self, "Niveau créé",
-            f"Le niveau « {v['ident'].strip()} » a été créé.\n\n"
-            "Édite enonce.md, starter.c et corrige.c dans son dossier pour le remplir.")
+            f"Le niveau « {ident} » a été créé.\n\n"
+            "L'éditer maintenant (énoncé, starter, corrigé) ?")
+        if editer == QMessageBox.StandardButton.Yes:
+            DialogueEdition(self.dossier, ident, self).exec()
+
+    def _modifier(self):
+        ident = self._selection()
+        if ident is None:
+            return
+        DialogueEdition(self.dossier, ident, self).exec()
+
+    def _reattacher(self):
+        detaches = gestion_niveaux.dossiers_detaches(self.dossier)
+        if not detaches:
+            QMessageBox.information(
+                self, "Aucun niveau détaché",
+                "Aucun dossier de niveau détaché du parcours pour le moment.")
+            return
+        ident, ok = QInputDialog.getItem(
+            self, "Réattacher un niveau", "Niveau détaché à remettre :",
+            detaches, 0, editable=False)
+        if not ok or not ident:
+            return
+        try:
+            gestion_niveaux.reattacher_niveau(self.dossier, ident)
+        except ValueError as e:
+            QMessageBox.warning(self, "Réattachement impossible", str(e))
+            return
+        self._rafraichir()
 
     def _retirer(self):
         ident = self._selection()
