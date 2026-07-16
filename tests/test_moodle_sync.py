@@ -148,6 +148,38 @@ class TestMoodleSync(unittest.TestCase):
             moodle_sync.signaler_porte("perso_P1", fichier=self.fichier, attendre=True)
             u.assert_not_called()
 
+    def test_mode_local_signaler_porte_ne_fait_rien(self):
+        # Un jeton valide traîne sur le disque, mais le mode local est un
+        # interrupteur franc : aucune requête ne doit partir malgré tout.
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123", "file": []}),
+            encoding="utf-8")
+        with mock.patch("chemins.ATELIER_SUIVI", "local"), \
+             mock.patch("moodle_sync.urllib.request.urlopen") as u:
+            moodle_sync.signaler_porte("perso_P1", fichier=self.fichier, attendre=True)
+            u.assert_not_called()
+
+    def test_mode_local_signaler_deja_faits_ne_fait_rien(self):
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123", "file": []}),
+            encoding="utf-8")
+        with mock.patch("chemins.ATELIER_SUIVI", "local"), \
+             mock.patch("moodle_sync.urllib.request.urlopen") as u:
+            moodle_sync.signaler_deja_faits(["ex01_types"], fichier=self.fichier, attendre=True)
+            u.assert_not_called()
+
+    def test_mode_local_rejouer_ne_fait_rien(self):
+        # rejouer() est aussi appelé seul au démarrage de la fenêtre : une file
+        # laissée par un ancien mode moodle ne doit pas partir non plus.
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123",
+             "file": [{"etape": "perso_P0", "reussite": True, "horodatage": "t0"}]}),
+            encoding="utf-8")
+        with mock.patch("chemins.ATELIER_SUIVI", "local"), \
+             mock.patch("moodle_sync.urllib.request.urlopen") as u:
+            moodle_sync.rejouer(fichier=self.fichier, attendre=True)
+            u.assert_not_called()
+
     def test_atelier_suivi_invalide_refuse_au_demarrage(self):
         # La validation vit dans chemins.py, importé au tout début : on la teste
         # dans un sous-processus pour ne pas corrompre le chemins déjà importé
