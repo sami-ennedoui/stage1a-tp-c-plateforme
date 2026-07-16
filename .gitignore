@@ -33,3 +33,6 @@ reglages.json
 
 # compilateur portable embarque a cote de l'appli, telecharge, hors depot
 w64devkit/
+
+# PDF de la doc, artefacts binaires regenerables par docs/build_pdf.py
+docs/pdf/
