@@ -24,3 +24,6 @@ journaux/
 compagnon/.venv/
 compagnon/*.sqlite3
 moodle_sync.json
+
+# relevé de progression écrit par --releve, artefact local à l'étudiant
+releve.txt
