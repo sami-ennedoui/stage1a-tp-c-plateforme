@@ -26,9 +26,12 @@ AUTEUR_FICHIER = RACINE / "auteur.json"
 # reglages locaux memorises d'un lancement a l'autre (dernier parcours), git-ignore
 REGLAGES_FICHIER = RACINE / "reglages.json"
 
-# "moodle" (défaut) : comportement actuel, la progression remonte au compagnon.
-# "local" : aucun réseau, jamais ; la progression ne vit que sur ce poste.
-ATELIER_SUIVI = os.environ.get("ATELIER_SUIVI", "moodle")
+# "local" (défaut) : aucun réseau, jamais ; la progression ne vit que sur ce poste.
+# "moodle" : la progression remonte au compagnon LTI, qui n'est plus qu'une démo.
+# Le défaut est local depuis le 2026-07-16 : le compagnon tourne sur un compte
+# Render personnel, l'école ne peut pas en dépendre, donc un bundle distribué ne
+# doit parler à aucun serveur tant que personne ne l'a demandé.
+ATELIER_SUIVI = os.environ.get("ATELIER_SUIVI", "local")
 if ATELIER_SUIVI not in ("moodle", "local"):
     raise SystemExit(
         f"ATELIER_SUIVI={ATELIER_SUIVI!r} invalide, valeurs acceptées : moodle, local.")

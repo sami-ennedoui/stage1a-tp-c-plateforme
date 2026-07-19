@@ -24,6 +24,14 @@ class TestMoodleSync(unittest.TestCase):
     def setUp(self):
         self.d = tempfile.TemporaryDirectory()
         self.fichier = Path(self.d.name) / "moodle_sync.json"
+        # Cette classe teste le chemin Moodle, qui n'est plus le défaut depuis que
+        # le suivi est local (voir test_le_suivi_est_local_par_defaut). Le mode est
+        # donc déclaré ici plutôt qu'hérité : un test qui dépend d'un défaut global
+        # sans le dire casse le jour où ce défaut change, ce qui est arrivé.
+        # Les tests du mode local, eux, repatchent explicitement en "local".
+        patch = mock.patch("chemins.ATELIER_SUIVI", "moodle")
+        patch.start()
+        self.addCleanup(patch.stop)
 
     def tearDown(self):
         self.d.cleanup()
@@ -215,6 +223,26 @@ class TestMoodleSync(unittest.TestCase):
     def test_desaccord_url_none_si_pas_d_appairage(self):
         with mock.patch.dict(os.environ, {"ATELIER_COMPAGNON_URL": "https://nouveau.example"}):
             self.assertIsNone(moodle_sync.desaccord_url(self.fichier))
+
+    def test_le_suivi_est_local_par_defaut(self):
+        """Le produit livré ne parle à aucun serveur tant que personne ne le demande.
+
+        Le compagnon LTI n'est plus qu'une démo : il tourne sur le compte Render de
+        Sami, l'école ne peut pas en dépendre. Un défaut à "moodle" ferait qu'un
+        bundle distribué tenterait de remonter des notes vers ce compte, sans que
+        l'enseignant l'ait choisi. Le mode moodle doit rester un opt-in explicite.
+
+        Testé dans un sous-processus, avec la variable retirée de l'environnement :
+        chemins est déjà importé par le reste de la suite et lit son défaut une
+        seule fois, à l'import.
+        """
+        racine = Path(__file__).resolve().parent.parent
+        env = {k: v for k, v in os.environ.items() if k != "ATELIER_SUIVI"}
+        r = subprocess.run(
+            [sys.executable, "-c", "import chemins; print(chemins.ATELIER_SUIVI)"],
+            cwd=str(racine), env=env, capture_output=True, text=True)
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(r.stdout.strip(), "local")
 
     def test_atelier_suivi_invalide_refuse_au_demarrage(self):
         # La validation vit dans chemins.py, importé au tout début : on la teste
