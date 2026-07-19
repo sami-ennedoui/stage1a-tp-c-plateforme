@@ -263,15 +263,36 @@ peuvent partir dans un sous-dossier `historique/`, elles ont fait leur travail.
 
 ---
 
-## Le point que Sami doit encore trancher
+## Le compagnon Moodle : tranché, il devient une démo
 
-Il a dit vouloir **quitter le compagnon Render**. La direction est claire, la destination ne
-l'est pas, et les deux lectures mènent à des travaux opposés.
+Sami a répondu. **Le compagnon reste, mais comme démo seulement.** Sa raison est nette et elle
+ferme le sujet : le service tourne sur son compte Render personnel, l'école ne peut pas dépendre
+de ses identifiants. Le produit livré ne parle donc à aucun serveur.
 
-Ou bien le compagnon déménage et l'on garde la note Moodle, mais Sami n'est pas administrateur
-Moodle, donc quelqu'un d'autre devra héberger et déclarer l'outil LTI. Ou bien l'on supprime le
-serveur, tout devient local, et la note Moodle automatique disparaît avec lui, ce qui est
-cohérent avec une progression locale et une reprise par un tiers.
+**C'est fait, côté Linux, commit `a61658e`.** Il n'y avait qu'une ligne à changer dans
+`chemins.py`, le défaut de `ATELIER_SUIVI` passe de `"moodle"` à `"local"`. Tout l'interrupteur
+existait déjà : `signaler_porte`, `signaler_deja_faits` et `rejouer` sortent immédiatement, et
+la fenêtre remplace le bouton Moodle par un indicateur de progression locale. Preuve
+comportementale, un processus neuf sans la variable dans son environnement franchit une porte
+et fait zéro appel réseau.
 
-**En attendant, ne touche pas à `moodle_sync`.** Il est inerte sans appairage, il ne coûte rien,
-et l'arracher serait long à refaire. Je pose la question à Sami en parallèle.
+Ce que ça veut dire pour toi :
+
+- **Ne retire rien.** `moodle_sync` et le compagnon restent dans le dépôt, inertes. Le mode
+  Moodle devient un opt-in explicite, pour la démo et la soutenance.
+- **Ne mets pas `ATELIER_SUIVI` dans `lancer.bat`.** Le défaut suffit, et un défaut qui se
+  contredit dans un lanceur est un piège pour celui qui reprendra.
+- **Attention à trois sens du mot démo, qui ne sont pas le même axe.** Il y a le drapeau
+  `--demo` de `atelier_snake.py`, qui débloque tout et fait écrire le code par le tuteur. Il y a
+  `packaging/lancer_demo.bat`, qui pose ce drapeau. Et maintenant `ATELIER_SUIVI=moodle`, qui
+  est autre chose encore. Ne les mélange pas au packaging. Si tu ajoutes un lanceur pour la
+  démo Moodle, donne-lui un nom qui ne dise pas seulement « demo ».
+- La progression locale du point c) devient donc **le seul** enregistrement de ce que fait
+  l'étudiant. Ça relève son importance, et ça rend le choix de son emplacement encore plus
+  structurant.
+
+Corollaire sur le tuteur, même raison. L'école ne pourra pas utiliser les identifiants de Sami
+non plus. C'est exactement pourquoi le point d) demande une commande configurable : chaque
+établissement met son propre moteur et ses propres accès. Vérifie bien que l'atelier reste
+pleinement utilisable sans aucun moteur IA disponible, compiler, tester et jouer doivent
+marcher seuls. `_moteur_choisi()` rend déjà None proprement, garde ce comportement.
