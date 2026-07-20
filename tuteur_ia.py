@@ -97,7 +97,8 @@ def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int) -> 
     try:
         r = subprocess.run([moteur.split(":", 1)[0], "-p", prompt],
                            capture_output=True, text=True,
-                           encoding="utf-8", errors="replace", timeout=60)
+                           encoding="utf-8", errors="replace",
+                           creationflags=chemins.SANS_FENETRE, timeout=60)
     except subprocess.TimeoutExpired:
         return "Le moteur IA n'a pas répondu à temps."
     # moteur trouvé mais en échec au runtime (auth, quota), on ne renvoie pas son

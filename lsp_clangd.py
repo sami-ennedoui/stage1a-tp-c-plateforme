@@ -277,6 +277,7 @@ class ClientClangd(QThread):
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
             cwd=str(dossier),
+            creationflags=chemins.SANS_FENETRE,
         )
 
         self._uri = fichier_c.as_uri()
