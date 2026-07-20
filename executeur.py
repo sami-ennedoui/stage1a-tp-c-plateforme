@@ -35,12 +35,14 @@ def _compiler_et_lancer(sources: list[Path], includes: list[Path],
         cmd += libs
         cmd += ["-lm", "-o", str(binaire)]
         comp = subprocess.run(cmd, capture_output=True, text=True,
-                              encoding="utf-8", errors="replace")
+                              encoding="utf-8", errors="replace",
+                              creationflags=chemins.SANS_FENETRE)
         if comp.returncode != 0:
             return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
         try:
             run = subprocess.run([str(binaire)], capture_output=True, text=True,
                                  encoding="utf-8", errors="replace",
+                                 creationflags=chemins.SANS_FENETRE,
                                  timeout=timeout)
         except subprocess.TimeoutExpired:
             return Resultat(False, "Le test a dépassé le délai, boucle infinie probable.")
@@ -127,7 +129,8 @@ def construire_apercu(etape: Etape, code_eleve: str) -> tuple[Resultat, Path | N
     cmd += chemins.libs_sdl(avec_ttf_image=True)
     cmd += ["-lm", "-o", str(binaire)]
     comp = subprocess.run(cmd, capture_output=True, text=True,
-                          encoding="utf-8", errors="replace")
+                          encoding="utf-8", errors="replace",
+                          creationflags=chemins.SANS_FENETRE)
     if comp.returncode != 0:
         shutil.rmtree(persistant, ignore_errors=True)
         return Resultat(False, "Erreur de compilation de l'aperçu :\n" + comp.stderr), None
@@ -141,7 +144,8 @@ def lancer_jeu(etape: Etape, code_eleve: str) -> Resultat:
     if not resultat.ok:
         return resultat
     subprocess.Popen([str(binaire)], cwd=str(chemins.BUILD_COPY),
-                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                     stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                     creationflags=chemins.SANS_FENETRE)
     return Resultat(True, "Fenêtre lancée. Échap pour fermer.")
 
 
@@ -169,12 +173,14 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
         cmd = ["gcc", "-Wall", "-Wno-unused-parameter", "-Wno-unused-variable",
                f"-I{etape.dossier}", str(src), "-lm", "-o", str(binaire)]
         comp = subprocess.run(cmd, capture_output=True, text=True,
-                              encoding="utf-8", errors="replace")
+                              encoding="utf-8", errors="replace",
+                              creationflags=chemins.SANS_FENETRE)
         if comp.returncode != 0:
             return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
         try:
             run = subprocess.run([str(binaire)], capture_output=True, text=True,
                                  encoding="utf-8", errors="replace",
+                                 creationflags=chemins.SANS_FENETRE,
                                  timeout=15, input=etape.entree or "")
         except subprocess.TimeoutExpired:
             return Resultat(False, "Le programme a dépassé le délai. Attend-il une saisie au clavier ?")
@@ -206,7 +212,9 @@ def compiler_et_executer(etape: Etape, code_eleve: str) -> Resultat:
 
         if etape.mode != "programme":
             comp = subprocess.run(base + ["-c", str(src), "-o", str(Path(d) / "o.o")],
-                                  capture_output=True, text=True)
+                                  capture_output=True, text=True,
+                                  encoding="utf-8", errors="replace",
+                                  creationflags=chemins.SANS_FENETRE)
             if comp.returncode != 0:
                 return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
             avert = comp.stderr.strip()
@@ -214,11 +222,15 @@ def compiler_et_executer(etape: Etape, code_eleve: str) -> Resultat:
 
         binaire = Path(d) / _nom_binaire("prog")
         comp = subprocess.run(base + [str(src), "-lm", "-o", str(binaire)],
-                              capture_output=True, text=True)
+                              capture_output=True, text=True,
+                              encoding="utf-8", errors="replace",
+                              creationflags=chemins.SANS_FENETRE)
         if comp.returncode != 0:
             return Resultat(False, "Erreur de compilation :\n" + comp.stderr)
         try:
             run = subprocess.run([str(binaire)], capture_output=True, text=True,
+                                 encoding="utf-8", errors="replace",
+                                 creationflags=chemins.SANS_FENETRE,
                                  timeout=15, input=etape.entree or "")
         except subprocess.TimeoutExpired:
             return Resultat(False, "Le programme a depasse le delai. Attend-il une saisie au clavier ?")
@@ -269,6 +281,7 @@ def construire_et_jouer_projet(espace, lancer: bool = True) -> Resultat:
         capture_output=True,
         text=True,
         cwd=str(espace.build_sh.parent),
+        creationflags=chemins.SANS_FENETRE,
     )
     if build.returncode != 0:
         return Resultat(False, "Erreur de build :\n" + build.stderr + build.stdout)
@@ -281,6 +294,7 @@ def construire_et_jouer_projet(espace, lancer: bool = True) -> Resultat:
             cwd=str(espace.dossier_snake),
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
+            creationflags=chemins.SANS_FENETRE,
         )
         return Resultat(True, "Build réussi. Jeu lancé.")
     return Resultat(True, "Build réussi.")

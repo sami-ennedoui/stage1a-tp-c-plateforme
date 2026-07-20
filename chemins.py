@@ -4,6 +4,14 @@ from pathlib import Path
 import os
 import subprocess
 
+# Sous Windows, un sous-processus console lancé depuis une application graphique ouvre
+# une fenêtre cmd le temps de son exécution. L'atelier en lance un à chaque compilation,
+# à chaque test et au démarrage : sans ce drapeau, la fenêtre clignote sans arrêt.
+# Vaut 0 hors Windows, où l'attribut n'existe pas : le passer est alors sans effet.
+# Défini ici parce que chemins.py est importé par tous les modules qui lancent un
+# processus, et qu'un seul endroit vaut mieux que la même ligne répétée cinq fois.
+SANS_FENETRE = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+
 RACINE = Path(__file__).resolve().parent
 # CONTENU pointe sur le parcours hybride ; tout le code existant continue de fonctionner.
 CONTENU = RACINE / "contenu" / "hybride"
@@ -70,10 +78,12 @@ def flags_toolchain_clangd() -> tuple[str, ...]:
         return ()
     try:
         triplet = subprocess.run(["gcc", "-dumpmachine"], capture_output=True, text=True,
-                                 encoding="utf-8", errors="replace").stdout.strip()
+                                 encoding="utf-8", errors="replace",
+                                 creationflags=SANS_FENETRE).stdout.strip()
         sonde = subprocess.run(["gcc", "-E", "-v", "-x", "c", os.devnull],
                                capture_output=True, text=True,
-                               encoding="utf-8", errors="replace")
+                               encoding="utf-8", errors="replace",
+                               creationflags=SANS_FENETRE)
     except OSError:
         return ()          # gcc introuvable : clangd se taira, l'atelier marche quand même
     if not triplet:
@@ -96,7 +106,8 @@ def flags_toolchain_clangd() -> tuple[str, ...]:
 
 def _module_existe(nom: str) -> bool:
     return subprocess.run(["pkg-config", "--exists", nom],
-                          stderr=subprocess.DEVNULL).returncode == 0
+                          stderr=subprocess.DEVNULL,
+                          creationflags=SANS_FENETRE).returncode == 0
 
 
 def modules_sdl(avec_ttf_image: bool = True) -> list[str]:
@@ -114,7 +125,8 @@ def modules_sdl(avec_ttf_image: bool = True) -> list[str]:
 
 
 def _pkg(champ: str, mods: list[str]) -> list[str]:
-    r = subprocess.run(["pkg-config", champ, *mods], capture_output=True, text=True)
+    r = subprocess.run(["pkg-config", champ, *mods], capture_output=True, text=True,
+                       creationflags=SANS_FENETRE)
     return r.stdout.split()
 
 

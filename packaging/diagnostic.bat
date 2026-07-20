@@ -1,9 +1,11 @@
 @echo off
 setlocal
 cd /d "%~dp0"
-set "PATH=%~dp0w64devkit\bin;%~dp0python;%PATH%"
+set "PATH=%~dp0w64devkit\bin;%~dp0python;%~dp0clangd\bin;%PATH%"
 echo === gcc ===
 gcc --version
+echo === clangd (diagnostics en direct) ===
+clangd --version
 echo === python ===
 "%~dp0python\python.exe" --version
 echo === import PyQt6 ===

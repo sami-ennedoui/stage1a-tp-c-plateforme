@@ -30,6 +30,10 @@ reglages.json
 # compilateur portable embarque a cote de l'appli, telecharge, hors depot
 w64devkit/
 
+# serveur de langage embarque (diagnostics en direct), telecharge par
+# packaging/build_windows.ps1, 63 Mo : jamais dans le depot
+clangd/
+
 # relevé de progression écrit par --releve, artefact local à l'étudiant
 releve.txt
 
