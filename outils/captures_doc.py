@@ -20,14 +20,26 @@ from PyQt6.QtWidgets import (QApplication, QDialog, QVBoxLayout, QLabel, QLineEd
 import fenetre, theme, progression, executeur, modele_etape, lsp_clangd
 
 progression.sauver = lambda *a, **k: None          # ne pas ecrire l'etat reel
-# Diagnostics live neutralises pendant les captures, pour deux raisons. D'abord la
-# reproductibilite : les soulignements de clangd arrivent de facon asynchrone, une
-# capture les attraperait ou non selon la machine. Ensuite la stabilite : ClientClangd
-# est un QThread, ce script cree des fenetres sans jamais les fermer, et un QThread
-# encore vivant detruit a la sortie fait planter l'interpreteur (0xC0000409). Sans
-# cette ligne, le build casse des que clangd est present sur le PATH -- c'est-a-dire
-# depuis que l'etape 3bis l'embarque.
-lsp_clangd.clangd_disponible = lambda: False
+
+# Le LSP touche les captures a deux endroits, et il faut traiter les deux
+# separement -- les confondre produit une doc qui ment.
+#
+# 1. Le demarrage du client. ClientClangd est un QThread, ce script cree des
+#    fenetres sans jamais les fermer, et un QThread encore vivant detruit a la
+#    sortie fait planter l'interpreteur (0xC0000409) : le build casse des que
+#    clangd est sur le PATH, c'est-a-dire depuis que l'etape 3bis l'embarque.
+#    Ne pas le demarrer regle aussi la reproductibilite, les soulignements
+#    arrivant de facon asynchrone une capture les attraperait ou non.
+fenetre.Fenetre._demarrer_lsp = lambda self: None
+#
+# 2. Le bandeau d'avertissement de fenetre.py, affiche quand clangd est absent.
+#    Le neutraliser via clangd_disponible() -> False (ce que faisait la version
+#    precedente) eteignait bien le thread, mais faisait aussi apparaitre
+#    "Installe clang-tools-extra" dans les captures livrees -- un message
+#    d'installation Linux, dans la doc d'un bundle Windows qui embarque deja
+#    clangd. On force donc True : la doc montre l'etat reel du livrable, quelle
+#    que soit la machine de build.
+lsp_clangd.clangd_disponible = lambda: True
 executeur.assurer_compilateur_sur_path()
 
 CAP = RACINE / "captures"
