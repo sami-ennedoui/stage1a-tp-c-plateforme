@@ -211,6 +211,17 @@ Remove-Item Env:\QT_QPA_PLATFORM
 if (-not $vivant) { throw "L'exe assemble ne demarre pas (imports ou assets manquants ?)." }
 Ok "l'exe demarre depuis le bundle"
 
+# Le demarrage ci-dessus ECRIT dans le bundle : journaux\session-*.jsonl, et selon les
+# chemins parcourus progression.json / reglages.json / moodle_sync.json. Sans ce
+# nettoyage, l'etape qui verifie le livrable le pollue : l'etudiant deballe une session
+# fantome de la machine de build, et le zip change a chaque construction (horodatage et
+# identifiant de session) alors qu'il devrait etre reproductible.
+$residus = @('journaux', 'progression.json', 'reglages.json', 'moodle_sync.json', 'auteur.json', 'releve.txt')
+foreach ($r in $residus) {
+    $p = Join-Path $Bundle $r
+    if (Test-Path $p) { Remove-Item $p -Recurse -Force; Info "residu du test retire : $r" }
+}
+
 # clangd doit etre DANS le bundle, pas seulement sur la machine de build : c'est
 # exactement le piege « ca marche chez moi ». On verifie le fichier livre.
 $ClangdBundle = Join-Path $Bundle 'clangd\bin\clangd.exe'

@@ -17,9 +17,17 @@ sys.path.insert(0, str(RACINE))
 
 from PyQt6.QtWidgets import (QApplication, QDialog, QVBoxLayout, QLabel, QLineEdit,
                              QComboBox, QCheckBox, QDialogButtonBox)
-import fenetre, theme, progression, executeur, modele_etape
+import fenetre, theme, progression, executeur, modele_etape, lsp_clangd
 
 progression.sauver = lambda *a, **k: None          # ne pas ecrire l'etat reel
+# Diagnostics live neutralises pendant les captures, pour deux raisons. D'abord la
+# reproductibilite : les soulignements de clangd arrivent de facon asynchrone, une
+# capture les attraperait ou non selon la machine. Ensuite la stabilite : ClientClangd
+# est un QThread, ce script cree des fenetres sans jamais les fermer, et un QThread
+# encore vivant detruit a la sortie fait planter l'interpreteur (0xC0000409). Sans
+# cette ligne, le build casse des que clangd est present sur le PATH -- c'est-a-dire
+# depuis que l'etape 3bis l'embarque.
+lsp_clangd.clangd_disponible = lambda: False
 executeur.assurer_compilateur_sur_path()
 
 CAP = RACINE / "captures"
