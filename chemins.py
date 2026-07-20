@@ -114,7 +114,8 @@ def modules_sdl(avec_ttf_image: bool = True) -> list[str]:
 
 
 def _pkg(champ: str, mods: list[str]) -> list[str]:
-    r = subprocess.run(["pkg-config", champ, *mods], capture_output=True, text=True)
+    r = subprocess.run(["pkg-config", champ, *mods], capture_output=True, text=True,
+                       encoding="utf-8", errors="replace")
     return r.stdout.split()
 
 

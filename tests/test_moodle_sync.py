@@ -20,6 +20,18 @@ def reponse_http(corps: dict):
     return r
 
 
+# Préambule des sous-processus de ce fichier. Il pose la racine du dépôt dans
+# sys.path explicitement, au lieu de compter sur `cwd`. Un `python -c` ordinaire met
+# le dossier courant en tête de sys.path, mais un Python isolé ou embarqué ne le fait
+# pas, et PYTHONPATH ne le rattrape pas non plus. Le poste Windows fait tourner la
+# suite avec le Python embarqué du bundle : sans ce préambule, `import chemins` y lève
+# ModuleNotFoundError et le test échoue pour une raison qui n'est pas celle qu'il teste.
+_AVEC_RACINE = (
+    "import sys; sys.path.insert(0, r'%s'); "
+    % Path(__file__).resolve().parent.parent
+)
+
+
 class TestMoodleSync(unittest.TestCase):
     def setUp(self):
         self.d = tempfile.TemporaryDirectory()
@@ -236,11 +248,10 @@ class TestMoodleSync(unittest.TestCase):
         chemins est déjà importé par le reste de la suite et lit son défaut une
         seule fois, à l'import.
         """
-        racine = Path(__file__).resolve().parent.parent
         env = {k: v for k, v in os.environ.items() if k != "ATELIER_SUIVI"}
         r = subprocess.run(
-            [sys.executable, "-c", "import chemins; print(chemins.ATELIER_SUIVI)"],
-            cwd=str(racine), env=env, capture_output=True, text=True)
+            [sys.executable, "-c", _AVEC_RACINE + "import chemins; print(chemins.ATELIER_SUIVI)"],
+            env=env, capture_output=True, text=True, encoding="utf-8")
         self.assertEqual(r.returncode, 0, r.stderr)
         self.assertEqual(r.stdout.strip(), "local")
 
@@ -248,10 +259,9 @@ class TestMoodleSync(unittest.TestCase):
         # La validation vit dans chemins.py, importé au tout début : on la teste
         # dans un sous-processus pour ne pas corrompre le chemins déjà importé
         # par le reste de la suite.
-        racine = Path(__file__).resolve().parent.parent
-        r = subprocess.run([sys.executable, "-c", "import chemins"], cwd=str(racine),
+        r = subprocess.run([sys.executable, "-c", _AVEC_RACINE + "import chemins"],
                            env={**os.environ, "ATELIER_SUIVI": "bogus"},
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8")
         self.assertNotEqual(r.returncode, 0)
         self.assertIn("ATELIER_SUIVI", r.stderr)
 

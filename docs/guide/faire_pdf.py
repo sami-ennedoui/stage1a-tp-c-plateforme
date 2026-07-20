@@ -96,7 +96,8 @@ def main():
             ["google-chrome", "--headless", "--disable-gpu", "--no-sandbox",
              "--no-pdf-header-footer", "--print-to-pdf-no-header",
              f"--print-to-pdf={sortie.resolve()}", page.as_uri()],
-            capture_output=True, text=True, timeout=180)
+            capture_output=True, text=True, timeout=180,
+            encoding="utf-8", errors="replace")
         if not sortie.exists():
             sys.exit(f"Chrome n'a pas produit le PDF :\n{r.stderr[-800:]}")
 

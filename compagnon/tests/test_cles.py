@@ -31,7 +31,8 @@ class TestSortieEnv(unittest.TestCase):
 
     def lancer(self, *args) -> str:
         r = subprocess.run([sys.executable, "-m", "compagnon.cles", *args],
-                           capture_output=True, text=True, check=True)
+                           capture_output=True, text=True, check=True,
+                           encoding="utf-8", errors="replace")
         return r.stdout
 
     def test_env_donne_les_deux_cles_en_un_seul_appel(self):
@@ -47,7 +48,8 @@ class TestSortieEnv(unittest.TestCase):
                            'printf "%s" "$TOOL_PRIVATE_KEY"; '
                            'printf "\\0"; printf "%s" "$TOOL_PUBLIC_KEY"',
              "_", sortie],
-            capture_output=True, text=True, check=True)
+            capture_output=True, text=True, check=True,
+            encoding="utf-8", errors="replace")
         privee, publique = lu.stdout.split("\0")
         self.assertTrue(privee.startswith("-----BEGIN"), privee[:40])
         self.assertEqual(publique_deduite(privee), publique)

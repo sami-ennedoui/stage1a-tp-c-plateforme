@@ -60,7 +60,8 @@ def construire() -> int:
         pdf_path = OUT / (md.stem + ".pdf")
         subprocess.run([EDGE, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
                         f"--print-to-pdf={pdf_path}", html_path.as_uri()],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True,
+                       encoding="utf-8", errors="replace")
         for _ in range(20):
             if pdf_path.exists() and pdf_path.stat().st_size > 0:
                 break
