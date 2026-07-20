@@ -216,10 +216,22 @@ Ok "l'exe demarre depuis le bundle"
 # nettoyage, l'etape qui verifie le livrable le pollue : l'etudiant deballe une session
 # fantome de la machine de build, et le zip change a chaque construction (horodatage et
 # identifiant de session) alors qu'il devrait etre reproductible.
+#
+# Le nettoyage balaie la racine ET _internal. Mesure le 20 juillet en ouvrant une porte
+# dans le bundle extrait : l'exe fige ecrit sa progression dans _internal\progression.json,
+# pas a la racine. Ne nettoyer que la racine laissait donc passer le residu le plus
+# revelateur, celui qui contient les exercices reussis sur la machine de build.
 $residus = @('journaux', 'progression.json', 'reglages.json', 'moodle_sync.json', 'auteur.json', 'releve.txt')
-foreach ($r in $residus) {
-    $p = Join-Path $Bundle $r
-    if (Test-Path $p) { Remove-Item $p -Recurse -Force; Info "residu du test retire : $r" }
+foreach ($dossier in @($Bundle, (Join-Path $Bundle '_internal'))) {
+    if (-not (Test-Path $dossier)) { continue }
+    foreach ($r in $residus) {
+        $p = Join-Path $dossier $r
+        if (Test-Path $p) {
+            Remove-Item $p -Recurse -Force
+            $ou = if ($dossier -eq $Bundle) { '' } else { '_internal\' }
+            Info "residu du test retire : $ou$r"
+        }
+    }
 }
 
 # clangd doit etre DANS le bundle, pas seulement sur la machine de build : c'est
