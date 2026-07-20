@@ -117,18 +117,18 @@ if (-not (Test-Path $Clangd) -and -not $SkipInstall) {
     $rel = Invoke-RestMethod 'https://api.github.com/repos/clangd/clangd/releases/latest' -Headers @{ 'User-Agent' = 'build-tpc' }
     $asset = $rel.assets | Where-Object { $_.name -match '^clangd-windows-.*\.zip$' } | Select-Object -First 1
     if (-not $asset) { throw "Asset clangd windows introuvable dans la derniere release." }
-    $zip = Join-Path $env:TEMP $asset.name
+    $zipClangd = Join-Path $env:TEMP $asset.name
     Info ("Telechargement " + $asset.name + " (" + [math]::Round($asset.size/1MB) + " Mo)...")
-    Invoke-WebRequest $asset.browser_download_url -OutFile $zip
+    Invoke-WebRequest $asset.browser_download_url -OutFile $zipClangd
     $tmp = Join-Path $env:TEMP 'clangd-extrait'
     if (Test-Path $tmp) { Remove-Item $tmp -Recurse -Force }
-    Expand-Archive -Path $zip -DestinationPath $tmp -Force
+    Expand-Archive -Path $zipClangd -DestinationPath $tmp -Force
     # l'archive contient un unique dossier clangd_<version>\ : on le remonte en clangd\
     $racine = Get-ChildItem $tmp -Directory | Select-Object -First 1
     if (-not $racine) { throw "Archive clangd inattendue : aucun dossier a la racine." }
     if (Test-Path $Cd) { Remove-Item $Cd -Recurse -Force }
     Move-Item $racine.FullName $Cd
-    Remove-Item $zip, $tmp -Recurse -Force -ErrorAction SilentlyContinue
+    Remove-Item $zipClangd, $tmp -Recurse -Force -ErrorAction SilentlyContinue
     # Les runtimes sanitizer (lib\clang\<n>\lib) pesent ~30 Mo et ne servent jamais a un
     # serveur de langage : verifie sur la VM, 0 erreur sur un fichier sain et les vraies
     # erreurs toujours signalees sans eux. 92 Mo -> 63 Mo.
@@ -164,7 +164,15 @@ Ok "exe construit"
 # 5. Regenerer captures + (le PDF est genere dans le bundle plus bas)
 # ---------------------------------------------------------------------------
 Info "Regeneration des captures (capture Qt, sans prendre l'ecran)..."
-& $Python "$Repo\outils\captures_doc.py"
+# $ErrorActionPreference = 'Stop' ne rattrape PAS le code de sortie d'un executable
+# natif : sans ce test, l'etape imprimait « captures a jour » alors que le script
+# n'existait meme pas. Un build qui ment sur une etape est pire qu'un build qui echoue.
+$scriptCaptures = Join-Path $Repo 'outils\captures_doc.py'
+if (-not (Test-Path $scriptCaptures)) {
+    throw "Captures : $scriptCaptures introuvable. La couche de livraison (GUIDE.md, outils\, captures\) n'est pas sur cette branche."
+}
+& $Python $scriptCaptures
+if ($LASTEXITCODE -ne 0) { throw "Captures : $scriptCaptures a echoue (code $LASTEXITCODE)." }
 Ok "captures a jour"
 
 # ---------------------------------------------------------------------------
@@ -182,7 +190,11 @@ Copy-Item "$Repo\packaging\diagnostic.bat" $Bundle -Force
 # doc utilisateur du bundle : GUIDE.md (pas le README depot) sous le nom README.md
 Copy-Item "$Repo\GUIDE.md" (Join-Path $Bundle 'README.md') -Force
 Copy-Item "$Repo\captures" (Join-Path $Bundle 'captures') -Recurse -Force
-& $Python "$Repo\outils\doc_pdf.py" "$Repo\GUIDE.md" (Join-Path $Bundle 'README.pdf')
+$pdf = Join-Path $Bundle 'README.pdf'
+& $Python "$Repo\outils\doc_pdf.py" "$Repo\GUIDE.md" $pdf
+# Meme piege qu'a l'etape 5 : un exe natif qui echoue ne stoppe pas le script. Sans ce
+# test, le bundle partait sans son PDF et l'etape s'annoncait quand meme reussie.
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path $pdf)) { throw "PDF du guide non produit ($pdf)." }
 # NB : lancer_demo.bat (interne) n'est volontairement PAS copie -> le bundle est distribuable.
 Ok "bundle assemble"
 
