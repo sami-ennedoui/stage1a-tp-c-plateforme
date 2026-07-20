@@ -7,6 +7,7 @@ import subprocess
 from pathlib import Path
 
 import chemins
+import garde_fous
 from modele_etape import Etape
 
 # Supprime la fenêtre cmd qui clignoterait au lancement du moteur (appli packagée
@@ -209,6 +210,11 @@ def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int,
         return ERR_RUNTIME
     reponse = r.stdout.strip() or r.stderr.strip()
     corrige = _chemin_corrige(etape).read_text(encoding="utf-8")
+    # Deux filtres, dans cet ordre, et ils ne font pas le même travail. Le garde-fou
+    # structurel recompile le code proposé et rejoue la porte : c'est le comportement
+    # qui juge, donc la paraphrase ne le contourne pas. Le filtre lexical qui suit
+    # compare au corrigé ligne à ligne et rattrape ce qui n'est pas un bloc complet.
+    reponse = garde_fous.masquer_si_solution(etape, reponse)
     return filtre_solution(reponse, corrige)
 
 
