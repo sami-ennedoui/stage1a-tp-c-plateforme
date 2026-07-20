@@ -66,7 +66,8 @@ class TestReleve(unittest.TestCase):
         racine = chemins.RACINE
         r = subprocess.run(
             [sys.executable, str(racine / "atelier_snake.py"), "--releve", "--parcours", "be_c"],
-            cwd=self.d.name, capture_output=True, text=True, timeout=30)
+            cwd=self.d.name, capture_output=True, text=True, timeout=30,
+            encoding="utf-8", errors="replace")
         self.assertEqual(r.returncode, 0, r.stderr)
         self.assertIn("Relevé de progression", r.stdout)
         self.assertTrue((Path(self.d.name) / "releve.txt").exists())
