@@ -117,6 +117,7 @@ def _creer_raccourci_bureau(cible_bat: Path) -> Path:
     import chemins
     res = subprocess.run(["powershell", "-NoProfile", "-Command", ps],
                          capture_output=True, text=True,
+                         encoding="utf-8", errors="replace",
                          creationflags=chemins.SANS_FENETRE)
     if res.returncode != 0:
         raise OSError(res.stderr.strip() or "Échec de la création du raccourci.")

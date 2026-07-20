@@ -280,6 +280,8 @@ def construire_et_jouer_projet(espace, lancer: bool = True) -> Resultat:
         ["bash", str(espace.build_sh)],
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
         cwd=str(espace.build_sh.parent),
         creationflags=chemins.SANS_FENETRE,
     )
