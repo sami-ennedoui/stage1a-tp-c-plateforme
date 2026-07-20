@@ -112,7 +112,8 @@ def flags_pour_etape(etape) -> list[str]:
     """Renvoie les drapeaux de compilation à écrire dans compile_flags.txt.
 
     clangd lit ce fichier dans le dossier de travail pour résoudre les en-têtes."""
-    flags = chemins.cflags_sdl()
+    flags = list(chemins.flags_toolchain_clangd())
+    flags += chemins.cflags_sdl()
     flags += [f"-I{etape.dossier}", "-std=c11"]
     return flags
 
@@ -276,6 +277,7 @@ class ClientClangd(QThread):
             stdout=subprocess.PIPE,
             stderr=subprocess.DEVNULL,
             cwd=str(dossier),
+            creationflags=chemins.SANS_FENETRE,
         )
 
         self._uri = fichier_c.as_uri()

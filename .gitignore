@@ -17,6 +17,26 @@ espace_session/
 # artefact ecrit par l exercice 10 (ecriture fichier) quand sa porte tourne
 resultats.txt
 
+# compagnon LTI : environnement virtuel et base locale, hors depot
+compagnon/.venv/
+compagnon/*.sqlite3
+
+# mode auteur : empreinte du mot de passe, locale a chaque poste
+auteur.json
+
+# reglages locaux (dernier parcours), locaux a chaque poste
+reglages.json
+
+# compilateur portable embarque a cote de l'appli, telecharge, hors depot
+w64devkit/
+
+# serveur de langage embarque (diagnostics en direct), telecharge par
+# packaging/build_windows.ps1, 63 Mo : jamais dans le depot
+clangd/
+
+# relevé de progression écrit par --releve, artefact local à l'étudiant
+releve.txt
+
 # traces de session ecrites par journal_session.py (donnees de demo, hors depot)
 journaux/
 

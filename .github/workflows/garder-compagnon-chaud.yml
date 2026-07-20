@@ -1,0 +1,24 @@
+# Garde le compagnon Render (plan gratuit) éveillé, pour qu'un lancement LTI
+# d'étudiant ne tombe jamais sur un réveil à froid. Voir le correctif de
+# secours dans compagnon/app.py et la migration N7 prévue comme vraie solution.
+name: garder le compagnon chaud
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # toutes les 10 min (GitHub peut décaler un peu)
+  workflow_dispatch:          # déclenchement manuel possible
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Réveiller / garder chaud
+        run: |
+          for i in 1 2 3; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 \
+              https://compagnon-tp-c.onrender.com/) || code=000
+            echo "tentative $i : HTTP $code"
+            [ "$code" = "200" ] && exit 0
+            sleep 20
+          done
+          echo "le service n'a pas répondu 200, il se réveillera au prochain ping"

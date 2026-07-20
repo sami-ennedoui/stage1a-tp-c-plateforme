@@ -1,0 +1,7 @@
+# Ne jamais embarquer l'environnement local ni les données dans l'image
+.venv/
+__pycache__/
+*.sqlite3
+tests/
+.dockerignore
+Dockerfile
