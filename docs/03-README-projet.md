@@ -15,8 +15,9 @@ la solution.
   structurel qui rejoue la porte sur la réponse pour retirer toute solution.
 - **Un mode auteur** : ajouter, modifier, réordonner et retirer des niveaux depuis
   l'appli, protégé par mot de passe.
-- **Une remontée Moodle optionnelle** : un compagnon LTI renvoie les scores au carnet de
-  notes.
+- **Une remontée Moodle, à l'état de démonstration** : un compagnon LTI peut renvoyer les
+  scores au carnet de notes. Le service tourne sur un compte d'hébergement personnel, donc
+  l'école ne doit pas en dépendre. Désactivé par défaut, le suivi est local.
 
 ## Principe : le contenu est une donnée
 

@@ -303,10 +303,17 @@ La fenetre montre :
 
 ---
 
-## 8. Moodle (optionnel)
+## 8. Moodle (démonstration seulement)
 
 Pont facultatif vers un compagnon Moodle (`moodle_sync.py`, bouton dans `fenetre.py`).
 **L'atelier fonctionne pleinement hors ligne** ; Moodle n'est active que si on le demande.
+
+> **À l'état de démonstration, pas de production.** Le compagnon tourne sur un compte
+> d'hébergement personnel, avec des identifiants personnels. L'établissement ne peut pas en
+> dépendre. L'hébergement gratuit s'endort aussi, avec une trentaine de secondes de réveil au
+> premier appel. Ce qui suit décrit une chaîne prouvée, à réserver à une démonstration.
+> Pour la remettre en service, il faut reprendre le déploiement à son compte et un
+> administrateur Moodle pour déclarer l'outil.
 
 - Sous le panneau PARCOURS, un bouton **« Connecter a Moodle »** (`_connecter_moodle`).
   On y colle le **code** affiche par l'activite Moodle du TP ; l'appli l'echange contre

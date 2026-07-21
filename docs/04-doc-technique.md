@@ -64,7 +64,7 @@ UI dans les modules d'exécution/notation.
 
 | Module | Rôle |
 | --- | --- |
-| `executeur.py` | Compile/exécute du C, rend un `Resultat`. Toutes les « portes ». Le **code de sortie fait foi**, pas le texte. Aucune UI. |
+| `executeur.py` | Compile/exécute du C, rend un `Resultat`. Toutes les « portes ». Ce qui ouvre la porte dépend du mode : le code de sortie du binaire, ou la sortie comparée à l'attendu. Jamais le code source. Aucune UI. |
 | `modele_etape.py` | Charge les étapes/parcours depuis les données (`meta.json`, `parcours.json`). Dataclasses `Etape` / `Parcours`. Aucune compilation. |
 | `progression.py` | État persistant de l'étudiant (`progression.json`) et règles de déverrouillage. |
 
@@ -144,13 +144,19 @@ Modes d'étape (champ `meta.mode`) et porte associée, aiguillage dans `fenetre.
 
 Mécanique des « portes » (toutes dans `executeur.py`, préfixe `porte_*`) :
 
-- Le **code de sortie du binaire fait foi** ; le texte n'est qu'affiché.
+- Ce qui fait foi dépend du mode. En `test_fourni` et `test_a_ecrire`, le code de sortie du
+  binaire décide. En `programme`, il faut un code de sortie nul **et** une sortie qui contient
+  l'attendu : le texte est donc jugé, pas seulement affiché.
 - `sortie_attendue` = fragments littéraux exigés ; `sortie_motifs` = `{"motif": regex, "attendu": libellé}`.
 - `fragment_present()` évite qu'un fragment « = 5 » soit validé par une sortie « = 50 »
   (frontière numérique), tout en tolérant `9.9` vs `9.900000`.
 - **Portes étanches** (`cas`) : plusieurs jeux d'entrées, **tous** doivent passer. Un seul
   jeu laisserait passer un programme qui réimprime la sortie attendue en dur. Un `cas`
   hérite des `sortie_motifs` (format) mais **pas** des `sortie_attendue` (valeur).
+- **La mécanique `cas` existe, mais aucun exercice de `be_c` ne l'emploie encore.** En mode
+  `programme` sans `cas`, un programme qui réimprime la sortie attendue franchit donc la porte.
+  Vérifié le 2026-07-21 : 14 étapes sur 14 tombent ainsi. Réussir un exercice prouve
+  l'avancement, pas la compétence, tant que les `cas` ne sont pas écrits.
 - Sous-processus plafonné en mémoire et en temps (`_executer_cape`, cap 10 Mo, timeout 15 s).
 
 Pour la **liste exhaustive des champs de `meta.json`**, se référer à `DOC-gestion-niveaux.md`

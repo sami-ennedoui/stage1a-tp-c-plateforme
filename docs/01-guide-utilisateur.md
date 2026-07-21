@@ -126,13 +126,13 @@ l'enseignant, voir **02-guide-auteur.md**.
 
 Sans aucun outil IA, l'atelier reste pleinement utilisable, simplement sans l'aide IA.
 
-## Les soulignements rouges pendant la frappe (optionnel)
+## Les soulignements rouges pendant la frappe
 
-Selon votre installation, vous pouvez voir apparaitre des **soulignements rouges** sous
-certaines parties de votre code pendant que vous tapez : ce sont des diagnostics en
-direct, qui signalent une erreur probable avant meme de compiler. C'est un confort
-optionnel. S'il n'est pas disponible, un petit message l'indique et rien n'est casse :
-vous compilez et testez exactement de la meme facon.
+Des **soulignements rouges** apparaissent sous certaines parties de votre code pendant que
+vous tapez : ce sont des diagnostics en direct, qui signalent une erreur probable avant
+meme de compiler. Le bundle Windows embarque ce qu'il faut, vous n'avez rien a installer.
+Si jamais l'outil manque, un petit message l'indique et rien n'est casse : vous compilez et
+testez exactement de la meme facon.
 
 ## En cas de probleme
 
