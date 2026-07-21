@@ -1,5 +1,8 @@
 """Tests du pont vers le compagnon : file locale, appairage, inertie sans appairage."""
 import json
+import os
+import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -17,10 +20,30 @@ def reponse_http(corps: dict):
     return r
 
 
+# Préambule des sous-processus de ce fichier. Il pose la racine du dépôt dans
+# sys.path explicitement, au lieu de compter sur `cwd`. Un `python -c` ordinaire met
+# le dossier courant en tête de sys.path, mais un Python isolé ou embarqué ne le fait
+# pas, et PYTHONPATH ne le rattrape pas non plus. Le poste Windows fait tourner la
+# suite avec le Python embarqué du bundle : sans ce préambule, `import chemins` y lève
+# ModuleNotFoundError et le test échoue pour une raison qui n'est pas celle qu'il teste.
+_AVEC_RACINE = (
+    "import sys; sys.path.insert(0, r'%s'); "
+    % Path(__file__).resolve().parent.parent
+)
+
+
 class TestMoodleSync(unittest.TestCase):
     def setUp(self):
         self.d = tempfile.TemporaryDirectory()
         self.fichier = Path(self.d.name) / "moodle_sync.json"
+        # Cette classe teste le chemin Moodle, qui n'est plus le défaut depuis que
+        # le suivi est local (voir test_le_suivi_est_local_par_defaut). Le mode est
+        # donc déclaré ici plutôt qu'hérité : un test qui dépend d'un défaut global
+        # sans le dire casse le jour où ce défaut change, ce qui est arrivé.
+        # Les tests du mode local, eux, repatchent explicitement en "local".
+        patch = mock.patch("chemins.ATELIER_SUIVI", "moodle")
+        patch.start()
+        self.addCleanup(patch.stop)
 
     def tearDown(self):
         self.d.cleanup()
@@ -35,21 +58,34 @@ class TestMoodleSync(unittest.TestCase):
     def test_appairer_range_le_jeton(self):
         with mock.patch("moodle_sync.urllib.request.urlopen",
                         return_value=reponse_http({"jeton": "J123"})):
-            ok, message = moodle_sync.appairer("KX7-3PF", fichier=self.fichier,
-                                               url="https://compagnon.example")
+            ok, message, faites = moodle_sync.appairer("KX7-3PF", fichier=self.fichier,
+                                                       url="https://compagnon.example")
         self.assertTrue(ok)
+        self.assertEqual(faites, [])  # réponse sans etapes_faites : liste vide, pas d'erreur
         d = json.loads(self.fichier.read_text(encoding="utf-8"))
         self.assertEqual(d["jeton"], "J123")
         self.assertTrue(moodle_sync.actif(self.fichier))
+
+    def test_appairer_renvoie_les_etapes_deja_faites(self):
+        # Reprise multi-poste : le compagnon renvoie ce que l'étudiant a fait ailleurs.
+        with mock.patch("moodle_sync.urllib.request.urlopen",
+                        return_value=reponse_http(
+                            {"jeton": "J123",
+                             "etapes_faites": ["ex01_types", "ex02_operateurs"]})):
+            ok, message, faites = moodle_sync.appairer("KX7-3PF", fichier=self.fichier,
+                                                       url="https://compagnon.example")
+        self.assertTrue(ok)
+        self.assertEqual(faites, ["ex01_types", "ex02_operateurs"])
 
     def test_appairer_code_refuse(self):
         import urllib.error
         with mock.patch("moodle_sync.urllib.request.urlopen",
                         side_effect=urllib.error.HTTPError("u", 404, "non", {}, None)):
-            ok, message = moodle_sync.appairer("XXXXXX", fichier=self.fichier,
-                                               url="https://compagnon.example")
+            ok, message, faites = moodle_sync.appairer("XXXXXX", fichier=self.fichier,
+                                                       url="https://compagnon.example")
         self.assertFalse(ok)
         self.assertIn("code", message.lower())
+        self.assertEqual(faites, [])
 
     def test_porte_passee_envoyee_et_file_videe(self):
         self.fichier.write_text(json.dumps(
@@ -102,12 +138,132 @@ class TestMoodleSync(unittest.TestCase):
         self.assertEqual(len(d["file"]), 1)
         self.assertEqual(d["file"][0]["etape"], "perso_P2")
 
+    def test_signaler_deja_faits_envoie_les_etapes(self):
+        # L'étudiant s'est connecté après avoir déjà validé des exos : au moment
+        # de l'appairage on renvoie tout ce qui est déjà fait, sinon c'est perdu.
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123", "file": []}),
+            encoding="utf-8")
+        capte = {}
+
+        def capture(requete, timeout=None):
+            capte["corps"] = json.loads(requete.data.decode())
+            return reponse_http({"recu": 2, "score": 14.3})
+
+        with mock.patch("moodle_sync.urllib.request.urlopen", side_effect=capture):
+            moodle_sync.signaler_deja_faits(["ex01_types", "ex02_operateurs"],
+                                            fichier=self.fichier, attendre=True)
+        etapes = [e["etape"] for e in capte["corps"]["evenements"]]
+        self.assertEqual(etapes, ["ex01_types", "ex02_operateurs"])
+        d = json.loads(self.fichier.read_text(encoding="utf-8"))
+        self.assertEqual(d["file"], [])
+
+    def test_signaler_deja_faits_sans_jeton_ne_fait_rien(self):
+        with mock.patch("moodle_sync.urllib.request.urlopen") as u:
+            moodle_sync.signaler_deja_faits(["ex01_types"], fichier=self.fichier)
+            u.assert_not_called()
+
+    def test_score_du_serveur_est_memorise(self):
+        # Le compagnon renvoie le score à chaque envoi ; on le retient pour que
+        # l'atelier puisse l'afficher (« Moodle : X% »).
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123", "file": []}),
+            encoding="utf-8")
+        with mock.patch("moodle_sync.urllib.request.urlopen",
+                        return_value=reponse_http({"recu": 1, "score": 21.4})):
+            moodle_sync.signaler_porte("ex03_menu", fichier=self.fichier, attendre=True)
+        self.assertEqual(moodle_sync.dernier_score, 21.4)
+
     def test_fichier_corrompu_ne_leve_pas(self):
         self.fichier.write_text("{ceci n'est pas du JSON valide", encoding="utf-8")
         self.assertFalse(moodle_sync.actif(self.fichier))
         with mock.patch("moodle_sync.urllib.request.urlopen") as u:
             moodle_sync.signaler_porte("perso_P1", fichier=self.fichier, attendre=True)
             u.assert_not_called()
+
+    def test_mode_local_signaler_porte_ne_fait_rien(self):
+        # Un jeton valide traîne sur le disque, mais le mode local est un
+        # interrupteur franc : aucune requête ne doit partir malgré tout.
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123", "file": []}),
+            encoding="utf-8")
+        with mock.patch("chemins.ATELIER_SUIVI", "local"), \
+             mock.patch("moodle_sync.urllib.request.urlopen") as u:
+            moodle_sync.signaler_porte("perso_P1", fichier=self.fichier, attendre=True)
+            u.assert_not_called()
+
+    def test_mode_local_signaler_deja_faits_ne_fait_rien(self):
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123", "file": []}),
+            encoding="utf-8")
+        with mock.patch("chemins.ATELIER_SUIVI", "local"), \
+             mock.patch("moodle_sync.urllib.request.urlopen") as u:
+            moodle_sync.signaler_deja_faits(["ex01_types"], fichier=self.fichier, attendre=True)
+            u.assert_not_called()
+
+    def test_mode_local_rejouer_ne_fait_rien(self):
+        # rejouer() est aussi appelé seul au démarrage de la fenêtre : une file
+        # laissée par un ancien mode moodle ne doit pas partir non plus.
+        self.fichier.write_text(json.dumps(
+            {"url": "https://compagnon.example", "jeton": "J123",
+             "file": [{"etape": "perso_P0", "reussite": True, "horodatage": "t0"}]}),
+            encoding="utf-8")
+        with mock.patch("chemins.ATELIER_SUIVI", "local"), \
+             mock.patch("moodle_sync.urllib.request.urlopen") as u:
+            moodle_sync.rejouer(fichier=self.fichier, attendre=True)
+            u.assert_not_called()
+
+    def test_desaccord_url_renvoie_ancienne_si_differente(self):
+        self.fichier.write_text(json.dumps(
+            {"url": "https://ancien.example", "jeton": "J123", "file": []}), encoding="utf-8")
+        with mock.patch.dict(os.environ, {"ATELIER_COMPAGNON_URL": "https://nouveau.example"}):
+            self.assertEqual(moodle_sync.desaccord_url(self.fichier), "https://ancien.example")
+
+    def test_desaccord_url_none_si_identique(self):
+        self.fichier.write_text(json.dumps(
+            {"url": "https://ancien.example", "jeton": "J123", "file": []}), encoding="utf-8")
+        with mock.patch.dict(os.environ, {"ATELIER_COMPAGNON_URL": "https://ancien.example"}):
+            self.assertIsNone(moodle_sync.desaccord_url(self.fichier))
+
+    def test_desaccord_url_none_si_variable_absente(self):
+        self.fichier.write_text(json.dumps(
+            {"url": "https://ancien.example", "jeton": "J123", "file": []}), encoding="utf-8")
+        with mock.patch.dict(os.environ):
+            os.environ.pop("ATELIER_COMPAGNON_URL", None)
+            self.assertIsNone(moodle_sync.desaccord_url(self.fichier))
+
+    def test_desaccord_url_none_si_pas_d_appairage(self):
+        with mock.patch.dict(os.environ, {"ATELIER_COMPAGNON_URL": "https://nouveau.example"}):
+            self.assertIsNone(moodle_sync.desaccord_url(self.fichier))
+
+    def test_le_suivi_est_local_par_defaut(self):
+        """Le produit livré ne parle à aucun serveur tant que personne ne le demande.
+
+        Le compagnon LTI n'est plus qu'une démo : il tourne sur le compte Render de
+        Sami, l'école ne peut pas en dépendre. Un défaut à "moodle" ferait qu'un
+        bundle distribué tenterait de remonter des notes vers ce compte, sans que
+        l'enseignant l'ait choisi. Le mode moodle doit rester un opt-in explicite.
+
+        Testé dans un sous-processus, avec la variable retirée de l'environnement :
+        chemins est déjà importé par le reste de la suite et lit son défaut une
+        seule fois, à l'import.
+        """
+        env = {k: v for k, v in os.environ.items() if k != "ATELIER_SUIVI"}
+        r = subprocess.run(
+            [sys.executable, "-c", _AVEC_RACINE + "import chemins; print(chemins.ATELIER_SUIVI)"],
+            env=env, capture_output=True, text=True, encoding="utf-8")
+        self.assertEqual(r.returncode, 0, r.stderr)
+        self.assertEqual(r.stdout.strip(), "local")
+
+    def test_atelier_suivi_invalide_refuse_au_demarrage(self):
+        # La validation vit dans chemins.py, importé au tout début : on la teste
+        # dans un sous-processus pour ne pas corrompre le chemins déjà importé
+        # par le reste de la suite.
+        r = subprocess.run([sys.executable, "-c", _AVEC_RACINE + "import chemins"],
+                           env={**os.environ, "ATELIER_SUIVI": "bogus"},
+                           capture_output=True, text=True, encoding="utf-8")
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("ATELIER_SUIVI", r.stderr)
 
 
 if __name__ == "__main__":

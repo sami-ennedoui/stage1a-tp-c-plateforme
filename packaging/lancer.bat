@@ -3,6 +3,9 @@ setlocal enableextensions
 cd /d "%~dp0"
 set "PATH=%~dp0w64devkit\bin;%PATH%"
 
+REM --- clangd (diagnostics en direct) : w64devkit ne le fournit pas, il est a part ---
+if exist "%~dp0clangd\bin" set "PATH=%~dp0clangd\bin;%PATH%"
+
 REM --- Tuteur IA (optionnel) : rend claude ou codex trouvable s'il est installe ---
 if exist "%USERPROFILE%\.local\bin" set "PATH=%USERPROFILE%\.local\bin;%PATH%"
 if exist "%APPDATA%\npm" set "PATH=%APPDATA%\npm;%PATH%"

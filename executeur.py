@@ -60,17 +60,22 @@ def _executer_cape(cmd, entree="", timeout=15, cap=_TAILLE_MAX_SORTIE):
     etat = {"tronque": False}
 
     def _lire():
-        while True:
-            bloc = proc.stdout.read(65536)
-            if not bloc:
-                break
-            reste = cap - len(tampon)
-            if reste > 0:
-                tampon.extend(bloc[:reste])
-            if len(tampon) >= cap:
-                etat["tronque"] = True
-            # on continue a vider le tube meme apres le plafond, sinon le programme
-            # se bloque sur un tube plein et on ne peut plus le tuer proprement.
+        try:
+            while True:
+                bloc = proc.stdout.read(65536)
+                if not bloc:
+                    break
+                reste = cap - len(tampon)
+                if reste > 0:
+                    tampon.extend(bloc[:reste])
+                if len(tampon) >= cap:
+                    etat["tronque"] = True
+                # on continue a vider le tube meme apres le plafond, sinon le programme
+                # se bloque sur un tube plein et on ne peut plus le tuer proprement.
+        except (ValueError, OSError):
+            # le tube a ete ferme sous nos pieds : cas du delai depasse, ou le fil
+            # survit a la fermeture ci-dessous. Rien a sauver, on sort sans bruit.
+            pass
 
     lecteur = threading.Thread(target=_lire, daemon=True)
     lecteur.start()
@@ -91,6 +96,15 @@ def _executer_cape(cmd, entree="", timeout=15, cap=_TAILLE_MAX_SORTIE):
         proc.kill()
         proc.wait()
     lecteur.join(timeout=2)
+    # Fermeture explicite du tube. Sans elle l'objet fichier n'est libere qu'au passage
+    # du ramasse-miettes : ca se voit d'abord comme un ResourceWarning dans les tests,
+    # mais le vrai cout est ailleurs. L'atelier appelle cette fonction a chaque « Tester »,
+    # et une session d'etudiant en enchaine des dizaines : autant de descripteurs retenus
+    # sans raison dans un processus qui reste ouvert des heures.
+    try:
+        proc.stdout.close()
+    except OSError:
+        pass
     # decodage + fins de ligne universelles (comme le faisait subprocess.run en mode texte) :
     # sous Windows le programme C emet \r\n, mais les fragments attendus utilisent \n.
     texte = tampon.decode("utf-8", errors="replace").replace("\r\n", "\n").replace("\r", "\n")
@@ -269,6 +283,74 @@ def porte_perso(etape: Etape, code_eleve: str) -> Resultat:
         return _compiler_et_lancer(sources, includes)
 
 
+def _fin_numerique(fragment: str) -> str:
+    """Portion numérique finale d'un fragment : 'a+b = 5' -> '5', 'a = 9.9' -> '9.9'."""
+    i = len(fragment)
+    while i > 0 and (fragment[i - 1].isdigit() or fragment[i - 1] == "."):
+        i -= 1
+    return fragment[i:]
+
+
+def fragment_present(fragment: str, sortie: str) -> bool:
+    """Cherche un fragment littéral dans la sortie, sans se laisser abuser par un
+    nombre plus long.
+
+    Mesuré sur ex12, qui attend « La somme de a+b = 5 » : un programme affichant
+    « La somme de a+b = 50 » franchissait la porte, parce que le fragment attendu
+    est bel et bien une sous-chaîne du résultat faux. Un étudiant dont le calcul se
+    trompe d'un facteur dix était donc validé.
+
+    La frontière n'est exigée que si le fragment se termine par un chiffre. Ailleurs
+    un fragment peut légitimement être le début d'une ligne plus longue, et plusieurs
+    étapes en dépendent : ex05 attend un bloc de tirets, ex09 des débuts de phrase.
+
+    Restait un cas que la première version de ce garde-fou cassait, et que les tests
+    ont attrapé : le parcours tp_c attend « 9.9 » là où printf %f écrit « 9.900000 ».
+    Des zéros qui suivent une décimale ne changent pas la valeur, alors que le chiffre
+    qui allonge un entier la change. On tolère donc les chiffres de queue seulement
+    s'ils sont tous des zéros ET que le nombre du fragment porte déjà une décimale."""
+    if not fragment:
+        return True
+    if not fragment[-1].isdigit():
+        return fragment in sortie
+    decimal = "." in _fin_numerique(fragment)
+    depart = 0
+    while True:
+        i = sortie.find(fragment, depart)
+        if i < 0:
+            return False
+        apres = i + len(fragment)
+        suite = ""
+        while apres + len(suite) < len(sortie) and sortie[apres + len(suite)].isdigit():
+            suite += sortie[apres + len(suite)]
+        if not suite or (decimal and set(suite) == {"0"}):
+            return True
+        depart = i + 1        # cette occurrence allonge un nombre, on cherche plus loin
+
+
+def _cas_de_letape(etape: Etape) -> list[dict]:
+    """Normalise les attentes de l'étape en une liste de cas à éprouver.
+
+    Une étape sans champ `cas` garde exactement son comportement d'avant : un cas
+    unique bâti sur entree/sortie_attendue/sortie_motifs.
+
+    Ce qu'un cas hérite de l'étape n'est pas uniforme, et la différence est voulue.
+    Les motifs décrivent un FORMAT, vrai quelle que soit l'entrée : un cas qui n'en
+    parle pas garde ceux de l'étape, sinon il faudrait répéter les mêmes regex sur
+    chaque jeu d'entrées. Les fragments littéraux de sortie_attendue décrivent au
+    contraire une VALEUR, qui dépend de l'entrée : les hériter ferait attendre du
+    cas « entrée 10 » la réponse du cas « entrée 3 ». Un cas part donc sans aucun
+    littéral tant qu'il n'en déclare pas."""
+    if not etape.cas:
+        return [{"entree": etape.entree or "",
+                 "sortie_attendue": etape.sortie_attendue or [],
+                 "sortie_motifs": etape.sortie_motifs or []}]
+    return [{"entree": c.get("entree", etape.entree or ""),
+             "sortie_attendue": c.get("sortie_attendue", []),
+             "sortie_motifs": c.get("sortie_motifs", etape.sortie_motifs or [])}
+            for c in etape.cas]
+
+
 def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
     """Compile le programme complet de l'étudiant, qui contient son propre main, l'exécute
     avec l'entrée standard fixée par l'étape, et juge la sortie.
@@ -293,25 +375,34 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
         if comp.returncode != 0:
             return Resultat(False, "Erreur de compilation :\n" + _masquer_chemin_temp(comp.stderr, d),
                             categorie="erreur_compilation")
-        rc, sortie, delai, tronque = _executer_cape([str(binaire)], etape.entree or "", timeout=15)
-        if delai:
-            return Resultat(False, "Le programme a dépassé le délai. Attend-il une saisie au clavier ?",
-                            categorie="delai")
-        if rc != 0:
-            return Resultat(False, "Le programme s'est terminé en erreur :\n" + sortie,
-                            categorie="erreur_execution")
-        attendus = etape.sortie_attendue or []
-        manquants = [repr(f) for f in attendus if f not in sortie]
-        motifs = etape.sortie_motifs or []
-        manquants += [m.get("attendu", m["motif"]) for m in motifs
-                      if not re.search(m["motif"], sortie)]
-        if manquants:
-            return Resultat(False,
-                            "Il manque ceci dans ta sortie : " + ", ".join(manquants) +
-                            "\n\nSortie obtenue :\n" + (sortie or "(rien)"),
-                            categorie="sortie_incomplete", manquants=tuple(manquants))
+        # Un seul binaire, plusieurs executions : compiler coute cher, lancer ne coute rien.
+        cas = _cas_de_letape(etape)
+        multi = len(cas) > 1
+        derniere_sortie, tronque = "", False
+        for numero, c in enumerate(cas, start=1):
+            prefixe = f"Cas {numero} sur {len(cas)} (entrée : {c['entree']!r})\n\n" if multi else ""
+            rc, sortie, delai, tronq = _executer_cape([str(binaire)], c["entree"], timeout=15)
+            derniere_sortie, tronque = sortie, tronque or tronq
+            if delai:
+                return Resultat(False, prefixe + "Le programme a dépassé le délai. "
+                                "Attend-il une saisie au clavier ?", categorie="delai")
+            if rc != 0:
+                return Resultat(False, prefixe + "Le programme s'est terminé en erreur :\n" + sortie,
+                                categorie="erreur_execution")
+            manquants = [repr(f) for f in c["sortie_attendue"]
+                         if not fragment_present(f, sortie)]
+            manquants += [m.get("attendu", m["motif"]) for m in c["sortie_motifs"]
+                          if not re.search(m["motif"], sortie)]
+            if manquants:
+                return Resultat(False,
+                                prefixe + "Il manque ceci dans ta sortie : " + ", ".join(manquants) +
+                                "\n\nSortie obtenue :\n" + (sortie or "(rien)"),
+                                categorie="sortie_incomplete", manquants=tuple(manquants))
         note = "" if not tronque else "\n(sortie très volumineuse, tronquée pour l'affichage)"
-        return Resultat(True, (sortie if sortie.strip() else "Le programme compile et s'exécute.") + note,
+        if multi:
+            note += f"\n({len(cas)} jeux d'entrées passés.)"
+        return Resultat(True,
+                        (derniere_sortie if derniere_sortie.strip() else "Le programme compile et s'exécute.") + note,
                         categorie="ok")
 
 

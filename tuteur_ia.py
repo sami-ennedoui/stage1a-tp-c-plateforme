@@ -2,11 +2,14 @@
 appel du moteur en sous-processus. Aucune UI."""
 import os
 import re
+import shlex
 import shutil
 import subprocess
 from pathlib import Path
 
 import chemins
+import garde_fous
+import reglages
 from modele_etape import Etape
 
 # Supprime la fenêtre cmd qui clignoterait au lancement du moteur (appli packagée
@@ -136,10 +139,38 @@ def _binaire(moteur: str) -> str:
     return moteur.split(":", 1)[0]
 
 
+# Moteur fictif qui signale « une commande sur mesure a été configurée ». Ce n'est
+# pas un nom d'exécutable : _commande le reconnaît et bâtit la ligne à partir du
+# réglage au lieu d'une recette codée en dur.
+MOTEUR_COMMANDE = "commande"
+
+
+def commande_personnalisee() -> str:
+    """Commande du tuteur configurée à la main, chaîne vide si l'auto-détection joue.
+
+    ATELIER_AI_CMD l'emporte sur le réglage enregistré : la variable d'environnement
+    sert à essayer un moteur le temps d'une session sans écrire dans reglages.json."""
+    depuis_env = os.environ.get("ATELIER_AI_CMD", "").strip()
+    if depuis_env:
+        return depuis_env
+    try:
+        return reglages.commande_ia().strip()
+    except Exception:
+        # Un reglages.json illisible ne doit pas priver l'étudiant de son atelier.
+        return ""
+
+
 def _moteur_choisi() -> str | None:
-    """Moteur IA à utiliser. La variable ATELIER_AI le force (si l'exécutable est
-    présent) ; sinon on prend le premier moteur connu trouvé sur le PATH. Renvoie
-    None si aucun moteur n'est disponible : l'atelier marche alors sans tuteur."""
+    """Moteur IA à utiliser. Une commande sur mesure l'emporte sur tout le reste ;
+    sinon la variable ATELIER_AI force un moteur (si l'exécutable est présent) ;
+    sinon on prend le premier moteur connu trouvé sur le PATH. Renvoie None si aucun
+    moteur n'est disponible : l'atelier marche alors sans tuteur."""
+    sur_mesure = commande_personnalisee()
+    if sur_mesure:
+        # On vérifie quand même que le binaire existe : une commande mal saisie doit
+        # se voir comme « pas de tuteur », pas comme une erreur au premier clic.
+        premier = shlex.split(sur_mesure)[0] if shlex.split(sur_mesure) else ""
+        return MOTEUR_COMMANDE if premier and shutil.which(premier) else None
     force = os.environ.get("ATELIER_AI")
     if force:
         return force if shutil.which(_binaire(force)) else None
@@ -156,6 +187,14 @@ def _commande(moteur: str, prompt: str, modele: str = "") -> list[str]:
     sable de codex reste en lecture seule, le tuteur ne fait que répondre.
     modele : optionnel, force un modèle (ex. 'sonnet', 'haiku' pour claude). Sert
     surtout au banc de tests, qui génère beaucoup et n'a pas besoin du plus gros modèle."""
+    if moteur == MOTEUR_COMMANDE:
+        morceaux = shlex.split(commande_personnalisee())
+        # {prompt} permet de placer la question ailleurs qu'en dernier argument, ce
+        # dont certains moteurs ont besoin. Sans marqueur, on ajoute à la fin, ce qui
+        # couvre le cas courant « binaire --options <question> ».
+        if any("{prompt}" in m for m in morceaux):
+            return [m.replace("{prompt}", prompt) for m in morceaux]
+        return morceaux + [prompt]
     binaire = _binaire(moteur)
     if binaire == "codex":
         cmd = ["codex", "exec", "--skip-git-repo-check"]
@@ -172,12 +211,31 @@ def moteur_disponible() -> bool:
     return _moteur_choisi() is not None
 
 
+def tuteur_disponible() -> bool:
+    """Vrai si le tuteur doit être proposé : activé dans les réglages ET un moteur.
+
+    Deux causes distinctes qu'il ne faut pas confondre. « Pas de moteur » est un
+    accident d'installation ; « désactivé » est une décision de l'enseignant. La
+    fenêtre s'appuie sur cette fonction pour masquer les commandes du tuteur plutôt
+    que de les laisser répondre qu'elles ne servent à rien."""
+    try:
+        if not reglages.tuteur_actif():
+            return False
+    except Exception:
+        pass          # réglages illisibles : on ne prive personne du tuteur pour ça
+    return moteur_disponible()
+
+
 # Messages renvoyés quand l'aide n'a pas pu être produite. Exposés pour que l'appelant
 # (la fenêtre) sache ne pas les mémoriser dans l'historique de conversation.
 ERR_INDISPONIBLE = "Moteur IA indisponible. Le reste de l'atelier marche, compiler, tester, lancer."
 ERR_TIMEOUT = "Le moteur IA n'a pas répondu à temps."
 ERR_RUNTIME = "Le moteur IA a renvoyé une erreur. Réessaie, ou demande à ton tuteur."
-_ERREURS = {ERR_INDISPONIBLE, ERR_TIMEOUT, ERR_RUNTIME}
+# Message distinct d'ERR_INDISPONIBLE, et la nuance compte pour l'étudiant : un moteur
+# absent est une panne dont il peut parler à l'enseignant, un tuteur désactivé est une
+# consigne de séance à laquelle il n'y a rien à réparer.
+ERR_DESACTIVE = "Le tuteur IA est désactivé pour cette séance. Compiler et tester restent disponibles."
+_ERREURS = {ERR_INDISPONIBLE, ERR_TIMEOUT, ERR_RUNTIME, ERR_DESACTIVE}
 
 
 def reponse_est_erreur(reponse: str) -> bool:
@@ -187,6 +245,14 @@ def reponse_est_erreur(reponse: str) -> bool:
 
 def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int,
                   historique=None, console: str = "", modele: str = "") -> str:
+    # Le masquage des boutons par la fenêtre est une commodité, pas une garantie :
+    # ce module est aussi appelé par les outils du dépôt. La bascule se vérifie donc
+    # ici, à l'endroit où part réellement la requête.
+    try:
+        if not reglages.tuteur_actif():
+            return ERR_DESACTIVE
+    except Exception:
+        pass
     moteur = _moteur_choisi()
     if moteur is None:
         return ERR_INDISPONIBLE
@@ -209,6 +275,11 @@ def demander_aide(etape: Etape, code_eleve: str, question: str, niveau: int,
         return ERR_RUNTIME
     reponse = r.stdout.strip() or r.stderr.strip()
     corrige = _chemin_corrige(etape).read_text(encoding="utf-8")
+    # Deux filtres, dans cet ordre, et ils ne font pas le même travail. Le garde-fou
+    # structurel recompile le code proposé et rejoue la porte : c'est le comportement
+    # qui juge, donc la paraphrase ne le contourne pas. Le filtre lexical qui suit
+    # compare au corrigé ligne à ligne et rattrape ce qui n'est pas un bloc complet.
+    reponse = garde_fous.masquer_si_solution(etape, reponse)
     return filtre_solution(reponse, corrige)
 
 

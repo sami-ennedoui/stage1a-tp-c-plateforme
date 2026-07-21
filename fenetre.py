@@ -8,21 +8,42 @@ from pathlib import Path
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QListWidget,
                              QPlainTextEdit, QTextEdit, QPushButton, QLabel, QTabWidget,
                              QListWidgetItem, QDialog, QLineEdit, QCheckBox,
-                             QDialogButtonBox, QComboBox, QInputDialog)
+                             QDialogButtonBox, QComboBox, QInputDialog, QMessageBox)
 from PyQt6.QtCore import Qt, QThread, QTimer, pyqtSignal
 from PyQt6.QtGui import QFont, QTextCursor
 
+import auteur
 import chemins
 import coloration
+import diagnostic
 import executeur
 import lsp_clangd
 import moodle_sync
 import progression
+import reglages
 import tuteur_ia
 import theme
+from dialogue_diagnostic import DialogueDiagnostic
+from dialogue_niveaux import DialogueNiveaux
 from journal_session import Journal, JournalMuet
 from espace_projet import EspaceProjet
 from modele_etape import charger_parcours_complet
+
+
+def _chemin_lanceur() -> Path:
+    """Trouve lancer.bat, où qu'il soit selon la façon dont l'atelier tourne.
+
+    Dans le bundle figé, chemins.RACINE désigne _internal et le lanceur est au niveau
+    au-dessus ; dans un clone du dépôt il vit dans packaging\\. On rend le premier
+    qui existe, et à défaut le chemin attendu du bundle, pour que le message d'erreur
+    du dialogue désigne un endroit sensé plutôt qu'un chemin interne."""
+    candidats = [chemins.RACINE.parent / "lancer.bat",
+                 chemins.RACINE / "lancer.bat",
+                 chemins.RACINE / "packaging" / "lancer.bat"]
+    for c in candidats:
+        if c.exists():
+            return c
+    return candidats[0]
 
 
 def _titre(texte: str) -> QLabel:
@@ -64,6 +85,7 @@ class Fenetre(QMainWindow):
         parcours = charger_parcours_complet(chemins.contenu_racine(parcours_nom))
         self.mode = parcours.mode
         self.parcours = parcours.etapes
+        self.libre = parcours.libre
 
         titre = "Atelier Snake"
         if self.mode == "projet":
@@ -186,7 +208,9 @@ class Fenetre(QMainWindow):
         b_tester = QPushButton("Tester")
         b_tester.setObjectName("primaire")     # bouton d'action principal, accent vert
         self.b_jeu = QPushButton("Compiler et jouer" if self.mode == "projet" else "Lancer le jeu")
-        b_aide = QPushButton("Demander de l'aide")
+        # attribut et non variable locale : _appliquer_reglage_tuteur doit pouvoir
+        # le masquer quand le tuteur est désactivé
+        self.b_aide = QPushButton("Demander de l'aide")
         self.b_ecrire = QPushButton("Le tuteur écrit le code")
         self.b_ecrire.setVisible(self.demo)      # bouton du mode démo seulement
         self.b_corrige = QPushButton("Charger le corrigé")
@@ -194,13 +218,13 @@ class Fenetre(QMainWindow):
         b_compiler.clicked.connect(self._compiler)
         b_tester.clicked.connect(self._tester)
         self.b_jeu.clicked.connect(self._lancer_jeu)
-        b_aide.clicked.connect(self._demander_aide)
+        self.b_aide.clicked.connect(self._demander_aide)
         self.b_ecrire.clicked.connect(self._tuteur_ecrit_code)
         self.b_corrige.clicked.connect(self._charger_corrige)
 
         barre = QHBoxLayout()
         barre.setSpacing(8)
-        for b in (b_compiler, b_tester, self.b_jeu, b_aide, self.b_ecrire, self.b_corrige):
+        for b in (b_compiler, b_tester, self.b_jeu, self.b_aide, self.b_ecrire, self.b_corrige):
             barre.addWidget(b)
         barre.addStretch(1)
 
@@ -253,6 +277,8 @@ class Fenetre(QMainWindow):
         conteneur.setLayout(racine)
         self.setCentralWidget(conteneur)
         self._construire_barre_affichage()
+        self._construire_menu()
+        self._appliquer_reglage_tuteur()
 
         # anti-rebond : textChanged déclenche le timer, pas l'envoi direct
         self.editeur.textChanged.connect(self._timer_lsp.start)
@@ -265,16 +291,159 @@ class Fenetre(QMainWindow):
             self._timer_inactif.start()
         moodle_sync.rejouer()   # vide au lancement ce qui attendait d'être envoyé
 
+    def _construire_menu(self):
+        """Menu Paramètres : navigation, dossiers, diagnostic, et édition protégée.
+
+        Ce menu avait disparu de la lignée de livraison lors de la fusion b40a8db, en
+        emportant le seul point d'entrée de reglages, auteur, diagnostic et des deux
+        dialogues : les modules étaient toujours livrés, mais plus rien ne pouvait les
+        ouvrir. Repère de contrôle donné par la vérification Linux : DialogueNiveaux
+        doit être référencé deux fois dans ce fichier, import compris."""
+        menu = self.menuBar().addMenu("Paramètres")
+        menu.addAction("Changer de parcours…").triggered.connect(self._changer_parcours)
+        menu.addAction("Ouvrir le dossier du contenu").triggered.connect(
+            self._ouvrir_dossier_contenu)
+        menu.addAction("Emplacements et diagnostic…").triggered.connect(
+            self._ouvrir_diagnostic)
+        menu.addSeparator()
+        self.action_tuteur = menu.addAction("Tuteur IA")
+        self.action_tuteur.setCheckable(True)
+        self.action_tuteur.setChecked(reglages.tuteur_actif())
+        self.action_tuteur.toggled.connect(self._basculer_tuteur)
+        menu.addAction("Commande du tuteur…").triggered.connect(self._changer_commande_ia)
+        menu.addSeparator()
+        menu.addAction("Gérer les niveaux…").triggered.connect(self._ouvrir_gestion_niveaux)
+        menu.addAction("Changer le mot de passe auteur…").triggered.connect(
+            self._changer_mot_de_passe)
+
+    def _changer_parcours(self):
+        noms = diagnostic.parcours_disponibles()
+        if not noms:
+            QMessageBox.warning(self, "Aucun parcours",
+                                "Aucun dossier de contenu avec un parcours.json.")
+            return
+        depart = noms.index(self.parcours_nom) if self.parcours_nom in noms else 0
+        choix, ok = QInputDialog.getItem(
+            self, "Changer de parcours", "Parcours :", noms, depart, editable=False)
+        if not ok or not choix or choix == self.parcours_nom:
+            return
+        reglages.definir_parcours(choix)
+        QMessageBox.information(
+            self, "Parcours enregistré",
+            f"Le parcours « {choix} » s'ouvrira au prochain lancement.\n"
+            "Ferme puis relance l'atelier pour basculer dessus.")
+
+    def _basculer_tuteur(self, actif: bool):
+        reglages.definir_tuteur_actif(actif)
+        self._appliquer_reglage_tuteur()
+        if actif and not tuteur_ia.moteur_disponible():
+            # Réactiver le réglage ne fait pas apparaître un moteur : le dire tout de
+            # suite, sinon l'enseignant croit avoir rendu le tuteur et rien ne bouge.
+            QMessageBox.information(
+                self, "Tuteur activé, moteur absent",
+                "Le tuteur est réactivé dans les réglages, mais aucun moteur IA n'a été "
+                "trouvé sur ce poste. Renseigne « Commande du tuteur… » ou installe un "
+                "moteur pour que l'aide soit réellement disponible.")
+
+    def _changer_commande_ia(self):
+        actuelle = reglages.commande_ia()
+        texte, ok = QInputDialog.getText(
+            self, "Commande du tuteur",
+            "Commande qui lance le moteur IA.\n"
+            "Vide = détection automatique. Utilise {prompt} pour placer la question,\n"
+            "sinon elle est ajoutée en dernier argument.\n"
+            "Exemple :  mon-moteur --sans-couleur {prompt}",
+            QLineEdit.EchoMode.Normal, actuelle)
+        if not ok:
+            return
+        reglages.definir_commande_ia(texte.strip())
+        self._appliquer_reglage_tuteur()
+        if texte.strip() and not tuteur_ia.moteur_disponible():
+            QMessageBox.warning(
+                self, "Commande introuvable",
+                "Le premier mot de cette commande n'a pas été trouvé sur le PATH.\n"
+                "Le tuteur restera indisponible tant qu'elle ne pointe pas sur un "
+                "exécutable existant.")
+
+    def _ouvrir_dossier_contenu(self):
+        try:
+            diagnostic.ouvrir_dossier(chemins.contenu_racine(self.parcours_nom))
+        except OSError as e:
+            QMessageBox.warning(self, "Ouverture impossible", str(e))
+
+    def _ouvrir_diagnostic(self):
+        DialogueDiagnostic(self.parcours_nom, _chemin_lanceur(), self).exec()
+
+    def _demander_mot_de_passe(self) -> bool:
+        """Demande le mot de passe auteur. Vrai s'il est correct."""
+        saisi, ok = QInputDialog.getText(
+            self, "Mode auteur", "Mot de passe pour modifier le contenu :",
+            QLineEdit.EchoMode.Password)
+        if not ok:
+            return False
+        if not auteur.verifier(saisi):
+            QMessageBox.warning(self, "Accès refusé", "Mot de passe incorrect.")
+            return False
+        return True
+
+    def _ouvrir_gestion_niveaux(self):
+        if self.mode == "projet":
+            QMessageBox.information(
+                self, "Indisponible",
+                "La gestion des niveaux ne concerne que les parcours isolés, "
+                "pas le parcours projet.")
+            return
+        if not self._demander_mot_de_passe():
+            return
+        DialogueNiveaux(chemins.contenu_racine(self.parcours_nom), self).exec()
+        self._recharger_parcours()
+
+    def _changer_mot_de_passe(self):
+        if not self._demander_mot_de_passe():
+            return
+        nouveau, ok = QInputDialog.getText(
+            self, "Changer le mot de passe", "Nouveau mot de passe :",
+            QLineEdit.EchoMode.Password)
+        if not ok or not nouveau:
+            return
+        auteur.definir(nouveau)
+        QMessageBox.information(self, "Mot de passe changé",
+                                "Le nouveau mot de passe auteur est enregistré.")
+
+    def _recharger_parcours(self):
+        """Recharge le parcours depuis le disque après une édition du contenu."""
+        parcours = charger_parcours_complet(chemins.contenu_racine(self.parcours_nom))
+        self.parcours = parcours.etapes
+        self.libre = parcours.libre
+        if not self.parcours:
+            self.liste.clear()
+            return
+        self._remplir_liste()
+        ligne = min(self.liste.currentRow(), len(self.parcours) - 1)
+        self.liste.setCurrentRow(max(0, ligne))
+
     def _connecter_moodle(self):
         code, ok = QInputDialog.getText(
             self, "Connecter à Moodle",
             "Colle le code affiché par l'activité Moodle du TP :")
         if not ok or not code.strip():
             return
-        reussi, message = moodle_sync.appairer(code.strip())
+        reussi, message, deja_faits = moodle_sync.appairer(code.strip())
         self.console.setPlainText(message)
         if reussi:
             self.b_moodle.setText("Connecté à Moodle")
+            # Reprise multi-poste : le compagnon renvoie les étapes déjà validées par
+            # cet étudiant, peut-être depuis une autre machine. On les fusionne dans la
+            # progression locale pour déverrouiller les niveaux au bon endroit.
+            if deja_faits:
+                self.prog = progression.fusionner(self.prog, deja_faits, self.parcours)
+                progression.sauver(self.prog)
+                self.niveau = progression.cran_disponible(self.prog)
+                self._remplir_liste()
+                self._maj_cran()
+            # Renvoie tout ce qui avait été validé AVANT la connexion : sans appairage
+            # signaler_porte ne gardait rien, cette progression serait perdue.
+            moodle_sync.signaler_deja_faits(self.prog.etapes_faites)
             moodle_sync.rejouer()
 
     def _reveil(self):
@@ -302,6 +471,7 @@ class Fenetre(QMainWindow):
         barre = self.addToolBar("Affichage")
         barre.setObjectName("barre_affichage")
         barre.setMovable(False)
+        self._bascules_affichage = {}
         for texte, panneau in (("Parcours", self.panneau_parcours),
                                ("Console", self.panneau_console),
                                ("Tuteur IA", self.panneau_tuteur)):
@@ -309,13 +479,39 @@ class Fenetre(QMainWindow):
             action.setCheckable(True)
             action.setChecked(True)
             action.toggled.connect(panneau.setVisible)
+            self._bascules_affichage[texte] = action
+
+    def _appliquer_reglage_tuteur(self):
+        """Montre ou masque tout ce qui relève du tuteur, selon le réglage.
+
+        Masquer le panneau ne suffirait pas : la barre d'affichage porte une bascule
+        « Tuteur IA » qui le ramènerait d'un clic. On retire donc aussi cette bascule,
+        sinon le réglage se contourne sans le vouloir.
+
+        On se règle sur la BASCULE seule, pas sur la présence d'un moteur, et la
+        distinction est délibérée. Un moteur absent doit laisser le bouton en place :
+        il répond alors « Moteur IA indisponible, le reste de l'atelier marche », ce
+        qui apprend à l'étudiant que sa séance n'est pas cassée. Le masquer aurait
+        supprimé cette explication et transformé une panne lisible en absence muette."""
+        actif = reglages.tuteur_actif()
+        self.b_aide.setVisible(actif)
+        if not actif:
+            self.b_ecrire.setVisible(False)      # y compris en démo : plus de génération
+        elif self.demo:
+            self.b_ecrire.setVisible(True)
+        self.panneau_tuteur.setVisible(actif)
+        bascule = self._bascules_affichage.get("Tuteur IA")
+        if bascule is not None:
+            bascule.setChecked(actif)
+            bascule.setVisible(actif)
 
     def _remplir_liste(self):
         self.liste.clear()
         for e in self.parcours:
             faite = e.id in self.prog.etapes_faites
-            if self.mode == "projet":
-                # parcours projet : on travaille sur la vraie structure, tout est ouvert
+            if self.mode == "projet" or self.libre:
+                # parcours projet : on travaille sur la vraie structure, tout est ouvert.
+                # parcours libre : l'étudiant révise le point qu'il veut, sans refaire la file.
                 ouverte = True
                 marque = "[fait]" if faite else "[à faire]"
             else:

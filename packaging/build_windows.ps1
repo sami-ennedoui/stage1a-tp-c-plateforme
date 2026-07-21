@@ -10,7 +10,7 @@
     3. w64devkit (gcc)   -> telecharge + auto-extrait a la racine du depot si absent
     4. Exe (PyInstaller) -> .build\dist\TP-C-perso\
     5. Captures + PDF    -> outils\captures_doc.py puis outils\doc_pdf.py
-    6. Bundle assemble   -> _bundle\TP-C-perso\ (exe, w64devkit, lanceurs, README+pdf, captures)
+    6. Bundle assemble   -> _bundle\TP-C-perso\ (exe, w64devkit elague, lanceurs, README+pdf, captures)
     7. Verification      -> l'exe assemble demarre (mode offscreen)
     8. Zip (option -Zip) -> _bundle\TP-C-perso.zip, pret pour une Release GitHub
 
@@ -105,6 +105,48 @@ Ok ("gcc : " + (& $Gcc --version | Select-Object -First 1))
 $env:PATH = (Join-Path $Wk 'bin') + ';' + $env:PATH   # gcc dispo pour les tests et les captures
 
 # ---------------------------------------------------------------------------
+# 3bis. clangd (diagnostics en direct) a la racine du depot
+# ---------------------------------------------------------------------------
+# w64devkit fournit gcc et MinGW, mais PAS clangd : clangd appartient a LLVM, c'est
+# un autre paquet. Sans cette etape, lsp_clangd.clangd_disponible() rend False sur une
+# machine etudiante et les diagnostics en direct sont silencieusement desactives.
+$Cd    = Join-Path $Repo 'clangd'
+$Clangd = Join-Path $Cd 'bin\clangd.exe'
+if (-not (Test-Path $Clangd) -and -not $SkipInstall) {
+    Info "clangd absent, telechargement de la derniere version windows..."
+    $rel = Invoke-RestMethod 'https://api.github.com/repos/clangd/clangd/releases/latest' -Headers @{ 'User-Agent' = 'build-tpc' }
+    $asset = $rel.assets | Where-Object { $_.name -match '^clangd-windows-.*\.zip$' } | Select-Object -First 1
+    if (-not $asset) { throw "Asset clangd windows introuvable dans la derniere release." }
+    $zipClangd = Join-Path $env:TEMP $asset.name
+    Info ("Telechargement " + $asset.name + " (" + [math]::Round($asset.size/1MB) + " Mo)...")
+    Invoke-WebRequest $asset.browser_download_url -OutFile $zipClangd
+    $tmp = Join-Path $env:TEMP 'clangd-extrait'
+    if (Test-Path $tmp) { Remove-Item $tmp -Recurse -Force }
+    Expand-Archive -Path $zipClangd -DestinationPath $tmp -Force
+    # l'archive contient un unique dossier clangd_<version>\ : on le remonte en clangd\
+    $racine = Get-ChildItem $tmp -Directory | Select-Object -First 1
+    if (-not $racine) { throw "Archive clangd inattendue : aucun dossier a la racine." }
+    if (Test-Path $Cd) { Remove-Item $Cd -Recurse -Force }
+    Move-Item $racine.FullName $Cd
+    Remove-Item $zipClangd, $tmp -Recurse -Force -ErrorAction SilentlyContinue
+    # Les runtimes sanitizer (lib\clang\<n>\lib) pesent ~30 Mo et ne servent jamais a un
+    # serveur de langage : verifie sur la VM, 0 erreur sur un fichier sain et les vraies
+    # erreurs toujours signalees sans eux. 92 Mo -> 63 Mo.
+    Get-ChildItem (Join-Path $Cd 'lib\clang') -Directory -ErrorAction SilentlyContinue |
+        ForEach-Object {
+            $sanit = Join-Path $_.FullName 'lib'
+            if (Test-Path $sanit) { Remove-Item $sanit -Recurse -Force }
+        }
+    if (-not (Test-Path $Clangd)) { throw "Extraction clangd echouee, attendu $Clangd." }
+}
+if (-not (Test-Path $Clangd)) {
+    Warn "clangd absent ($Clangd) : le bundle n'aura pas les diagnostics en direct."
+} else {
+    Ok ("clangd : " + ((& $Clangd --version) -split "`n" | Select-Object -First 1))
+    $env:PATH = (Join-Path $Cd 'bin') + ';' + $env:PATH
+}
+
+# ---------------------------------------------------------------------------
 # 4. Build de l'exe (PyInstaller)
 # ---------------------------------------------------------------------------
 $BuildDir = Join-Path $Repo '.build'
@@ -122,7 +164,15 @@ Ok "exe construit"
 # 5. Regenerer captures + (le PDF est genere dans le bundle plus bas)
 # ---------------------------------------------------------------------------
 Info "Regeneration des captures (capture Qt, sans prendre l'ecran)..."
-& $Python "$Repo\outils\captures_doc.py"
+# $ErrorActionPreference = 'Stop' ne rattrape PAS le code de sortie d'un executable
+# natif : sans ce test, l'etape imprimait « captures a jour » alors que le script
+# n'existait meme pas. Un build qui ment sur une etape est pire qu'un build qui echoue.
+$scriptCaptures = Join-Path $Repo 'outils\captures_doc.py'
+if (-not (Test-Path $scriptCaptures)) {
+    throw "Captures : $scriptCaptures introuvable. La couche de livraison (GUIDE.md, outils\, captures\) n'est pas sur cette branche."
+}
+& $Python $scriptCaptures
+if ($LASTEXITCODE -ne 0) { throw "Captures : $scriptCaptures a echoue (code $LASTEXITCODE)." }
 Ok "captures a jour"
 
 # ---------------------------------------------------------------------------
@@ -134,12 +184,72 @@ New-Item -ItemType Directory -Force -Path $Bundle | Out-Null
 Info "Assemblage du bundle dans $Bundle ..."
 Copy-Item "$ExeSrc\*" $Bundle -Recurse -Force
 Copy-Item $Wk (Join-Path $Bundle 'w64devkit') -Recurse -Force
+
+# Elagage de la COPIE livree seulement : le w64devkit du depot reste complet, un
+# developpeur garde g++, gdb et cmake sous la main. Ce qui part ici ne sert a aucun
+# moment au parcours be_c, seul parcours embarque.
+#
+# 567 Mo -> 319 Mo, mesure. Ce n'est pas de la cosmetique : le bundle se telecharge
+# par une promo entiere sur le reseau de l'ecole.
+#
+# Choix volontairement conservateur. On ne retire que ce dont l'absence est
+# demontrable : les compilateurs d'autres langages (Fortran, C++) et leurs
+# bibliotheques, l'outillage de build tiers (cmake, ninja, ccache), le debogueur,
+# l'editeur vim, et les sources .idl qui ne servent qu'a widl. On GARDE tout le
+# reste, notamment lib\ et include\ : les bibliotheques d'import Windows et les
+# en-tetes sont ce que l'editeur de liens et clangd consultent, et trier dedans
+# demanderait une certitude qu'on n'a pas. c++filt est garde aussi, c'est un
+# demangleur de binutils et pas un compilateur -- coupures a l'aveugle s'abstenir.
+$WkB = Join-Path $Bundle 'w64devkit'
+$binInutiles = @('cmake.exe', 'ccmake.exe', 'cpack.exe', 'ctest.exe', 'cmcldeps.exe',
+                 'dcmake.exe', 'ninja.exe', 'gdb.exe', 'gdbserver.exe', 'ccache.exe',
+                 'ctags.exe', 'quilt.exe',
+                 'g++.exe', 'c++.exe', 'x86_64-w64-mingw32-c++.exe',
+                 'gfortran.exe', 'x86_64-w64-mingw32-gfortran.exe')
+$libexecInutiles = @('f951.exe', 'cc1plus.exe')      # Fortran et C++ proprement dits
+$poidsAvant = (Get-ChildItem $WkB -Recurse -File | Measure-Object Length -Sum).Sum
+
+$aRetirer = @()
+foreach ($d in @('share\vim', 'share\cmake-4.3')) {
+    $p = Join-Path $WkB $d
+    if (Test-Path $p) { $aRetirer += Get-Item $p }
+}
+$aRetirer += Get-ChildItem (Join-Path $WkB 'bin') -File |
+             Where-Object { $binInutiles -contains $_.Name }
+$aRetirer += Get-ChildItem (Join-Path $WkB 'libexec') -Recurse -File |
+             Where-Object { $libexecInutiles -contains $_.Name }
+$aRetirer += Get-ChildItem (Join-Path $WkB 'lib') -Recurse -File |
+             Where-Object { $_.Name -like 'libstdc++*' -or $_.Name -like 'libsupc++*' -or
+                            $_.Name -like 'libgfortran*' -or $_.Name -like 'libcaf*' }
+$aRetirer += Get-ChildItem $WkB -Recurse -File -Include '*.idl'
+
+foreach ($c in $aRetirer) {
+    if ($c -and (Test-Path -LiteralPath $c.FullName)) {
+        Remove-Item -LiteralPath $c.FullName -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+$poidsApres = (Get-ChildItem $WkB -Recurse -File | Measure-Object Length -Sum).Sum
+Ok ("w64devkit elague : {0:N0} Mo -> {1:N0} Mo" -f ($poidsAvant/1MB), ($poidsApres/1MB))
+
+# gcc doit encore repondre APRES l'elagage, et depuis la copie livree. Sans ce
+# controle, une coupure de trop ne se verrait qu'a l'ouverture du zip par un etudiant.
+$GccBundle = Join-Path $WkB 'bin\gcc.exe'
+if (-not (Test-Path $GccBundle)) { throw "Elagage : gcc.exe a disparu de la copie livree." }
+$vGcc = & $GccBundle --version 2>&1 | Select-Object -First 1
+if ($LASTEXITCODE -ne 0) { throw "Elagage : le gcc livre ne repond plus (code $LASTEXITCODE)." }
+Ok "gcc livre apres elagage : $vGcc"
+
+if (Test-Path $Cd) { Copy-Item $Cd (Join-Path $Bundle 'clangd') -Recurse -Force }
 Copy-Item "$Repo\packaging\lancer.bat" $Bundle -Force
 Copy-Item "$Repo\packaging\diagnostic.bat" $Bundle -Force
 # doc utilisateur du bundle : GUIDE.md (pas le README depot) sous le nom README.md
 Copy-Item "$Repo\GUIDE.md" (Join-Path $Bundle 'README.md') -Force
 Copy-Item "$Repo\captures" (Join-Path $Bundle 'captures') -Recurse -Force
-& $Python "$Repo\outils\doc_pdf.py" "$Repo\GUIDE.md" (Join-Path $Bundle 'README.pdf')
+$pdf = Join-Path $Bundle 'README.pdf'
+& $Python "$Repo\outils\doc_pdf.py" "$Repo\GUIDE.md" $pdf
+# Meme piege qu'a l'etape 5 : un exe natif qui echoue ne stoppe pas le script. Sans ce
+# test, le bundle partait sans son PDF et l'etape s'annoncait quand meme reussie.
+if ($LASTEXITCODE -ne 0 -or -not (Test-Path $pdf)) { throw "PDF du guide non produit ($pdf)." }
 # NB : lancer_demo.bat (interne) n'est volontairement PAS copie -> le bundle est distribuable.
 Ok "bundle assemble"
 
@@ -155,6 +265,38 @@ if ($vivant) { Stop-Process -Id $proc.Id -Force }
 Remove-Item Env:\QT_QPA_PLATFORM
 if (-not $vivant) { throw "L'exe assemble ne demarre pas (imports ou assets manquants ?)." }
 Ok "l'exe demarre depuis le bundle"
+
+# Le demarrage ci-dessus ECRIT dans le bundle : journaux\session-*.jsonl, et selon les
+# chemins parcourus progression.json / reglages.json / moodle_sync.json. Sans ce
+# nettoyage, l'etape qui verifie le livrable le pollue : l'etudiant deballe une session
+# fantome de la machine de build, et le zip change a chaque construction (horodatage et
+# identifiant de session) alors qu'il devrait etre reproductible.
+#
+# Le nettoyage balaie la racine ET _internal. Mesure le 20 juillet en ouvrant une porte
+# dans le bundle extrait : l'exe fige ecrit sa progression dans _internal\progression.json,
+# pas a la racine. Ne nettoyer que la racine laissait donc passer le residu le plus
+# revelateur, celui qui contient les exercices reussis sur la machine de build.
+$residus = @('journaux', 'progression.json', 'reglages.json', 'moodle_sync.json', 'auteur.json', 'releve.txt')
+foreach ($dossier in @($Bundle, (Join-Path $Bundle '_internal'))) {
+    if (-not (Test-Path $dossier)) { continue }
+    foreach ($r in $residus) {
+        $p = Join-Path $dossier $r
+        if (Test-Path $p) {
+            Remove-Item $p -Recurse -Force
+            $ou = if ($dossier -eq $Bundle) { '' } else { '_internal\' }
+            Info "residu du test retire : $ou$r"
+        }
+    }
+}
+
+# clangd doit etre DANS le bundle, pas seulement sur la machine de build : c'est
+# exactement le piege « ca marche chez moi ». On verifie le fichier livre.
+$ClangdBundle = Join-Path $Bundle 'clangd\bin\clangd.exe'
+if (Test-Path $ClangdBundle) {
+    Ok ("clangd present dans le bundle : " + [math]::Round((Get-Item $ClangdBundle).Length/1MB) + " Mo")
+} else {
+    Warn "clangd ABSENT du bundle : pas de diagnostics en direct chez l'etudiant."
+}
 
 # ---------------------------------------------------------------------------
 # 8. Zip distribuable (option)

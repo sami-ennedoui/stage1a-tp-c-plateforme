@@ -1,0 +1,19 @@
+{
+  "parcours": "be_c",
+  "etapes": [
+    "ex01_types",
+    "ex02_operateurs",
+    "ex03_menu",
+    "ex04_devine",
+    "ex05_rectangle",
+    "ex06_rectangle_sp",
+    "ex07_struct",
+    "ex08_tableaux",
+    "ex09_chaines",
+    "ex10_fichier",
+    "ex11_droite",
+    "ex12_produit_somme",
+    "ex13_permutation",
+    "ex_second_degre"
+  ]
+}

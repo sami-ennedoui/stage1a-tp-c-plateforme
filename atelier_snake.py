@@ -3,25 +3,35 @@
   python3 atelier_snake.py                    lance la fenêtre, parcours hybride
   python3 atelier_snake.py --parcours projet  lance le parcours projet
   python3 atelier_snake.py --selftest         vérifie les portes sans écran
+  python3 atelier_snake.py --releve           écrit releve.txt et l'affiche, sans écran
   python3 atelier_snake.py --smoketest        construit la fenêtre sans l'afficher
   python3 atelier_snake.py --demo             mode démo, tout débloqué, bouton Charger le corrigé
 Le mode démo et --parcours se combinent : --demo --parcours projet charge le corrigé du projet.
 """
 import sys
+from pathlib import Path
+
+# Le paquet portable Windows embarque la distribution « embeddable » de Python, qui tourne
+# en mode isolé à cause de son fichier python3xx._pth : elle n'ajoute pas d'elle-même le
+# dossier du script à sys.path, et elle ignore PYTHONPATH. Sans cette ligne, « import
+# chemins » échoue au lancement. Sans effet sur un Python normal, où le dossier y est déjà.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import chemins
 import executeur
-from modele_etape import charger_etape
+from modele_etape import ParcoursIntrouvable, charger_etape
 
 
 def _parcours_choisi() -> str:
-    """Lit --parcours <nom> ou --parcours=<nom> dans les arguments. Défaut : hybride."""
+    """Parcours à ouvrir. Priorité à --parcours <nom> ou --parcours=<nom>, sinon le
+    dernier parcours mémorisé dans reglages.json (défaut be_c au tout premier lancement)."""
     for i, a in enumerate(sys.argv):
         if a.startswith("--parcours="):
             return a.split("=", 1)[1]
         if a == "--parcours" and i + 1 < len(sys.argv):
             return sys.argv[i + 1]
-    return "hybride"
+    import reglages
+    return reglages.dernier_parcours()
 
 
 def selftest() -> int:
@@ -46,6 +56,14 @@ def selftest() -> int:
     return echecs
 
 
+def releve_cli() -> int:
+    import releve
+    contenu = releve.texte(_parcours_choisi())
+    releve.ecrire(contenu)
+    print(contenu)
+    return 0
+
+
 def smoketest() -> int:
     from PyQt6.QtWidgets import QApplication
     import fenetre
@@ -61,6 +79,8 @@ def main():
     executeur.assurer_compilateur_sur_path()
     if "--selftest" in sys.argv:
         sys.exit(1 if selftest() else 0)
+    if "--releve" in sys.argv:
+        sys.exit(releve_cli())
     if "--smoketest" in sys.argv:
         sys.exit(smoketest())
     from PyQt6.QtWidgets import QApplication
@@ -78,4 +98,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except ParcoursIntrouvable as e:
+        # message lisible plutôt qu'une trace Python : le paquet portable ne livre pas
+        # forcément tous les parcours du dépôt, et lancer.bat garde la fenêtre ouverte.
+        print(f"\n{e}\n", file=sys.stderr)
+        sys.exit(1)
