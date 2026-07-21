@@ -591,8 +591,15 @@ class Fenetre(QMainWindow):
         self.niveau = self._cran_dispo()
 
     def _compiler(self):
+        """Compile et exécute, n'affiche que la sortie console. Ne tente pas la porte et
+        ne valide pas l'étape : franchir la porte est le rôle du bouton Tester."""
+        if self.mode == "projet":
+            # parcours projet : le compiler-jouer reste le geste dédié, on le garde
+            self._tester()
+            return
         self.console.setPlainText("Compilation et exécution en cours…")
-        self._tester()
+        r = executeur.compiler_et_executer(self.etape, self.editeur.toPlainText())
+        self.console.setPlainText(r.sortie)
 
     def _tester(self):
         if self.mode == "projet":

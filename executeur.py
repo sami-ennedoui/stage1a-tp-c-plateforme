@@ -406,6 +406,53 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
                         categorie="ok")
 
 
+def compiler_et_executer(etape: Etape, code_eleve: str) -> Resultat:
+    """Compile le code de l'étudiant et, en mode programme, l'exécute. Rend la sortie
+    console brute, sans juger de porte ni valider l'étape : c'est le geste du bouton
+    Compiler, distinct de Tester qui, lui, franchit la porte.
+
+    En mode programme, on lance le binaire et on renvoie sa sortie (avertissements du
+    compilateur en tête). Dans les autres modes, où le code seul n'a pas forcément de
+    main, on se contente de vérifier qu'il compile (compilation sans édition de liens)."""
+    with tempfile.TemporaryDirectory() as d:
+        src = Path(d) / "programme.c"
+        src.write_text(code_eleve, encoding="utf-8")
+        base = ["gcc", "-Wall", "-Wno-unused-parameter", "-Wno-unused-variable",
+                f"-I{etape.dossier}"]
+
+        if etape.mode != "programme":
+            # pas forcément de main : on vérifie seulement que ça compile (-c, sans lien)
+            try:
+                comp = subprocess.run(base + ["-c", str(src), "-o", str(Path(d) / "o.o")],
+                                      capture_output=True, encoding="utf-8",
+                                      errors="replace", creationflags=_SANS_FENETRE)
+            except FileNotFoundError:
+                return _resultat_sans_gcc()
+            if comp.returncode != 0:
+                return Resultat(False, "Erreur de compilation :\n" + _masquer_chemin_temp(comp.stderr, d))
+            avert = _masquer_chemin_temp(comp.stderr, d).strip()
+            return Resultat(True, (avert + "\n\n" if avert else "") + "Compilation réussie.")
+
+        binaire = Path(d) / _nom_binaire("prog")
+        try:
+            comp = subprocess.run(base + [str(src), "-lm", "-o", str(binaire)],
+                                  capture_output=True, encoding="utf-8",
+                                  errors="replace", creationflags=_SANS_FENETRE)
+        except FileNotFoundError:
+            return _resultat_sans_gcc()
+        if comp.returncode != 0:
+            return Resultat(False, "Erreur de compilation :\n" + _masquer_chemin_temp(comp.stderr, d))
+        avert = _masquer_chemin_temp(comp.stderr, d).strip()
+        entete = "Avertissements du compilateur :\n" + avert + "\n\n" if avert else ""
+        rc, sortie, delai, tronque = _executer_cape([str(binaire)], etape.entree or "", timeout=15)
+        if delai:
+            return Resultat(False, entete + "Le programme a dépassé le délai. "
+                            "Attend-il une saisie au clavier ?")
+        note = "\n(sortie très volumineuse, tronquée pour l'affichage)" if tronque else ""
+        corps = sortie if sortie.strip() else "(aucune sortie)"
+        return Resultat(rc == 0, entete + corps + note)
+
+
 def porte_logique(espace, fichier_edite: str, code_etudiant: str,
                   harnais: Path, sources: list[str]) -> Resultat:
     """Écrit le code de l'étudiant dans l'espace, compile le harnais logique avec les sources du
