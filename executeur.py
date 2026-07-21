@@ -283,6 +283,29 @@ def porte_perso(etape: Etape, code_eleve: str) -> Resultat:
         return _compiler_et_lancer(sources, includes)
 
 
+def _cas_de_letape(etape: Etape) -> list[dict]:
+    """Normalise les attentes de l'étape en une liste de cas à éprouver.
+
+    Une étape sans champ `cas` garde exactement son comportement d'avant : un cas
+    unique bâti sur entree/sortie_attendue/sortie_motifs.
+
+    Ce qu'un cas hérite de l'étape n'est pas uniforme, et la différence est voulue.
+    Les motifs décrivent un FORMAT, vrai quelle que soit l'entrée : un cas qui n'en
+    parle pas garde ceux de l'étape, sinon il faudrait répéter les mêmes regex sur
+    chaque jeu d'entrées. Les fragments littéraux de sortie_attendue décrivent au
+    contraire une VALEUR, qui dépend de l'entrée : les hériter ferait attendre du
+    cas « entrée 10 » la réponse du cas « entrée 3 ». Un cas part donc sans aucun
+    littéral tant qu'il n'en déclare pas."""
+    if not etape.cas:
+        return [{"entree": etape.entree or "",
+                 "sortie_attendue": etape.sortie_attendue or [],
+                 "sortie_motifs": etape.sortie_motifs or []}]
+    return [{"entree": c.get("entree", etape.entree or ""),
+             "sortie_attendue": c.get("sortie_attendue", []),
+             "sortie_motifs": c.get("sortie_motifs", etape.sortie_motifs or [])}
+            for c in etape.cas]
+
+
 def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
     """Compile le programme complet de l'étudiant, qui contient son propre main, l'exécute
     avec l'entrée standard fixée par l'étape, et juge la sortie.
@@ -307,25 +330,33 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
         if comp.returncode != 0:
             return Resultat(False, "Erreur de compilation :\n" + _masquer_chemin_temp(comp.stderr, d),
                             categorie="erreur_compilation")
-        rc, sortie, delai, tronque = _executer_cape([str(binaire)], etape.entree or "", timeout=15)
-        if delai:
-            return Resultat(False, "Le programme a dépassé le délai. Attend-il une saisie au clavier ?",
-                            categorie="delai")
-        if rc != 0:
-            return Resultat(False, "Le programme s'est terminé en erreur :\n" + sortie,
-                            categorie="erreur_execution")
-        attendus = etape.sortie_attendue or []
-        manquants = [repr(f) for f in attendus if f not in sortie]
-        motifs = etape.sortie_motifs or []
-        manquants += [m.get("attendu", m["motif"]) for m in motifs
-                      if not re.search(m["motif"], sortie)]
-        if manquants:
-            return Resultat(False,
-                            "Il manque ceci dans ta sortie : " + ", ".join(manquants) +
-                            "\n\nSortie obtenue :\n" + (sortie or "(rien)"),
-                            categorie="sortie_incomplete", manquants=tuple(manquants))
+        # Un seul binaire, plusieurs executions : compiler coute cher, lancer ne coute rien.
+        cas = _cas_de_letape(etape)
+        multi = len(cas) > 1
+        derniere_sortie, tronque = "", False
+        for numero, c in enumerate(cas, start=1):
+            prefixe = f"Cas {numero} sur {len(cas)} (entrée : {c['entree']!r})\n\n" if multi else ""
+            rc, sortie, delai, tronq = _executer_cape([str(binaire)], c["entree"], timeout=15)
+            derniere_sortie, tronque = sortie, tronque or tronq
+            if delai:
+                return Resultat(False, prefixe + "Le programme a dépassé le délai. "
+                                "Attend-il une saisie au clavier ?", categorie="delai")
+            if rc != 0:
+                return Resultat(False, prefixe + "Le programme s'est terminé en erreur :\n" + sortie,
+                                categorie="erreur_execution")
+            manquants = [repr(f) for f in c["sortie_attendue"] if f not in sortie]
+            manquants += [m.get("attendu", m["motif"]) for m in c["sortie_motifs"]
+                          if not re.search(m["motif"], sortie)]
+            if manquants:
+                return Resultat(False,
+                                prefixe + "Il manque ceci dans ta sortie : " + ", ".join(manquants) +
+                                "\n\nSortie obtenue :\n" + (sortie or "(rien)"),
+                                categorie="sortie_incomplete", manquants=tuple(manquants))
         note = "" if not tronque else "\n(sortie très volumineuse, tronquée pour l'affichage)"
-        return Resultat(True, (sortie if sortie.strip() else "Le programme compile et s'exécute.") + note,
+        if multi:
+            note += f"\n({len(cas)} jeux d'entrées passés.)"
+        return Resultat(True,
+                        (derniere_sortie if derniere_sortie.strip() else "Le programme compile et s'exécute.") + note,
                         categorie="ok")
 
 

@@ -25,8 +25,15 @@ def sauver(p: Progression, fichier: Path = chemins.PROGRESSION_FICHIER) -> None:
                              encoding="utf-8")
 
 
-def etape_deverrouillee(etape: Etape, parcours: list[Etape], prog: Progression) -> bool:
-    """Déverrouillée si toutes les étapes qui la précèdent dans le parcours sont faites."""
+def etape_deverrouillee(etape: Etape, parcours: list[Etape], prog: Progression,
+                        libre: bool = False) -> bool:
+    """Déverrouillée si toutes les étapes qui la précèdent dans le parcours sont faites.
+
+    Dans un parcours libre, tout est ouvert d'emblée : on révise un point précis sans
+    refaire la file. Le déverrouillage reste porté par le parcours et non par le nom du
+    parcours, pour que le même contenu puisse servir aux deux usages."""
+    if libre:
+        return True
     for e in parcours:
         if e.id == etape.id:
             return True

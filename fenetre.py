@@ -64,6 +64,7 @@ class Fenetre(QMainWindow):
         parcours = charger_parcours_complet(chemins.contenu_racine(parcours_nom))
         self.mode = parcours.mode
         self.parcours = parcours.etapes
+        self.libre = parcours.libre
 
         titre = "Atelier Snake"
         if self.mode == "projet":
@@ -314,8 +315,9 @@ class Fenetre(QMainWindow):
         self.liste.clear()
         for e in self.parcours:
             faite = e.id in self.prog.etapes_faites
-            if self.mode == "projet":
-                # parcours projet : on travaille sur la vraie structure, tout est ouvert
+            if self.mode == "projet" or self.libre:
+                # parcours projet : on travaille sur la vraie structure, tout est ouvert.
+                # parcours libre : l'étudiant révise le point qu'il veut, sans refaire la file.
                 ouverte = True
                 marque = "[fait]" if faite else "[à faire]"
             else:
