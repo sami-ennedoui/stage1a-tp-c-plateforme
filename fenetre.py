@@ -8,21 +8,42 @@ from pathlib import Path
 from PyQt6.QtWidgets import (QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QListWidget,
                              QPlainTextEdit, QTextEdit, QPushButton, QLabel, QTabWidget,
                              QListWidgetItem, QDialog, QLineEdit, QCheckBox,
-                             QDialogButtonBox, QComboBox, QInputDialog)
+                             QDialogButtonBox, QComboBox, QInputDialog, QMessageBox)
 from PyQt6.QtCore import Qt, QThread, QTimer, pyqtSignal
 from PyQt6.QtGui import QFont, QTextCursor
 
+import auteur
 import chemins
 import coloration
+import diagnostic
 import executeur
 import lsp_clangd
 import moodle_sync
 import progression
+import reglages
 import tuteur_ia
 import theme
+from dialogue_diagnostic import DialogueDiagnostic
+from dialogue_niveaux import DialogueNiveaux
 from journal_session import Journal, JournalMuet
 from espace_projet import EspaceProjet
 from modele_etape import charger_parcours_complet
+
+
+def _chemin_lanceur() -> Path:
+    """Trouve lancer.bat, où qu'il soit selon la façon dont l'atelier tourne.
+
+    Dans le bundle figé, chemins.RACINE désigne _internal et le lanceur est au niveau
+    au-dessus ; dans un clone du dépôt il vit dans packaging\\. On rend le premier
+    qui existe, et à défaut le chemin attendu du bundle, pour que le message d'erreur
+    du dialogue désigne un endroit sensé plutôt qu'un chemin interne."""
+    candidats = [chemins.RACINE.parent / "lancer.bat",
+                 chemins.RACINE / "lancer.bat",
+                 chemins.RACINE / "packaging" / "lancer.bat"]
+    for c in candidats:
+        if c.exists():
+            return c
+    return candidats[0]
 
 
 def _titre(texte: str) -> QLabel:
@@ -254,6 +275,7 @@ class Fenetre(QMainWindow):
         conteneur.setLayout(racine)
         self.setCentralWidget(conteneur)
         self._construire_barre_affichage()
+        self._construire_menu()
 
         # anti-rebond : textChanged déclenche le timer, pas l'envoi direct
         self.editeur.textChanged.connect(self._timer_lsp.start)
@@ -266,16 +288,121 @@ class Fenetre(QMainWindow):
             self._timer_inactif.start()
         moodle_sync.rejouer()   # vide au lancement ce qui attendait d'être envoyé
 
+    def _construire_menu(self):
+        """Menu Paramètres : navigation, dossiers, diagnostic, et édition protégée.
+
+        Ce menu avait disparu de la lignée de livraison lors de la fusion b40a8db, en
+        emportant le seul point d'entrée de reglages, auteur, diagnostic et des deux
+        dialogues : les modules étaient toujours livrés, mais plus rien ne pouvait les
+        ouvrir. Repère de contrôle donné par la vérification Linux : DialogueNiveaux
+        doit être référencé deux fois dans ce fichier, import compris."""
+        menu = self.menuBar().addMenu("Paramètres")
+        menu.addAction("Changer de parcours…").triggered.connect(self._changer_parcours)
+        menu.addAction("Ouvrir le dossier du contenu").triggered.connect(
+            self._ouvrir_dossier_contenu)
+        menu.addAction("Emplacements et diagnostic…").triggered.connect(
+            self._ouvrir_diagnostic)
+        menu.addSeparator()
+        menu.addAction("Gérer les niveaux…").triggered.connect(self._ouvrir_gestion_niveaux)
+        menu.addAction("Changer le mot de passe auteur…").triggered.connect(
+            self._changer_mot_de_passe)
+
+    def _changer_parcours(self):
+        noms = diagnostic.parcours_disponibles()
+        if not noms:
+            QMessageBox.warning(self, "Aucun parcours",
+                                "Aucun dossier de contenu avec un parcours.json.")
+            return
+        depart = noms.index(self.parcours_nom) if self.parcours_nom in noms else 0
+        choix, ok = QInputDialog.getItem(
+            self, "Changer de parcours", "Parcours :", noms, depart, editable=False)
+        if not ok or not choix or choix == self.parcours_nom:
+            return
+        reglages.definir_parcours(choix)
+        QMessageBox.information(
+            self, "Parcours enregistré",
+            f"Le parcours « {choix} » s'ouvrira au prochain lancement.\n"
+            "Ferme puis relance l'atelier pour basculer dessus.")
+
+    def _ouvrir_dossier_contenu(self):
+        try:
+            diagnostic.ouvrir_dossier(chemins.contenu_racine(self.parcours_nom))
+        except OSError as e:
+            QMessageBox.warning(self, "Ouverture impossible", str(e))
+
+    def _ouvrir_diagnostic(self):
+        DialogueDiagnostic(self.parcours_nom, _chemin_lanceur(), self).exec()
+
+    def _demander_mot_de_passe(self) -> bool:
+        """Demande le mot de passe auteur. Vrai s'il est correct."""
+        saisi, ok = QInputDialog.getText(
+            self, "Mode auteur", "Mot de passe pour modifier le contenu :",
+            QLineEdit.EchoMode.Password)
+        if not ok:
+            return False
+        if not auteur.verifier(saisi):
+            QMessageBox.warning(self, "Accès refusé", "Mot de passe incorrect.")
+            return False
+        return True
+
+    def _ouvrir_gestion_niveaux(self):
+        if self.mode == "projet":
+            QMessageBox.information(
+                self, "Indisponible",
+                "La gestion des niveaux ne concerne que les parcours isolés, "
+                "pas le parcours projet.")
+            return
+        if not self._demander_mot_de_passe():
+            return
+        DialogueNiveaux(chemins.contenu_racine(self.parcours_nom), self).exec()
+        self._recharger_parcours()
+
+    def _changer_mot_de_passe(self):
+        if not self._demander_mot_de_passe():
+            return
+        nouveau, ok = QInputDialog.getText(
+            self, "Changer le mot de passe", "Nouveau mot de passe :",
+            QLineEdit.EchoMode.Password)
+        if not ok or not nouveau:
+            return
+        auteur.definir(nouveau)
+        QMessageBox.information(self, "Mot de passe changé",
+                                "Le nouveau mot de passe auteur est enregistré.")
+
+    def _recharger_parcours(self):
+        """Recharge le parcours depuis le disque après une édition du contenu."""
+        parcours = charger_parcours_complet(chemins.contenu_racine(self.parcours_nom))
+        self.parcours = parcours.etapes
+        self.libre = parcours.libre
+        if not self.parcours:
+            self.liste.clear()
+            return
+        self._remplir_liste()
+        ligne = min(self.liste.currentRow(), len(self.parcours) - 1)
+        self.liste.setCurrentRow(max(0, ligne))
+
     def _connecter_moodle(self):
         code, ok = QInputDialog.getText(
             self, "Connecter à Moodle",
             "Colle le code affiché par l'activité Moodle du TP :")
         if not ok or not code.strip():
             return
-        reussi, message = moodle_sync.appairer(code.strip())
+        reussi, message, deja_faits = moodle_sync.appairer(code.strip())
         self.console.setPlainText(message)
         if reussi:
             self.b_moodle.setText("Connecté à Moodle")
+            # Reprise multi-poste : le compagnon renvoie les étapes déjà validées par
+            # cet étudiant, peut-être depuis une autre machine. On les fusionne dans la
+            # progression locale pour déverrouiller les niveaux au bon endroit.
+            if deja_faits:
+                self.prog = progression.fusionner(self.prog, deja_faits, self.parcours)
+                progression.sauver(self.prog)
+                self.niveau = progression.cran_disponible(self.prog)
+                self._remplir_liste()
+                self._maj_cran()
+            # Renvoie tout ce qui avait été validé AVANT la connexion : sans appairage
+            # signaler_porte ne gardait rien, cette progression serait perdue.
+            moodle_sync.signaler_deja_faits(self.prog.etapes_faites)
             moodle_sync.rejouer()
 
     def _reveil(self):
