@@ -77,6 +77,7 @@ def smoketest() -> int:
 
 def main():
     executeur.assurer_compilateur_sur_path()
+    executeur.assurer_clangd_sur_path()   # diagnostics en direct même au double-clic sur l'exe
     if "--selftest" in sys.argv:
         sys.exit(1 if selftest() else 0)
     if "--releve" in sys.argv:

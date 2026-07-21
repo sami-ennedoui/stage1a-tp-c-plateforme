@@ -125,6 +125,30 @@ def assurer_compilateur_sur_path() -> None:
         os.environ["PATH"] = str(wk) + os.pathsep + os.environ.get("PATH", "")
 
 
+def assurer_clangd_sur_path() -> None:
+    """Ajoute clangd\\bin au PATH s'il est trouvé à côté de l'application. Sans elle, les
+    diagnostics en direct ne marchent QUE si l'atelier a été lancé par lancer.bat (qui met
+    clangd sur le PATH). Au double-clic direct sur l'exe, clangd\\bin n'y est pas et
+    clangd_disponible() rend False, donc le LSP s'éteint en silence alors que le clangd
+    embarqué est juste à côté. Sans effet si clangd est déjà là ou si le dossier est absent.
+
+    On essaie plusieurs racines car le dossier clangd\\ ne se range pas au même niveau
+    selon le montage : à côté de l'exe figé, à la racine du bundle portable (un cran
+    au-dessus de plateforme\\), ou à la racine à plat du dépôt."""
+    if os.name != "nt" or shutil.which("clangd"):
+        return
+    ici = Path(__file__).resolve().parent
+    candidats = []
+    if getattr(sys, "frozen", False):
+        candidats.append(Path(sys.executable).resolve().parent)
+    candidats += [ici.parent, ici]
+    for base in candidats:
+        cd = base / "clangd" / "bin"
+        if cd.is_dir():
+            os.environ["PATH"] = str(cd) + os.pathsep + os.environ.get("PATH", "")
+            return
+
+
 def _resultat_sans_gcc() -> "Resultat":
     return Resultat(False,
                     "Le compilateur gcc est introuvable.\n"
