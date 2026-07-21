@@ -6,6 +6,7 @@ Microsoft Edge en mode headless. Sortie dans docs/pdf/ (git-ignoré, regénérab
 Prérequis : Windows avec Edge, et `pip install markdown pygments`.
 Usage : python docs/build_pdf.py
 """
+import shutil
 import subprocess
 import time
 from pathlib import Path
@@ -47,28 +48,65 @@ GABARIT = ('<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">'
            "<style>{css}</style></head><body>{corps}</body></html>")
 
 
+def _rendre(html_path: Path, pdf_path: Path, profil: Path) -> bool:
+    """Imprime html_path en pdf_path via Edge headless. Robuste a un Edge deja ouvert.
+
+    Deux pieges Windows, appris a la dure :
+      - « msedge --headless » sans profil dedie DELEGUE a une instance Edge deja ouverte
+        et rend la main aussitot, sans imprimer : d'ou un --user-data-dir jetable et
+        UNIQUE par appel, qui force une instance isolee.
+      - Edge rend souvent la main avant d'avoir fini d'ecrire le PDF. On n'efface donc le
+        HTML qu'apres l'appel, et on attend que la TAILLE du PDF se stabilise avant de
+        conclure (sinon on lisait un fichier a moitie ecrit, ou la page d'erreur d'Edge)."""
+    if pdf_path.exists():
+        pdf_path.unlink()
+    subprocess.run([EDGE, "--headless", "--disable-gpu", "--no-pdf-header-footer",
+                    f"--user-data-dir={profil}",
+                    f"--print-to-pdf={pdf_path.resolve()}", html_path.as_uri()],
+                   capture_output=True, text=True)
+    derniere, stable = -1, 0
+    for _ in range(80):                     # ~20 s max
+        time.sleep(0.25)
+        if not pdf_path.exists():
+            continue
+        taille = pdf_path.stat().st_size
+        if taille > 0 and taille == derniere:
+            stable += 1
+            if stable >= 4:                 # inchangee ~1 s : Edge a fini d'ecrire
+                return True
+        else:
+            stable = 0
+        derniere = taille
+    return pdf_path.exists() and pdf_path.stat().st_size > 0
+
+
 def construire() -> int:
     OUT.mkdir(exist_ok=True)
     fichiers = sorted(DOCS.glob("*.md"))
-    reussis = 0
+    # 1. ecrire tous les HTML dans OUT/ et les GARDER le temps de tous les rendus : Edge
+    #    doit pouvoir lire le fichier au moment ou il imprime, pas seulement au lancement.
+    travaux = []
     for md in fichiers:
         corps = markdown.markdown(
             md.read_text(encoding="utf-8"),
             extensions=["tables", "fenced_code", "toc", "sane_lists"])
         html_path = OUT / (md.stem + ".html")
         html_path.write_text(GABARIT.format(css=CSS, corps=corps), encoding="utf-8")
-        pdf_path = OUT / (md.stem + ".pdf")
-        subprocess.run([EDGE, "--headless=new", "--disable-gpu", "--no-pdf-header-footer",
-                        f"--print-to-pdf={pdf_path}", html_path.as_uri()],
-                       capture_output=True, text=True)
-        for _ in range(20):
-            if pdf_path.exists() and pdf_path.stat().st_size > 0:
-                break
-            time.sleep(0.3)
-        html_path.unlink(missing_ok=True)
-        ok = pdf_path.exists() and pdf_path.stat().st_size > 0
+        travaux.append((md, html_path, OUT / (md.stem + ".pdf")))
+    # 2. rendre chacun avec un profil jetable UNIQUE (pas de delegation entre fichiers)
+    reussis = 0
+    profils = []
+    for i, (md, html_path, pdf_path) in enumerate(travaux):
+        profil = OUT / f".edge-profil-{i}"
+        profils.append(profil)
+        ok = _rendre(html_path, pdf_path, profil)
         print(f"{'OK ' if ok else 'ECHEC'} {md.name} -> {pdf_path.name}")
         reussis += ok
+    # 3. nettoyage : HTML intermediaires et profils jetables
+    for _, html_path, _ in travaux:
+        html_path.unlink(missing_ok=True)
+    for profil in profils:
+        shutil.rmtree(profil, ignore_errors=True)
     print(f"PDF generes : {reussis}/{len(fichiers)}")
     return 0 if reussis == len(fichiers) else 1
 
