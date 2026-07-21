@@ -1,77 +1,150 @@
-# Guide utilisateur, Atelier TP C
+# Atelier TP C, guide de l'etudiant
 
-Plateforme d'apprentissage du langage C. On y fait, un par un, les exercices du BE C :
-on écrit un programme, l'appli le compile, et une porte s'ouvre quand la sortie est
-correcte. Un tuteur IA aide sans jamais donner la solution.
+Un atelier de bureau pour Windows : 14 exercices d'introduction au langage C. Pour
+chaque exercice vous ecrivez un petit programme complet, vous cliquez pour compiler et
+tester, et une porte s'ouvre quand la sortie est correcte.
 
-## 1. Lancer l'appli
+![Vue d'ensemble de l'atelier](captures/01-vue-ensemble.png)
 
-Double-clique sur **`Atelier.bat`** à la racine du dossier. Une fenêtre s'ouvre sur le
-parcours en cours (au premier lancement, le parcours du BE C, `be_c`).
+## A quoi ca sert
 
-Si rien ne se passe, voir la section 6, Problèmes courants.
+Les 14 exercices couvrent les bases du langage C : les types de variables et leur
+format d'affichage, les operateurs, les structures de controle, les sous-programmes et
+le passage par valeur, les structures (struct), les tableaux, les tableaux de caracteres
+(chaines), l'ecriture dans un fichier texte, et pour finir l'equation du second degre.
 
-Pour lancer plus vite les fois suivantes : menu **Paramètres -> Emplacements et
-diagnostic -> Créer un raccourci sur le bureau**.
+Dans l'ordre, les exercices sont :
 
-## 2. La fenêtre
+1. Les types de variables
+2. Les operateurs
+3. Les structures de controle
+4. Deviner un nombre
+5. Les structures de controle (rectangle)
+6. Les sous-programmes
+7. Les structures de variables (struct)
+8. Les tableaux
+9. Les tableaux de caracteres (chaines)
+10. L'ecriture dans un fichier texte
+11. Les sous-programmes (droite)
+12. Une procedure avec passage par valeur
+13. Les sous-programmes (permutation)
+14. L'equation du second degre
 
-Trois colonnes :
+Chaque exercice est autonome : un enonce en haut, un editeur de code au centre, une
+console en bas, et un panneau tuteur optionnel a droite.
 
-- **À gauche, le parcours** : la liste des exercices. Chacun porte une marque :
-  `[ouvert]` (disponible), `[fait]` (porte franchie), `[verrou]` (pas encore débloqué).
-  Un exercice se débloque en franchissant le précédent.
-- **Au centre, le travail** : l'énoncé en haut, l'éditeur de code au milieu (onglet
-  « Mon code »), la console en bas.
-- **À droite, le tuteur IA** : le niveau d'aide et les réponses du tuteur.
+## Prerequis
 
-## 3. Faire un exercice
+Un Windows 64 bits. **Rien d'autre a installer** pour le coeur de l'atelier : Python et
+le compilateur gcc sont deja fournis dans ce dossier.
 
-1. Clique un exercice **ouvert** dans la liste. L'énoncé s'affiche, l'éditeur se remplit
-   d'un code de départ.
-2. Écris ton programme dans l'éditeur.
-3. Clique **Compiler** pour compiler et exécuter, ou **Tester** pour tenter la porte.
-4. La console affiche le résultat :
-   - **PORTE OUVERTE** (vert) : c'est réussi, l'exercice passe en `[fait]` et le suivant
-     se débloque.
-   - **PORTE FERMÉE** (rouge) : la console montre ce qui ne va pas (erreur de
-     compilation, ou sortie qui ne correspond pas à ce qui est attendu).
+## Comment lancer
 
-Si `clangd` est installé, des soulignements signalent les erreurs de C pendant que tu
-tapes. C'est optionnel : l'appli marche sans.
+1. Decompressez ce dossier ou vous voulez (le Bureau, par exemple).
+2. Double-cliquez sur **`lancer.bat`**.
 
-## 4. Le tuteur IA
+La fenetre s'ouvre sur le premier exercice.
 
-Le tuteur répond à tes questions **sans donner la solution**. Il travaille par crans
-d'aide, du plus discret au plus direct :
+Si quelque chose cloche, lancez d'abord **`diagnostic.bat`** : il verifie que gcc,
+Python et l'affichage repondent, et affiche un message clair. Une fenetre s'ouvre, lit
+le rapport, puis appuyez sur une touche pour la fermer.
 
-- **N0 à N2** : aide socratique, il pose des questions et oriente.
-- **N3** : plus direct, mais jamais le programme complet.
+## Si Windows affiche un avertissement au lancement
 
-Tu débloques des crans en avançant dans le parcours. Le menu déroulant à droite permet
-de **redescendre** sous le cran débloqué si tu veux moins d'aide. Pour poser une
-question, clique **Demander de l'aide** et écris ta question.
+L'atelier n'est pas signe par un editeur connu (c'est un projet pedagogique, pas un
+logiciel commercial). Apres un telechargement, Windows peut donc afficher **« Windows a
+protege votre PC »** (SmartScreen) au premier lancement. C'est attendu, ce n'est pas un
+virus.
 
-Le tuteur a besoin de l'outil `claude` sur le poste. S'il est absent, l'appli fonctionne
-quand même, simplement sans tuteur.
+- **Pour lancer quand meme** : cliquez sur **« Informations complementaires »** puis sur
+  **« Executer quand meme »**. Aucun droit administrateur n'est requis.
+- **Pour eviter l'avertissement des le depart** : avant de decompresser le zip, faites un
+  **clic droit sur le fichier `.zip` -> Proprietes -> cochez « Debloquer » -> OK**, puis
+  decompressez. Les fichiers extraits ne declencheront plus SmartScreen.
 
-## 5. Suivre sa progression, et Moodle
+Si votre etablissement bloque l'execution (le bouton « Executer quand meme » est absent ou
+grise), c'est une politique de securite du poste : rapprochez-vous du service informatique.
 
-La progression (exercices faits, crans débloqués) est enregistrée automatiquement, tu la
-retrouves au prochain lancement.
+## Comment ca marche, exercice par exercice
 
-Si le cours utilise Moodle, le bouton **Connecter à Moodle** en bas à gauche permet de
-coller le code d'appairage affiché par l'activité Moodle. Une fois connecté, les
-exercices franchis remontent dans le carnet de notes, et le bouton affiche ton score.
+1. Lisez l'enonce en haut de la fenetre.
+2. Ecrivez votre programme dans l'editeur.
+3. Cliquez sur **Compiler** pour compiler et executer votre programme. La console
+   affiche **uniquement la sortie** de votre programme (ou les erreurs du compilateur).
+   Ce bouton **n'ouvre pas la porte** : il vous sert a voir ce que fait votre code.
+4. Cliquez sur **Tester** pour lancer les verifications. Si votre sortie est correcte, la
+   **porte s'ouvre** et l'exercice est valide.
 
-## 6. Problèmes courants
+![Une erreur de compilation, ligne et colonne exactes](captures/02-erreur-compilation.png)
 
-- **Rien ne s'ouvre au double-clic** : Python n'est peut-être pas installé. Installe
-  Python 3.12, puis relance `Atelier.bat`.
-- **La compilation échoue toujours, même avec un bon code** : le compilateur `gcc` n'est
-  pas trouvé. Ouvre **Paramètres -> Emplacements et diagnostic** : la ligne `gcc` doit
-  être « présent ». Sinon, le dossier `w64devkit` doit être à côté de l'appli.
-- **Le tuteur ne répond pas** : l'outil `claude` est absent, c'est normal si le poste ne
-  l'a pas. Le reste de l'appli marche.
-- **Voir où sont les fichiers** : **Paramètres -> Emplacements et diagnostic** liste tous
-  les chemins utiles, chacun avec un bouton pour ouvrir le dossier.
+En cas d'erreur de compilation, le message pointe la **ligne et la colonne exactes**
+(par exemple `programme.c:6:10: error: ...`), sans chemin de fichier parasite qui
+brouillerait la lecture.
+
+Si la porte s'ouvre, c'est gagne. Sinon, le message vous explique precisement ce qui
+manque dans votre sortie (« Il manque ceci dans ta sortie : ... »), et reaffiche la
+sortie obtenue pour comparer. Les exercices sont independants : faites-les dans l'ordre
+que vous voulez.
+
+### Le niveau cache
+
+Quand vous validez certains exercices, un **niveau cache** se debloque : un **bandeau
+vert** apparait sous le titre ENONCE et un approfondissement s'ajoute au bas de l'enonce.
+Il va un peu plus loin que la consigne de base, pour ceux qui veulent creuser. Tous les
+exercices n'en ont pas ; quand il y en a un, il n'apparait qu'apres avoir franchi la
+porte.
+
+![Porte ouverte et niveau cache debloque](captures/03-porte-ouverte-niveau-cache.png)
+
+## Le tuteur IA (optionnel)
+
+Un bouton **Demander de l'aide** peut vous repondre pendant un exercice, **sans jamais
+donner la solution toute faite**. Il repond court et direct, nomme ce qui cloche et le
+concept en jeu, mais vous laisse ecrire la correction vous-meme : les lignes du corrige
+sont automatiquement masquees dans sa reponse.
+
+![Le dialogue Demander de l'aide](captures/04-demander-aide.png)
+
+Vous posez votre question, choisissez le **niveau d'aide** voulu (vous pouvez demander
+**moins** d'aide que le maximum debloque, de « juste un indice » a une « aide directe »),
+et decidez si vous **joignez votre code** et le **rendu de la console**. Par defaut ces
+deux cases sont decochees : le tuteur ne voit que l'enonce et votre question.
+
+**Le tuteur est OPTIONNEL.** Les exercices fonctionnent entierement sans lui.
+
+Pour qu'il s'active, il faut un **outil IA en ligne de commande** installe et connecte
+avec votre propre compte. Deux outils sont reconnus automatiquement :
+
+- **Claude Code** (commande `claude`)
+- **Codex** (commande `codex`)
+
+Si l'un des deux est present sur la machine et connecte, le tuteur s'allume tout seul au
+lancement (si les deux sont presents, `claude` est choisi par defaut). D'autres outils
+peuvent aussi etre utilises : c'est **votre enseignant** qui les configure. La mise en
+place du tuteur (choix et configuration de la commande) est decrite dans le guide de
+l'enseignant, voir **02-guide-auteur.md**.
+
+Sans aucun outil IA, l'atelier reste pleinement utilisable, simplement sans l'aide IA.
+
+## Les soulignements rouges pendant la frappe (optionnel)
+
+Selon votre installation, vous pouvez voir apparaitre des **soulignements rouges** sous
+certaines parties de votre code pendant que vous tapez : ce sont des diagnostics en
+direct, qui signalent une erreur probable avant meme de compiler. C'est un confort
+optionnel. S'il n'est pas disponible, un petit message l'indique et rien n'est casse :
+vous compilez et testez exactement de la meme facon.
+
+## En cas de probleme
+
+- **La fenetre ne s'ouvre pas** : lancez `diagnostic.bat`, il indique ce qui manque.
+- **Une erreur « gcc introuvable »** : lancez toujours l'atelier par `lancer.bat` (il
+  ajoute le compilateur au PATH). Verifiez aussi que le dossier `w64devkit` est bien
+  reste a cote de l'application.
+- **Le tuteur reste eteint** : c'est normal si aucun outil IA n'est installe ou
+  connecte. L'atelier fonctionne sans.
+
+## Pour l'enseignant
+
+Le reglage de l'affichage progressif ou de l'ouverture de tous les exercices, le mot de
+passe auteur, la configuration de la commande du tuteur, l'ajout d'un parcours et le
+suivi Moodle sont reserves a l'enseignant : voir **02-guide-auteur.md**.

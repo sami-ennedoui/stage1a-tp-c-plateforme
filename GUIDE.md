@@ -85,7 +85,7 @@ rendu de la console. Par defaut, le tuteur ne voit que l'enonce et votre questio
 **Le tuteur est OPTIONNEL.** Les exercices fonctionnent entierement sans lui.
 
 Pour l'activer, il faut un outil IA en ligne de commande, installe et connecte avec
-votre propre compte. Deux sont reconnus :
+votre propre compte. Deux sont **reconnus automatiquement** :
 
 - **Claude Code** (commande `claude`)
 - **Codex** (commande `codex`)
@@ -99,6 +99,13 @@ machine (dans le PATH) et connecte, le tuteur s'allume tout seul au lancement.
 - Si les deux outils sont presents, Claude est choisi par defaut. Pour forcer l'un ou
   l'autre, definissez la variable d'environnement `ATELIER_AI` a `claude` ou a `codex`
   avant de lancer `lancer.bat`.
+
+**Le tuteur n'est pas limite a ces deux outils.** Claude et Codex sont seulement ceux
+qu'il detecte tout seul ; **n'importe quel** outil IA en ligne de commande peut etre
+branche, sans toucher au code, via le menu **Parametres -> « Commande du tuteur… »** (on
+y saisit la commande a lancer, avec `{prompt}` a l'endroit ou placer la question, sinon
+elle est ajoutee a la fin). C'est un reglage cote enseignant : la marche a suivre
+complete est dans le guide de l'enseignant (`docs/02-guide-auteur.md`).
 
 Note : ces outils sont payants et n'ont pas d'essai gratuit dedie. Sans aucun des deux,
 l'atelier reste pleinement utilisable, simplement sans l'aide IA.
