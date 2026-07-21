@@ -60,17 +60,22 @@ def _executer_cape(cmd, entree="", timeout=15, cap=_TAILLE_MAX_SORTIE):
     etat = {"tronque": False}
 
     def _lire():
-        while True:
-            bloc = proc.stdout.read(65536)
-            if not bloc:
-                break
-            reste = cap - len(tampon)
-            if reste > 0:
-                tampon.extend(bloc[:reste])
-            if len(tampon) >= cap:
-                etat["tronque"] = True
-            # on continue a vider le tube meme apres le plafond, sinon le programme
-            # se bloque sur un tube plein et on ne peut plus le tuer proprement.
+        try:
+            while True:
+                bloc = proc.stdout.read(65536)
+                if not bloc:
+                    break
+                reste = cap - len(tampon)
+                if reste > 0:
+                    tampon.extend(bloc[:reste])
+                if len(tampon) >= cap:
+                    etat["tronque"] = True
+                # on continue a vider le tube meme apres le plafond, sinon le programme
+                # se bloque sur un tube plein et on ne peut plus le tuer proprement.
+        except (ValueError, OSError):
+            # le tube a ete ferme sous nos pieds : cas du delai depasse, ou le fil
+            # survit a la fermeture ci-dessous. Rien a sauver, on sort sans bruit.
+            pass
 
     lecteur = threading.Thread(target=_lire, daemon=True)
     lecteur.start()
@@ -91,6 +96,15 @@ def _executer_cape(cmd, entree="", timeout=15, cap=_TAILLE_MAX_SORTIE):
         proc.kill()
         proc.wait()
     lecteur.join(timeout=2)
+    # Fermeture explicite du tube. Sans elle l'objet fichier n'est libere qu'au passage
+    # du ramasse-miettes : ca se voit d'abord comme un ResourceWarning dans les tests,
+    # mais le vrai cout est ailleurs. L'atelier appelle cette fonction a chaque « Tester »,
+    # et une session d'etudiant en enchaine des dizaines : autant de descripteurs retenus
+    # sans raison dans un processus qui reste ouvert des heures.
+    try:
+        proc.stdout.close()
+    except OSError:
+        pass
     # decodage + fins de ligne universelles (comme le faisait subprocess.run en mode texte) :
     # sous Windows le programme C emet \r\n, mais les fragments attendus utilisent \n.
     texte = tampon.decode("utf-8", errors="replace").replace("\r\n", "\n").replace("\r", "\n")
