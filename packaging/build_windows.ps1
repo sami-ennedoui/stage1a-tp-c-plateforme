@@ -10,7 +10,7 @@
     3. w64devkit (gcc)   -> telecharge + auto-extrait a la racine du depot si absent
     4. Exe (PyInstaller) -> .build\dist\TP-C-perso\
     5. Captures + PDF    -> outils\captures_doc.py puis outils\doc_pdf.py
-    6. Bundle assemble   -> _bundle\TP-C-perso\ (exe, w64devkit, lanceurs, README+pdf, captures)
+    6. Bundle assemble   -> _bundle\TP-C-perso\ (exe, w64devkit elague, lanceurs, README+pdf, captures)
     7. Verification      -> l'exe assemble demarre (mode offscreen)
     8. Zip (option -Zip) -> _bundle\TP-C-perso.zip, pret pour une Release GitHub
 
@@ -184,6 +184,61 @@ New-Item -ItemType Directory -Force -Path $Bundle | Out-Null
 Info "Assemblage du bundle dans $Bundle ..."
 Copy-Item "$ExeSrc\*" $Bundle -Recurse -Force
 Copy-Item $Wk (Join-Path $Bundle 'w64devkit') -Recurse -Force
+
+# Elagage de la COPIE livree seulement : le w64devkit du depot reste complet, un
+# developpeur garde g++, gdb et cmake sous la main. Ce qui part ici ne sert a aucun
+# moment au parcours be_c, seul parcours embarque.
+#
+# 567 Mo -> 319 Mo, mesure. Ce n'est pas de la cosmetique : le bundle se telecharge
+# par une promo entiere sur le reseau de l'ecole.
+#
+# Choix volontairement conservateur. On ne retire que ce dont l'absence est
+# demontrable : les compilateurs d'autres langages (Fortran, C++) et leurs
+# bibliotheques, l'outillage de build tiers (cmake, ninja, ccache), le debogueur,
+# l'editeur vim, et les sources .idl qui ne servent qu'a widl. On GARDE tout le
+# reste, notamment lib\ et include\ : les bibliotheques d'import Windows et les
+# en-tetes sont ce que l'editeur de liens et clangd consultent, et trier dedans
+# demanderait une certitude qu'on n'a pas. c++filt est garde aussi, c'est un
+# demangleur de binutils et pas un compilateur -- coupures a l'aveugle s'abstenir.
+$WkB = Join-Path $Bundle 'w64devkit'
+$binInutiles = @('cmake.exe', 'ccmake.exe', 'cpack.exe', 'ctest.exe', 'cmcldeps.exe',
+                 'dcmake.exe', 'ninja.exe', 'gdb.exe', 'gdbserver.exe', 'ccache.exe',
+                 'ctags.exe', 'quilt.exe',
+                 'g++.exe', 'c++.exe', 'x86_64-w64-mingw32-c++.exe',
+                 'gfortran.exe', 'x86_64-w64-mingw32-gfortran.exe')
+$libexecInutiles = @('f951.exe', 'cc1plus.exe')      # Fortran et C++ proprement dits
+$poidsAvant = (Get-ChildItem $WkB -Recurse -File | Measure-Object Length -Sum).Sum
+
+$aRetirer = @()
+foreach ($d in @('share\vim', 'share\cmake-4.3')) {
+    $p = Join-Path $WkB $d
+    if (Test-Path $p) { $aRetirer += Get-Item $p }
+}
+$aRetirer += Get-ChildItem (Join-Path $WkB 'bin') -File |
+             Where-Object { $binInutiles -contains $_.Name }
+$aRetirer += Get-ChildItem (Join-Path $WkB 'libexec') -Recurse -File |
+             Where-Object { $libexecInutiles -contains $_.Name }
+$aRetirer += Get-ChildItem (Join-Path $WkB 'lib') -Recurse -File |
+             Where-Object { $_.Name -like 'libstdc++*' -or $_.Name -like 'libsupc++*' -or
+                            $_.Name -like 'libgfortran*' -or $_.Name -like 'libcaf*' }
+$aRetirer += Get-ChildItem $WkB -Recurse -File -Include '*.idl'
+
+foreach ($c in $aRetirer) {
+    if ($c -and (Test-Path -LiteralPath $c.FullName)) {
+        Remove-Item -LiteralPath $c.FullName -Recurse -Force -ErrorAction SilentlyContinue
+    }
+}
+$poidsApres = (Get-ChildItem $WkB -Recurse -File | Measure-Object Length -Sum).Sum
+Ok ("w64devkit elague : {0:N0} Mo -> {1:N0} Mo" -f ($poidsAvant/1MB), ($poidsApres/1MB))
+
+# gcc doit encore repondre APRES l'elagage, et depuis la copie livree. Sans ce
+# controle, une coupure de trop ne se verrait qu'a l'ouverture du zip par un etudiant.
+$GccBundle = Join-Path $WkB 'bin\gcc.exe'
+if (-not (Test-Path $GccBundle)) { throw "Elagage : gcc.exe a disparu de la copie livree." }
+$vGcc = & $GccBundle --version 2>&1 | Select-Object -First 1
+if ($LASTEXITCODE -ne 0) { throw "Elagage : le gcc livre ne repond plus (code $LASTEXITCODE)." }
+Ok "gcc livre apres elagage : $vGcc"
+
 if (Test-Path $Cd) { Copy-Item $Cd (Join-Path $Bundle 'clangd') -Recurse -Force }
 Copy-Item "$Repo\packaging\lancer.bat" $Bundle -Force
 Copy-Item "$Repo\packaging\diagnostic.bat" $Bundle -Force
