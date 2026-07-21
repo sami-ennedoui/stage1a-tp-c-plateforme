@@ -23,8 +23,26 @@ Telechargez le bundle pret a lancer depuis la page des Releases :
 3. Double-cliquez sur `lancer.bat`.
 
 Le bundle est **autonome** : Python et gcc sont dedans, rien d'autre a installer, pas
-de droits admin requis. Le guide utilisateur complet est fourni dans le zip
-(`README.md`) et lisible ici : **[GUIDE.md](GUIDE.md)**.
+de droits admin requis. Le guide utilisateur est fourni dans le zip (`README.md`) et
+detaille dans la documentation ci-dessous.
+
+## Documentation
+
+Toute la documentation est dans **[`docs/`](docs/)** (versions PDF pretes a imprimer
+dans [`docs/pdf/`](docs/pdf/)) :
+
+- **[Guide utilisateur](docs/01-guide-utilisateur.md)** — pour l'etudiant : lancer
+  l'atelier, faire les exercices, Compiler / Tester, le tuteur IA.
+- **[Guide enseignant / auteur](docs/02-guide-auteur.md)** — menu Parametres, mot de
+  passe auteur, « Tout debloquer », ajout d'un parcours, configuration du tuteur
+  (n'importe quel outil en ligne de commande), suivi Moodle.
+- **[Vue d'ensemble du projet](docs/03-README-projet.md)** — contexte et grandes lignes.
+- **[Documentation technique](docs/04-doc-technique.md)** — pour reprendre le
+  developpement : carte des modules, modele de contenu, build, tests.
+
+Pour aller plus loin : **[DOC-gestion-niveaux.md](DOC-gestion-niveaux.md)** (format
+detaille des niveaux et de `meta.json`) et **[GUIDE.md](GUIDE.md)** (le guide livre dans
+le bundle sous le nom `README.md`).
 
 ## Reconstruire le bundle depuis le source
 
@@ -41,5 +59,6 @@ assemblage du bundle, regeneration de la documentation.
 - `outils/` : bancs de test du correcteur et du tuteur, et le pipeline de
   documentation (`captures_doc.py`, `doc_pdf.py`).
 - `tests/` : tests unitaires.
-- **[GUIDE.md](GUIDE.md)** : le guide utilisateur (aussi livre dans le bundle).
+- `docs/` : la **documentation** (utilisateur, enseignant, projet, technique) et ses
+  PDF — voir la section [Documentation](#documentation) ci-dessus.
 - **[RECONSTRUCTION.md](RECONSTRUCTION.md)** : mode d'emploi de reconstruction.
