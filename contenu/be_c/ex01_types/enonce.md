@@ -2,7 +2,7 @@
 
 1 - Créez un programme principal où vous déclarez et initialisez une variable de type `short`, une variable de type `int`, une variable de type `char`, une variable de type `float` et une variable de type `double`. (slides 8 à 10)
 
-2 - Utilisez les `printf` et `scanf` associés à ces différents types de variable (`%c`, `%f`, `%i`, `%d`, `%e`). (slides 23 à 25)
+2 - Affichez chaque variable avec le `printf` et le spécificateur de format qui lui correspond (`%c`, `%f`, `%i`, `%d`, `%e`). Ce sont les mêmes spécificateurs qu'on utilise avec `scanf` pour la saisie, mais ici les valeurs sont fixées dans le code : il n'y a rien à lire au clavier. (slides 23 à 25)
 
 Affiche une ligne par variable, préfixée par le nom du type, par exemple :
 
