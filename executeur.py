@@ -283,6 +283,51 @@ def porte_perso(etape: Etape, code_eleve: str) -> Resultat:
         return _compiler_et_lancer(sources, includes)
 
 
+def _fin_numerique(fragment: str) -> str:
+    """Portion numérique finale d'un fragment : 'a+b = 5' -> '5', 'a = 9.9' -> '9.9'."""
+    i = len(fragment)
+    while i > 0 and (fragment[i - 1].isdigit() or fragment[i - 1] == "."):
+        i -= 1
+    return fragment[i:]
+
+
+def fragment_present(fragment: str, sortie: str) -> bool:
+    """Cherche un fragment littéral dans la sortie, sans se laisser abuser par un
+    nombre plus long.
+
+    Mesuré sur ex12, qui attend « La somme de a+b = 5 » : un programme affichant
+    « La somme de a+b = 50 » franchissait la porte, parce que le fragment attendu
+    est bel et bien une sous-chaîne du résultat faux. Un étudiant dont le calcul se
+    trompe d'un facteur dix était donc validé.
+
+    La frontière n'est exigée que si le fragment se termine par un chiffre. Ailleurs
+    un fragment peut légitimement être le début d'une ligne plus longue, et plusieurs
+    étapes en dépendent : ex05 attend un bloc de tirets, ex09 des débuts de phrase.
+
+    Restait un cas que la première version de ce garde-fou cassait, et que les tests
+    ont attrapé : le parcours tp_c attend « 9.9 » là où printf %f écrit « 9.900000 ».
+    Des zéros qui suivent une décimale ne changent pas la valeur, alors que le chiffre
+    qui allonge un entier la change. On tolère donc les chiffres de queue seulement
+    s'ils sont tous des zéros ET que le nombre du fragment porte déjà une décimale."""
+    if not fragment:
+        return True
+    if not fragment[-1].isdigit():
+        return fragment in sortie
+    decimal = "." in _fin_numerique(fragment)
+    depart = 0
+    while True:
+        i = sortie.find(fragment, depart)
+        if i < 0:
+            return False
+        apres = i + len(fragment)
+        suite = ""
+        while apres + len(suite) < len(sortie) and sortie[apres + len(suite)].isdigit():
+            suite += sortie[apres + len(suite)]
+        if not suite or (decimal and set(suite) == {"0"}):
+            return True
+        depart = i + 1        # cette occurrence allonge un nombre, on cherche plus loin
+
+
 def _cas_de_letape(etape: Etape) -> list[dict]:
     """Normalise les attentes de l'étape en une liste de cas à éprouver.
 
@@ -344,7 +389,8 @@ def porte_programme(etape: Etape, code_eleve: str) -> Resultat:
             if rc != 0:
                 return Resultat(False, prefixe + "Le programme s'est terminé en erreur :\n" + sortie,
                                 categorie="erreur_execution")
-            manquants = [repr(f) for f in c["sortie_attendue"] if f not in sortie]
+            manquants = [repr(f) for f in c["sortie_attendue"]
+                         if not fragment_present(f, sortie)]
             manquants += [m.get("attendu", m["motif"]) for m in c["sortie_motifs"]
                           if not re.search(m["motif"], sortie)]
             if manquants:

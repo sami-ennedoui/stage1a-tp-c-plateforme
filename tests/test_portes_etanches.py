@@ -114,6 +114,46 @@ class TestPorteMultiCas(unittest.TestCase):
         self.assertTrue(executeur.porte_programme(e, VRAI_CALCUL).ok)
 
 
+class TestFragmentNumerique(unittest.TestCase):
+    """Un resultat faux d'un facteur dix ne doit pas passer pour le bon.
+
+    Mesure sur ex12_produit_somme, qui attend « La somme de a+b = 5 » : un programme
+    affichant 50 franchissait la porte, le fragment attendu etant une sous-chaine du
+    resultat faux."""
+
+    def test_un_nombre_plus_long_ne_satisfait_pas_le_fragment(self):
+        self.assertFalse(executeur.fragment_present("a+b = 5", "a+b = 50\n"))
+        self.assertFalse(executeur.fragment_present("case [4] = 20", "case [4] = 200\n"))
+
+    def test_le_bon_nombre_passe(self):
+        self.assertTrue(executeur.fragment_present("a+b = 5", "a+b = 5\n"))
+        self.assertTrue(executeur.fragment_present("a+b = 5", "La somme de a+b = 5 ok"))
+
+    def test_une_occurrence_correcte_plus_loin_suffit(self):
+        # La premiere occurrence est un prefixe de nombre, la seconde est la bonne :
+        # on ne doit pas s'arreter a la premiere.
+        self.assertTrue(executeur.fragment_present("x = 1", "x = 12\nx = 1\n"))
+
+    def test_les_zeros_de_queue_d_un_decimal_sont_tolerés(self):
+        # Cas casse par ma premiere version, rattrape par la suite tp_c : l'etape
+        # attend « 9.9 » et printf %f ecrit « 9.900000 ». Des zeros apres une
+        # decimale ne changent pas la valeur, contrairement au chiffre qui allonge
+        # un entier.
+        self.assertTrue(executeur.fragment_present("a = 9.9", "a = 9.900000\n"))
+        self.assertTrue(executeur.fragment_present("x1 = 3.0", "x1 = 3.000000,"))
+
+    def test_un_chiffre_significatif_apres_la_decimale_refuse(self):
+        # 9.99 n'est pas 9.9 : la tolerance ne porte que sur les zeros.
+        self.assertFalse(executeur.fragment_present("a = 9.9", "a = 9.99\n"))
+
+    def test_un_fragment_ne_finissant_pas_par_un_chiffre_reste_un_prefixe_valide(self):
+        # Plusieurs etapes en dependent : ex05 attend un bloc de tirets, ex09 des
+        # debuts de phrase. Exiger une frontiere partout les casserait.
+        self.assertTrue(executeur.fragment_present("Nombre de lignes ?",
+                                                   "Nombre de lignes ? 6\n"))
+        self.assertTrue(executeur.fragment_present("----", "--------\n"))
+
+
 class TestParcoursLibre(unittest.TestCase):
     def setUp(self):
         self.d = tempfile.TemporaryDirectory()
