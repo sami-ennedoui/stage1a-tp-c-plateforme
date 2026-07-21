@@ -103,6 +103,27 @@ machine (dans le PATH) et connecte, le tuteur s'allume tout seul au lancement.
 Note : ces outils sont payants et n'ont pas d'essai gratuit dedie. Sans aucun des deux,
 l'atelier reste pleinement utilisable, simplement sans l'aide IA.
 
+## Pour l'enseignant : ouvrir tous les exercices d'un coup
+
+Par defaut l'atelier est progressif : l'etudiant ouvre les exercices un a un, chacun se
+debloquant quand le precedent est valide. Pour une demonstration, une seance de reprise
+ou un examen ou tout doit etre accessible, vous pouvez tout ouvrir d'un seul geste.
+
+Dans le menu **Parametres** (en haut de la fenetre), cochez **« Tout debloquer (mode
+enseignant) »**. Un mot de passe est demande (le **mot de passe auteur**, `auteur` par
+defaut ; changez-le via **Parametres -> Changer le mot de passe auteur…**). Une fois
+coche :
+
+- **tous les exercices sont ouverts**, dans l'ordre que vous voulez, comme en mode demo ;
+- **les quatre niveaux du tuteur** sont disponibles tout de suite, sans avoir a les gagner.
+
+Le reglage **reste actif au prochain lancement**. Pour revenir au parcours progressif de
+l'etudiant, il suffit de **decocher** la case (aucun mot de passe demande pour refermer).
+
+**La progression reelle de l'etudiant n'est pas modifiee** : « tout debloquer » ne fait
+que lever le verrouillage a l'affichage. Les exercices deja valides le restent, ceux qui
+ne le sont pas ne sont pas marques comme faits, et rien de faux n'est envoye a Moodle.
+
 ## En cas de probleme
 
 - **La fenetre ne s'ouvre pas** : lancez `diagnostic.bat`, il indique ce qui manque.

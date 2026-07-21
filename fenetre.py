@@ -86,6 +86,10 @@ class Fenetre(QMainWindow):
         self.mode = parcours.mode
         self.parcours = parcours.etapes
         self.libre = parcours.libre
+        # mode enseignant/démo mémorisé : tout ouvert, tous les crans du tuteur. Activé
+        # depuis le menu Paramètres (protégé par le mot de passe auteur). N'altère pas la
+        # progression réelle : le décocher rend le parcours progressif tel qu'il était.
+        self.tout_debloque = reglages.tout_debloque()
 
         titre = "Atelier Snake"
         if self.mode == "projet":
@@ -132,8 +136,9 @@ class Fenetre(QMainWindow):
         else:
             self.prog = progression.charger()
         self.etape = self.parcours[0]
-        # cran restauré depuis l'état sauvegardé, l'étudiant qui revient garde son niveau
-        self.niveau = 0 if self.mode == "projet" else progression.cran_disponible(self.prog)
+        # cran restauré depuis l'état sauvegardé, l'étudiant qui revient garde son niveau ;
+        # _cran_dispo tient compte du mode « tout débloqué » (tous les crans ouverts)
+        self.niveau = 0 if self.mode == "projet" else self._cran_dispo()
 
         self.liste = QListWidget()
         self.liste.currentRowChanged.connect(self._changer_etape)
@@ -313,6 +318,15 @@ class Fenetre(QMainWindow):
         menu.addAction("Commande du tuteur…").triggered.connect(self._changer_commande_ia)
         menu.addSeparator()
         menu.addAction("Gérer les niveaux…").triggered.connect(self._ouvrir_gestion_niveaux)
+        # Tout débloquer : mode enseignant/démo, toutes les étapes ouvertes et tous les
+        # crans du tuteur. Coché avant de connecter le signal pour ne pas déclencher la
+        # demande de mot de passe au démarrage. Sans objet en parcours projet (déjà ouvert).
+        self.action_tout_debloque = menu.addAction("Tout débloquer (mode enseignant)")
+        self.action_tout_debloque.setCheckable(True)
+        self.action_tout_debloque.setChecked(self.tout_debloque)
+        self.action_tout_debloque.setEnabled(self.mode != "projet")
+        self.action_tout_debloque.toggled.connect(self._basculer_tout_debloque)
+        menu.addSeparator()
         menu.addAction("Changer le mot de passe auteur…").triggered.connect(
             self._changer_mot_de_passe)
 
@@ -344,6 +358,27 @@ class Fenetre(QMainWindow):
                 "Le tuteur est réactivé dans les réglages, mais aucun moteur IA n'a été "
                 "trouvé sur ce poste. Renseigne « Commande du tuteur… » ou installe un "
                 "moteur pour que l'aide soit réellement disponible.")
+
+    def _basculer_tout_debloque(self, actif: bool):
+        """Active/désactive le mode enseignant « tout débloqué ». L'activation exige le
+        mot de passe auteur ; la désactivation ne fait que re-verrouiller, sans mot de passe."""
+        if actif and not self._demander_mot_de_passe():
+            # annulation ou mot de passe faux : on rétablit la case sans rien changer
+            self.action_tout_debloque.blockSignals(True)
+            self.action_tout_debloque.setChecked(False)
+            self.action_tout_debloque.blockSignals(False)
+            return
+        reglages.definir_tout_debloque(actif)
+        self.tout_debloque = actif
+        self._maj_cran()             # ouvre (ou referme) les crans du tuteur
+        self._remplir_liste()        # ouvre (ou reverrouille) les étapes à l'affichage
+        if actif:
+            QMessageBox.information(
+                self, "Tout débloqué",
+                "Toutes les étapes sont ouvertes et les quatre crans du tuteur "
+                "disponibles, comme en mode démo. La progression réelle de l'étudiant "
+                "n'est pas modifiée. Ce réglage reste actif au prochain lancement ; "
+                "décoche-le pour revenir au parcours progressif.")
 
     def _changer_commande_ia(self):
         actuelle = reglages.commande_ia()
@@ -509,9 +544,10 @@ class Fenetre(QMainWindow):
         self.liste.clear()
         for e in self.parcours:
             faite = e.id in self.prog.etapes_faites
-            if self.mode == "projet" or self.libre:
+            if self.mode == "projet" or self.libre or self.tout_debloque:
                 # parcours projet : on travaille sur la vraie structure, tout est ouvert.
                 # parcours libre : l'étudiant révise le point qu'il veut, sans refaire la file.
+                # tout débloqué (enseignant) : verrouillage levé, comme en démo.
                 ouverte = True
                 marque = "[fait]" if faite else "[à faire]"
             else:
@@ -582,8 +618,11 @@ class Fenetre(QMainWindow):
         self._maj_cran()
 
     def _cran_dispo(self):
-        # parcours projet : les quatre crans d'aide sont ouverts d'emblée, pas de déverrouillage
-        return 3 if self.mode == "projet" else progression.cran_disponible(self.prog)
+        # parcours projet et mode « tout débloqué » : les quatre crans d'aide sont ouverts
+        # d'emblée, pas de déverrouillage progressif
+        if self.mode == "projet" or self.tout_debloque:
+            return 3
+        return progression.cran_disponible(self.prog)
 
     def _maj_cran(self):
         # le tuteur utilise automatiquement le meilleur cran débloqué ; l'aide devient

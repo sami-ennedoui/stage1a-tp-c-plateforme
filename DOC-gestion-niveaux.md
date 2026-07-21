@@ -122,6 +122,15 @@ Le menu **Paramètres** contient, en plus de la gestion des niveaux :
 - **Emplacements et diagnostic…** : version fenêtre de l'ancien `diagnostic.bat`. Montre
   les chemins clés (appli, contenu, progression, w64devkit) et l'état présent/absent de
   `gcc`, `clangd`, `claude`, chacun avec un bouton « Ouvrir le dossier ».
+- **Tout débloquer (mode enseignant)** : case à cocher qui ouvre toutes les étapes et les
+  quatre crans du tuteur d'un coup, comme en mode démo. L'**activation exige le mot de
+  passe auteur** ; la décocher (retour au parcours progressif) n'en demande pas. Le réglage
+  est mémorisé dans `reglages.json` (clé `tout_debloque`) et **survit au relancement**.
+  Point clé : il ne touche **pas** la progression réelle — il lève seulement le verrou à
+  l'affichage (`fenetre._remplir_liste` / `_cran_dispo`). Aucune étape n'est faussement
+  marquée « faite », donc rien de faux ne part vers Moodle. En parcours projet l'entrée est
+  grisée (tout y est déjà ouvert). Réglage : `reglages.tout_debloque` /
+  `definir_tout_debloque` ; bascule : `fenetre._basculer_tout_debloque`.
 
 `reglages.json` est **local et git-ignoré**, comme `auteur.json`.
 

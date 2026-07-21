@@ -72,3 +72,25 @@ def definir_commande_ia(commande: str) -> None:
     donnees = charger()
     donnees["commande_ia"] = str(commande or "")
     _sauver(donnees)
+
+
+# Mode « tout débloqué » (enseignant/démo) : quand vrai, toutes les étapes sont ouvertes
+# et les quatre crans du tuteur disponibles, sans qu'il faille les gagner. L'activation
+# est protégée par le mot de passe auteur (voir fenetre). Faux = parcours progressif.
+TOUT_DEBLOQUE_DEFAUT = False
+
+
+def tout_debloque(defaut: bool = TOUT_DEBLOQUE_DEFAUT) -> bool:
+    """Vrai si l'atelier doit tout ouvrir d'emblée, comme en mode démo.
+
+    Réglé par l'enseignant depuis le menu Paramètres (activation protégée par le mot de
+    passe auteur). N'efface pas la progression réelle de l'étudiant : il ne fait que lever
+    le verrouillage à l'affichage et ouvrir les crans du tuteur. Le décocher rend le
+    parcours progressif exactement tel qu'il était."""
+    return bool(charger().get("tout_debloque", defaut))
+
+
+def definir_tout_debloque(actif: bool) -> None:
+    donnees = charger()
+    donnees["tout_debloque"] = bool(actif)
+    _sauver(donnees)
