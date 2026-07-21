@@ -37,6 +37,89 @@ niveau **détaché** (retiré du parcours, mais conservé sur le disque).
 | `noeud_cours`     | texte  | Rappel du point de cours visé, sert au tuteur                   |
 | `sortie_attendue` | liste  | Fragments qui doivent figurer dans la sortie (mode `programme`) |
 
+## Ajouter un parcours
+
+Un **parcours** (un ensemble d'exercices, par exemple les 14 du BE C) s'ajoute **sans
+toucher au code** : il suffit de déposer un dossier dans `contenu/`. Aucune inscription,
+aucun enregistrement : la découverte est automatique.
+
+### Règle de découverte
+
+`diagnostic.parcours_disponibles()` liste **tout sous-dossier de `contenu/` qui contient
+un `parcours.json`** (et rien d'autre : un dossier sans ce fichier est ignoré). C'est
+exactement ce que propose le menu **Paramètres → Changer de parcours…**
+(`fenetre._changer_parcours`).
+
+### Le fichier `parcours.json`
+
+Lu par `modele_etape.charger_parcours_complet`. Deux clés :
+
+| Clé     | Type  | Sens                                                                    |
+|---------|-------|-------------------------------------------------------------------------|
+| `ordre` | liste | Noms des dossiers d'étapes, dans l'ordre d'affichage                     |
+| `mode`  | texte | `"isole"` (exercices indépendants) ou `"projet"` ; défaut `"isole"`      |
+| `libre` | booléen | Optionnel, défaut `false`. À `true`, toutes les étapes sont ouvertes d'emblée, sans franchir les portes précédentes (`Parcours.libre`, testé dans `fenetre.py` : `if self.mode == "projet" or self.libre or self.tout_debloque`). Utile pour un parcours de révision sur le même contenu qu'un parcours étanche. |
+
+Exemple minimal complet (parcours isolé d'un seul exercice) :
+
+```json
+{
+  "ordre": ["ex01_intro"],
+  "mode": "isole"
+}
+```
+
+### Les étapes
+
+Chaque nom cité dans `ordre` est un sous-dossier d'étape, au **format commun décrit plus
+haut** (« Ce qu'est un niveau » : `meta.json` + `enonce.md` + `starter.c` + `corrige.c`,
+`approfondissement.md` optionnel ; les champs de `meta.json` figurent dans le tableau
+ci-dessus). Le plus simple pour démarrer est de copier une étape existante de `be_c`
+(par exemple `contenu/be_c/ex01_types/`) et de l'adapter, ou d'utiliser l'outil d'auteur
+(**Gérer les niveaux… → Ajouter**), qui crée le dossier et l'insère dans `ordre`.
+
+### Où poser le dossier : source vs paquet livré
+
+`chemins.RACINE = Path(__file__).resolve().parent`, et
+`chemins.contenu_racine(nom) = RACINE/"contenu"/nom`.
+
+- **Dépôt / checkout source** : `<repo>\contenu\<nom>\`.
+- **Exe PyInstaller livré** : les modules Python vivent dans `_internal\`, donc le contenu
+  est à `TP-C-perso\_internal\contenu\<nom>\`. Un enseignant qui ajoute un parcours au
+  produit livré dépose son dossier là.
+
+### Sélection et effet au lancement
+
+`Changer de parcours…` mémorise le choix dans `reglages.json` via
+`reglages.definir_parcours` (`reglages.json` est **local et git-ignoré**). Le parcours
+d'ouverture est résolu par `atelier_snake._parcours_choisi()` : **priorité à l'argument
+`--parcours`, sinon `reglages.dernier_parcours()`** (défaut `be_c`, `reglages.PARCOURS_DEFAUT`).
+
+Conséquence importante selon le lanceur :
+
+- **Depuis les sources** (`Atelier.bat`, qui lance `atelier_snake.py` **sans** `--parcours`) :
+  le choix du menu est bien pris en compte **au prochain lancement**. C'est le cas nominal.
+- **Depuis l'exe livré** : le point d'entrée `packaging/entree_be_c.py` **force
+  `--parcours be_c`** quand aucun `--parcours` n'est passé, et `lancer.bat` passe déjà
+  `--parcours be_c`. Comme `--parcours` est prioritaire sur `reglages.json`, le choix
+  mémorisé par le menu **n'a pas d'effet** dans le paquet livré : l'exe ouvre toujours
+  `be_c`. Pour ouvrir un autre parcours dans le livrable, il faut **éditer `lancer.bat`**
+  et remplacer `--parcours be_c` par `--parcours <nom>` (l'argument, non `be_c`, est alors
+  respecté par `entree_be_c.py`).
+
+### Empaqueter un nouveau parcours
+
+Le build ne bundle **que `be_c`** : voir `packaging/build_windows.ps1`, ligne
+`--add-data "$Repo\contenu\be_c;contenu/be_c"`. Un nouveau parcours n'est donc pas dans
+l'exe livré tant que l'une des deux choses n'est pas faite :
+
+- **le copier après coup** dans `TP-C-perso\_internal\contenu\<nom>\` du livrable, ou
+- **étendre le packaging** : ajouter une ligne `--add-data "$Repo\contenu\<nom>;contenu/<nom>"`
+  dans `packaging/build_windows.ps1` pour l'embarquer au build.
+
+> Rappel notation : un seul parcours est noté par le compagnon (`be_c` par défaut). Ajouter
+> un parcours ne le rend pas noté ; voir « Parcours noté et redéploiement du compagnon ».
+
 ## Ouvrir l'outil dans l'appli
 
 1. Menu **Paramètres → Gérer les niveaux…**

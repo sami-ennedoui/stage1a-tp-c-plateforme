@@ -124,6 +124,44 @@ l'etudiant, il suffit de **decocher** la case (aucun mot de passe demande pour r
 que lever le verrouillage a l'affichage. Les exercices deja valides le restent, ceux qui
 ne le sont pas ne sont pas marques comme faits, et rien de faux n'est envoye a Moodle.
 
+## Ajouter un parcours
+
+Un **parcours** est une suite d'exercices (par exemple les 14 exercices du BE C). Vous
+pouvez en ajouter un **sans toucher au code** : il suffit de deposer un dossier.
+
+Un parcours est un sous-dossier de `contenu\` qui contient un fichier `parcours.json`.
+Dans l'application livree, le contenu se trouve dans `_internal\contenu\` (a cote de
+`TP-C-perso.exe`). Le paquet ne livre que le parcours `be_c` ; pour en ajouter un, copiez
+votre dossier a cote.
+
+1. Creez le dossier `_internal\contenu\mon_parcours\`.
+2. Mettez-y un fichier `parcours.json` qui liste, dans l'ordre, les dossiers d'exercices :
+
+   ```json
+   {
+     "ordre": ["ex01_intro"],
+     "mode": "isole"
+   }
+   ```
+
+   - `ordre` : la liste des noms de dossiers d'exercices, dans l'ordre d'affichage.
+   - `mode` : `"isole"` pour une suite d'exercices independants (le cas courant).
+
+3. Pour chaque nom cite dans `ordre`, creez un sous-dossier d'exercice (par exemple
+   `_internal\contenu\mon_parcours\ex01_intro\`). Un exercice contient un `meta.json`
+   (ses metadonnees) plus ses fichiers de contenu : `enonce.md`, `starter.c`, `corrige.c`.
+   Le plus simple est de copier un exercice existant de `be_c` et de l'adapter. Le format
+   exact d'un exercice est decrit dans `DOC-gestion-niveaux.md`.
+
+4. Choisissez le parcours et relancez :
+   - Ouvrez le menu **Parametres -> « Changer de parcours… »** : votre dossier apparait
+     dans la liste (tout dossier de `contenu\` avec un `parcours.json` y figure).
+   - Dans l'application livree, l'exercice ouvert au demarrage est impose par le lanceur.
+     Pour ouvrir votre parcours, editez **`lancer.bat`** et remplacez, sur la derniere
+     ligne, `--parcours be_c` par `--parcours mon_parcours`, puis relancez `lancer.bat`.
+
+Le parcours par defaut est `be_c`.
+
 ## En cas de probleme
 
 - **La fenetre ne s'ouvre pas** : lancez `diagnostic.bat`, il indique ce qui manque.
