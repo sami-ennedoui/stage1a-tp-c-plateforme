@@ -208,7 +208,9 @@ class Fenetre(QMainWindow):
         b_tester = QPushButton("Tester")
         b_tester.setObjectName("primaire")     # bouton d'action principal, accent vert
         self.b_jeu = QPushButton("Compiler et jouer" if self.mode == "projet" else "Lancer le jeu")
-        b_aide = QPushButton("Demander de l'aide")
+        # attribut et non variable locale : _appliquer_reglage_tuteur doit pouvoir
+        # le masquer quand le tuteur est désactivé
+        self.b_aide = QPushButton("Demander de l'aide")
         self.b_ecrire = QPushButton("Le tuteur écrit le code")
         self.b_ecrire.setVisible(self.demo)      # bouton du mode démo seulement
         self.b_corrige = QPushButton("Charger le corrigé")
@@ -216,13 +218,13 @@ class Fenetre(QMainWindow):
         b_compiler.clicked.connect(self._compiler)
         b_tester.clicked.connect(self._tester)
         self.b_jeu.clicked.connect(self._lancer_jeu)
-        b_aide.clicked.connect(self._demander_aide)
+        self.b_aide.clicked.connect(self._demander_aide)
         self.b_ecrire.clicked.connect(self._tuteur_ecrit_code)
         self.b_corrige.clicked.connect(self._charger_corrige)
 
         barre = QHBoxLayout()
         barre.setSpacing(8)
-        for b in (b_compiler, b_tester, self.b_jeu, b_aide, self.b_ecrire, self.b_corrige):
+        for b in (b_compiler, b_tester, self.b_jeu, self.b_aide, self.b_ecrire, self.b_corrige):
             barre.addWidget(b)
         barre.addStretch(1)
 
@@ -276,6 +278,7 @@ class Fenetre(QMainWindow):
         self.setCentralWidget(conteneur)
         self._construire_barre_affichage()
         self._construire_menu()
+        self._appliquer_reglage_tuteur()
 
         # anti-rebond : textChanged déclenche le timer, pas l'envoi direct
         self.editeur.textChanged.connect(self._timer_lsp.start)
@@ -303,6 +306,12 @@ class Fenetre(QMainWindow):
         menu.addAction("Emplacements et diagnostic…").triggered.connect(
             self._ouvrir_diagnostic)
         menu.addSeparator()
+        self.action_tuteur = menu.addAction("Tuteur IA")
+        self.action_tuteur.setCheckable(True)
+        self.action_tuteur.setChecked(reglages.tuteur_actif())
+        self.action_tuteur.toggled.connect(self._basculer_tuteur)
+        menu.addAction("Commande du tuteur…").triggered.connect(self._changer_commande_ia)
+        menu.addSeparator()
         menu.addAction("Gérer les niveaux…").triggered.connect(self._ouvrir_gestion_niveaux)
         menu.addAction("Changer le mot de passe auteur…").triggered.connect(
             self._changer_mot_de_passe)
@@ -323,6 +332,38 @@ class Fenetre(QMainWindow):
             self, "Parcours enregistré",
             f"Le parcours « {choix} » s'ouvrira au prochain lancement.\n"
             "Ferme puis relance l'atelier pour basculer dessus.")
+
+    def _basculer_tuteur(self, actif: bool):
+        reglages.definir_tuteur_actif(actif)
+        self._appliquer_reglage_tuteur()
+        if actif and not tuteur_ia.moteur_disponible():
+            # Réactiver le réglage ne fait pas apparaître un moteur : le dire tout de
+            # suite, sinon l'enseignant croit avoir rendu le tuteur et rien ne bouge.
+            QMessageBox.information(
+                self, "Tuteur activé, moteur absent",
+                "Le tuteur est réactivé dans les réglages, mais aucun moteur IA n'a été "
+                "trouvé sur ce poste. Renseigne « Commande du tuteur… » ou installe un "
+                "moteur pour que l'aide soit réellement disponible.")
+
+    def _changer_commande_ia(self):
+        actuelle = reglages.commande_ia()
+        texte, ok = QInputDialog.getText(
+            self, "Commande du tuteur",
+            "Commande qui lance le moteur IA.\n"
+            "Vide = détection automatique. Utilise {prompt} pour placer la question,\n"
+            "sinon elle est ajoutée en dernier argument.\n"
+            "Exemple :  mon-moteur --sans-couleur {prompt}",
+            QLineEdit.EchoMode.Normal, actuelle)
+        if not ok:
+            return
+        reglages.definir_commande_ia(texte.strip())
+        self._appliquer_reglage_tuteur()
+        if texte.strip() and not tuteur_ia.moteur_disponible():
+            QMessageBox.warning(
+                self, "Commande introuvable",
+                "Le premier mot de cette commande n'a pas été trouvé sur le PATH.\n"
+                "Le tuteur restera indisponible tant qu'elle ne pointe pas sur un "
+                "exécutable existant.")
 
     def _ouvrir_dossier_contenu(self):
         try:
@@ -430,6 +471,7 @@ class Fenetre(QMainWindow):
         barre = self.addToolBar("Affichage")
         barre.setObjectName("barre_affichage")
         barre.setMovable(False)
+        self._bascules_affichage = {}
         for texte, panneau in (("Parcours", self.panneau_parcours),
                                ("Console", self.panneau_console),
                                ("Tuteur IA", self.panneau_tuteur)):
@@ -437,6 +479,31 @@ class Fenetre(QMainWindow):
             action.setCheckable(True)
             action.setChecked(True)
             action.toggled.connect(panneau.setVisible)
+            self._bascules_affichage[texte] = action
+
+    def _appliquer_reglage_tuteur(self):
+        """Montre ou masque tout ce qui relève du tuteur, selon le réglage.
+
+        Masquer le panneau ne suffirait pas : la barre d'affichage porte une bascule
+        « Tuteur IA » qui le ramènerait d'un clic. On retire donc aussi cette bascule,
+        sinon le réglage se contourne sans le vouloir.
+
+        On se règle sur la BASCULE seule, pas sur la présence d'un moteur, et la
+        distinction est délibérée. Un moteur absent doit laisser le bouton en place :
+        il répond alors « Moteur IA indisponible, le reste de l'atelier marche », ce
+        qui apprend à l'étudiant que sa séance n'est pas cassée. Le masquer aurait
+        supprimé cette explication et transformé une panne lisible en absence muette."""
+        actif = reglages.tuteur_actif()
+        self.b_aide.setVisible(actif)
+        if not actif:
+            self.b_ecrire.setVisible(False)      # y compris en démo : plus de génération
+        elif self.demo:
+            self.b_ecrire.setVisible(True)
+        self.panneau_tuteur.setVisible(actif)
+        bascule = self._bascules_affichage.get("Tuteur IA")
+        if bascule is not None:
+            bascule.setChecked(actif)
+            bascule.setVisible(actif)
 
     def _remplir_liste(self):
         self.liste.clear()
