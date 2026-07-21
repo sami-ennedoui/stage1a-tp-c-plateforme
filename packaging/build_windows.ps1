@@ -250,6 +250,28 @@ $pdf = Join-Path $Bundle 'README.pdf'
 # Meme piege qu'a l'etape 5 : un exe natif qui echoue ne stoppe pas le script. Sans ce
 # test, le bundle partait sans son PDF et l'etape s'annoncait quand meme reussie.
 if ($LASTEXITCODE -ne 0 -or -not (Test-Path $pdf)) { throw "PDF du guide non produit ($pdf)." }
+
+# Guides enseignant et developpeur, livres AUSSI dans le bundle. On regenere d'abord les
+# PDF de docs/ (docs\build_pdf.py, robuste a un Edge deja ouvert), puis on copie les deux
+# guides sous des noms parlants. La page d'erreur d'Edge pese ~60 Ko : le garde-fou de
+# taille attrape un PDF vide (les vrais guides pesent des centaines de Ko).
+Info "Generation des guides docs/ en PDF (enseignant, developpeur)..."
+& $Python "$Repo\docs\build_pdf.py"
+if ($LASTEXITCODE -ne 0) { throw "docs\build_pdf.py a echoue (generation des guides)." }
+$guidesLivres = @(
+    @{ src = 'docs\pdf\02-guide-auteur.pdf';  md = 'docs\02-guide-auteur.md';  dst = 'GUIDE-enseignant' },
+    @{ src = 'docs\pdf\04-doc-technique.pdf'; md = 'docs\04-doc-technique.md'; dst = 'GUIDE-developpeur' }
+)
+foreach ($g in $guidesLivres) {
+    $srcPdf = Join-Path $Repo $g.src
+    $dstPdf = Join-Path $Bundle ($g.dst + '.pdf')
+    if (-not (Test-Path $srcPdf) -or (Get-Item $srcPdf).Length -lt 100000) {
+        throw "Guide $($g.dst) absent ou vide ($srcPdf) : PDF non genere ?"
+    }
+    Copy-Item $srcPdf $dstPdf -Force
+    Copy-Item (Join-Path $Repo $g.md) (Join-Path $Bundle ($g.dst + '.md')) -Force
+}
+Ok "guides enseignant + developpeur ajoutes au bundle (md + pdf)"
 # NB : lancer_demo.bat (interne) n'est volontairement PAS copie -> le bundle est distribuable.
 Ok "bundle assemble"
 
